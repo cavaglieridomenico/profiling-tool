@@ -9,7 +9,8 @@
     "start:mobile": "node connect.js mobile",
     "start:desktop": "node connect.js desktop",
     "trace:start": "curl http://localhost:8080/trace:start",
-    "trace:stop": "curl http://localhost:8080/trace:stop"
+    "trace:stop": "curl http://localhost:8080/trace:stop",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "puppeteer": "24.28.0"
@@ -17,5 +18,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
 }
