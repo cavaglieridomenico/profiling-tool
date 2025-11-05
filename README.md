@@ -62,7 +62,7 @@ You can start the script in either **mobile** or **desktop** mode. The command s
 
   If no URL is provided, it will list the currently open tabs on your device.
 
-- **Desktop Mode:** Launches a new local Chrome instance in maximized size, rendering as a full desktop view.
+- **Desktop Mode:** Launches a new local Chrome instance in maximized size, rendering as a full desktop view, with camera permissions automatically granted.
   ```bash
   npm run start:desktop
   ```
