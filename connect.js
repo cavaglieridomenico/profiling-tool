@@ -82,16 +82,19 @@ function getNextTraceNumber() {
       }
       console.log(`Navigating to ${url}...`);
       pageForTracing = await browserInstance.newPage();
+      await pageForTracing.setCacheEnabled(false);
       await pageForTracing.goto(url);
       console.log('Navigation complete.');
     } else if (pages.length > 0) {
       pageForTracing = pages[0];
+      await pageForTracing.setCacheEnabled(false);
       console.log(
         `Using first open page for tracing: ${await pageForTracing.url()}`
       );
     } else {
       console.log('No open pages. A new page will be created for tracing.');
       pageForTracing = await browserInstance.newPage();
+      await pageForTracing.setCacheEnabled(false);
     }
 
     // Start the command server
