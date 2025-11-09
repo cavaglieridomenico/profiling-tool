@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.2.3
+
+### Refactored
+
+- Added modularization.
+
+### Added
+
+- Added page refresh command for both desktop and mobile
+
 ## 1.2.2
 
 ### Added

@@ -1,15 +1,16 @@
 {
   "name": "puppeteer-profiling",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Puppeteer Profiling",
-  "main": "connect.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node connect.js",
-    "start:mobile": "node connect.js mobile",
-    "start:desktop": "node connect.js desktop",
+    "start": "node index.js",
+    "start:mobile": "node index.js mobile",
+    "start:desktop": "node index.js desktop",
     "trace:start": "curl http://localhost:8080/trace:start",
     "trace:stop": "curl http://localhost:8080/trace:stop",
+    "navigate:refresh": "curl http://localhost:8080/navigate:refresh",
     "format": "prettier --write ."
   },
   "dependencies": {

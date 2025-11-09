@@ -17,19 +17,13 @@ Before you begin, ensure you have the following installed:
 
 ## Setup
 
-1.  **Clone the repository (if applicable) or navigate to your project directory:**
-
-    ```bash
-    cd /path/to/puppeteer-profiling
-    ```
-
-2.  **Install Node.js dependencies:**
+1.  **Install Node.js dependencies:**
 
     ```bash
     npm install
     ```
 
-3.  **Connect your Android device:**
+2.  **Connect your Android device:**
 
     Ensure your Android device is connected via USB and USB debugging is enabled. Verify it's recognized by ADB:
 
@@ -39,7 +33,7 @@ Before you begin, ensure you have the following installed:
 
     You should see your device listed.
 
-4.  **Forward the Chrome DevTools port (for mobile mode):**
+3.  **Forward the Chrome DevTools port (for mobile mode):**
 
     This command forwards the Chrome DevTools port from your Android device to your local machine (port 9222). This is only required if you intend to use the `mobile` mode.
 
@@ -47,11 +41,11 @@ Before you begin, ensure you have the following installed:
     .\adb forward tcp:9222 localabstract:chrome_devtools_remote
     ```
 
-    Keep this command running in a dedicated terminal or ensure it's executed before starting the `connect.js` script in `mobile` mode.
+    Keep this command running in a dedicated terminal or ensure it's executed before starting the `index.js` script in `mobile` mode.
 
 ## Usage
 
-Once the setup is complete, you can use the `connect.js` script to interact with Chrome on your Android device or a local desktop Chrome instance.
+Once the setup is complete, you can use the `index.js` script to interact with Chrome on your Android device or a local desktop Chrome instance.
 
 ### 1. Start the Puppeteer connection and command server
 
