@@ -3,31 +3,7 @@ const fs = require('fs');
 const { URL } = require('url');
 const { exec } = require('child_process');
 const path = require('path');
-
-// Function to determine the path to the adb executable
-const getAdbPath = () => {
-  // 1. Use ADB_PATH environment variable if available
-  if (process.env.ADB_PATH) {
-    console.log(`Using adb from ADB_PATH: ${process.env.ADB_PATH}`);
-    return process.env.ADB_PATH;
-  }
-  // 2. Use ANDROID_HOME environment variable if available
-  if (process.env.ANDROID_HOME) {
-    // Construct path to adb within the Android SDK
-    const adbPathResult = path.join(
-      process.env.ANDROID_HOME,
-      'platform-tools',
-      'adb'
-    );
-    console.log(`Using adb from ANDROID_HOME: ${adbPathResult}`);
-    return adbPathResult;
-  }
-  // 3. Fallback to assuming 'adb' is in the system's PATH
-  console.log("Assuming 'adb' is in the system's PATH.");
-  return 'adb';
-};
-
-const adbPath = getAdbPath();
+const { handleTap } = require('./utils');
 
 let traceCounter = 0;
 
@@ -148,65 +124,15 @@ function startCommandServer(pageForTracing) {
         }
       })();
     } else if (pathname === '/input:tap-vm-video') {
-      exec(`${adbPath} shell input tap 760 370`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end(`Failed to execute tap command: ${error.message}\n`);
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tapped vm-video.\n`);
-        console.log(`Tapped vm-video.`);
-      });
+      handleTap(res, 760, 370, 'Tapped vm-video.');
     } else if (pathname === '/input:tap-vm-vmp-continue') {
-      exec(`${adbPath} shell input tap 530 2050`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end(`Failed to execute tap command: ${error.message}\n`);
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tapped on vm-vmp-continue.\n`);
-        console.log(`Tapped on vm-vmp-continue.`);
-      });
+      handleTap(res, 530, 2050, 'Tapped on vm-vmp-continue.');
     } else if (pathname === '/input:tap-vm-vmp-rec') {
-      exec(`${adbPath} shell input tap 555 2030`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end(`Failed to execute tap command: ${error.message}\n`);
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tapped at (194, 635).\n`);
-        console.log(`Tapped at (194, 635).`);
-      });
+      handleTap(res, 555, 2030, 'Tapped at (194, 635).');
     } else if (pathname === '/input:tap-vm-multivm-open') {
-      exec(`${adbPath} shell input tap 100 1680`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end(`Failed to execute tap command: ${error.message}\n`);
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tapped on vm-multivm-open.\n`);
-        console.log(`Tapped on vm-multivm-open.`);
-      });
+      handleTap(res, 100, 1680, 'Tapped on vm-multivm-open.');
     } else if (pathname === '/input:tap-vm-multivm-close') {
-      exec(`${adbPath} shell input tap 100 1680`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end(`Failed to execute tap command: ${error.message}\n`);
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tapped on vm-multivm-close.\n`);
-        console.log(`Tapped on vm-multivm-close.`);
-      });
+      handleTap(res, 100, 1680, 'Tapped on vm-multivm-close.');
     } else {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end(

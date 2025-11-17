@@ -1,5 +1,29 @@
 const puppeteer = require('puppeteer');
 const http = require('http');
+const path = require('path');
+
+// Function to determine the path to the adb executable
+const getAdbPath = () => {
+  // 1. Use ADB_PATH environment variable if available
+  if (process.env.ADB_PATH) {
+    console.log(`Using adb from ADB_PATH: ${process.env.ADB_PATH}`);
+    return process.env.ADB_PATH;
+  }
+  // 2. Use ANDROID_HOME environment variable if available
+  if (process.env.ANDROID_HOME) {
+    // Construct path to adb within the Android SDK
+    const adbPathResult = path.join(
+      process.env.ANDROID_HOME,
+      'platform-tools',
+      'adb'
+    );
+    console.log(`Using adb from ANDROID_HOME: ${adbPathResult}`);
+    return adbPathResult;
+  }
+  // 3. Fallback to assuming 'adb' is in the system's PATH
+  console.log("Assuming 'adb' is in the system's PATH.");
+  return 'adb';
+};
 
 // Helper function to get the WebSocket endpoint for mobile
 function getMobileWebSocketEndpoint() {
@@ -56,4 +80,4 @@ async function initializeBrowser(mode) {
   return browserInstance;
 }
 
-module.exports = { initializeBrowser };
+module.exports = { initializeBrowser, getAdbPath };
