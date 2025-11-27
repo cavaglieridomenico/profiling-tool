@@ -39,6 +39,7 @@ function startCommandServer(pageForTracing) {
       }
     } else if (pathname === '/trace:stop') {
       if (pageForTracing) {
+        console.log(`Tracing stopped... Saving...`);
         await pageForTracing.tracing.stop();
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(`Tracing stopped. File trace-${traceCounter}.json saved.\n`);
@@ -61,12 +62,12 @@ function startCommandServer(pageForTracing) {
         res.end('No page available for refreshing.\n');
         console.log('No page available for refreshing.');
       }
-} else if (pathname === '/input:tap-vm-video') {
+    } else if (pathname === '/input:tap-vm-video') {
       handleTap(res, 760, 370, 'Tapped vm-video.');
     } else if (pathname === '/input:tap-vm-vmp-continue') {
       handleTap(res, 530, 2050, 'Tapped on vm-vmp-continue.');
     } else if (pathname === '/input:tap-vm-vmp-rec') {
-      handleTap(res, 555, 2030, 'Tapped at (194, 635).');
+      handleTap(res, 555, 2030, 'Tapped on vm-vmp-rec.');
     } else if (pathname === '/input:tap-vm-multivm-open') {
       handleTap(res, 100, 1680, 'Tapped on vm-multivm-open.');
     } else if (pathname === '/input:tap-vm-multivm-close') {
@@ -90,6 +91,7 @@ function startCommandServer(pageForTracing) {
     console.log('  - Send GET to /input:tap-vm-vmp-rec');
     console.log('  - Send GET to /input:tap-vm-multivm-open');
     console.log('  - Send GET to /input:tap-vm-multivm-close');
+    console.log('  - Send GET to /profile:vm-tc10');
   });
 }
 

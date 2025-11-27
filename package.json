@@ -16,7 +16,8 @@
     "input:tap-vm-vmp-rec": "curl http://localhost:8080/input:tap-vm-vmp-rec",
     "input:tap-vm-multivm-open": "curl http://localhost:8080/input:tap-vm-multivm-open",
     "input:tap-vm-multivm-close": "curl http://localhost:8080/input:tap-vm-multivm-close",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "profile:vm-tc10": "cmd /c profile_vm-tc10.bat"
   },
   "dependencies": {
     "puppeteer": "24.28.0"
