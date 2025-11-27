@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-profiling",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Puppeteer Profiling",
   "main": "index.js",
   "scripts": {

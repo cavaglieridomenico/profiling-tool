@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 1.2.5
+
+### Added
+
+- Added a tap commands for Virtual Mirror
+
+### Removed
+
+- command to open a new Chrome window with `chrome://inspect`
+
 ## 1.2.4
 
 ### Added
