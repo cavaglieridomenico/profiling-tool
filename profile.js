@@ -26,7 +26,7 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function runTestCase(name) {
+async function runTestCase(name, traceName) {
   const steps = testCases[name];
   if (!steps) {
     console.error(`Test case "${name}" not found.`);
@@ -37,7 +37,11 @@ async function runTestCase(name) {
   console.log(`Running test case: ${name}`);
   try {
     for (const step of steps) {
-      await sendCommand(step.command);
+      let { command } = step;
+      if (command.startsWith('trace:start') && traceName) {
+        command = `${command}?name=${traceName}`;
+      }
+      await sendCommand(command);
       if (step.delay) {
         await sleep(step.delay);
       }
@@ -50,12 +54,13 @@ async function runTestCase(name) {
 }
 
 const testCaseName = process.argv[2];
+const traceName = process.argv[3];
 
 if (!testCaseName) {
   console.error('Please provide a test case name to run.');
-  console.log('Usage: node profile-tc10.js <test_case_name>');
+  console.log('Usage: node profile.js <test_case_name> [trace_name]');
   console.log('Available test cases:', Object.keys(testCases).join(', '));
   process.exit(1);
 }
 
-runTestCase(testCaseName);
+runTestCase(testCaseName, traceName);

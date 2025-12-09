@@ -6,11 +6,12 @@ const { COMMANDS } = require('./commands');
 const { handleTap } = require('./utils');
 
 let traceCounter = 0;
+let traceName = '';
 
 // Function to find the next available trace file number
-function getNextTraceNumber() {
-  let i = 0;
-  while (fs.existsSync(`trace-${i}.json`)) {
+function getNextTraceNumber(name = 'trace') {
+  let i = 1;
+  while (fs.existsSync(`${name}-${i}.json`)) {
     i++;
   }
   return i;
@@ -23,8 +24,10 @@ function startCommandServer(pageForTracing) {
 
     if (pathname === COMMANDS.TRACE_START) {
       if (pageForTracing) {
-        traceCounter = getNextTraceNumber();
-        const tracePath = `trace-${traceCounter}.json`;
+        const traceUrl = requestUrl.searchParams.get('name');
+        traceName = traceUrl || 'trace';
+        traceCounter = getNextTraceNumber(traceName);
+        const tracePath = `${traceName}-${traceCounter}.json`;
         await pageForTracing.tracing.start({
           path: tracePath,
           screenshots: true,
@@ -42,8 +45,12 @@ function startCommandServer(pageForTracing) {
         console.log(`Tracing stopped... Saving...`);
         await pageForTracing.tracing.stop();
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`Tracing stopped. File trace-${traceCounter}.json saved.\n`);
-        console.log(`Tracing stopped. File trace-${traceCounter}.json saved.`);
+        res.end(
+          `Tracing stopped. File ${traceName}-${traceCounter}.json saved.\n`
+        );
+        console.log(
+          `Tracing stopped. File ${traceName}-${traceCounter}.json saved.`
+        );
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('No page available for tracing (was tracing ever started?).\n');
@@ -109,7 +116,7 @@ function startCommandServer(pageForTracing) {
   const PORT = 8080;
   server.listen(PORT, () => {
     console.log(`Command server listening on http://localhost:${PORT}`);
-    console.log('  - Send GET to /trace:start');
+    console.log('  - Send GET to /trace:start?name=<TRACE_NAME>');
     console.log('  - Send GET to /trace:stop');
     console.log('  - Send GET to /navigate:refresh');
     console.log('  - Send GET to /navigate:url?url=<URL>');
