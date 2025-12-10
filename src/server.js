@@ -87,18 +87,18 @@ function startCommandServer(pageForTracing) {
         res.end('No page available for navigation.\n');
         console.log('No page available for navigation.');
       }
-    } else if (pathname === COMMANDS.INPUT_TAP_VM_UPLOAD) {
-      handleTap(res, 550, 370, 'Tapped vm-upload.');
-    } else if (pathname === COMMANDS.INPUT_TAP_VM_VIDEO) {
-      handleTap(res, 760, 370, 'Tapped vm-video.');
-    } else if (pathname === COMMANDS.INPUT_TAP_VM_CONTINUE) {
-      handleTap(res, 530, 2050, 'Tapped on vm-vmp-continue.');
-    } else if (pathname === COMMANDS.INPUT_TAP_VM_REC) {
-      handleTap(res, 555, 2030, 'Tapped on vm-vmp-rec.');
-    } else if (pathname === COMMANDS.INPUT_TAP_MULTIVM_OPEN) {
-      handleTap(res, 100, 1680, 'Tapped on vm-multivm-open.');
-    } else if (pathname === COMMANDS.INPUT_TAP_MULTIVM_CLOSE) {
-      handleTap(res, 100, 1680, 'Tapped on vm-multivm-close.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_UPLOAD) {
+      handleTap(res, 550, 370, 'Tapped vmmv-upload.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_VIDEO) {
+      handleTap(res, 760, 370, 'Tapped vmmv-video.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_CONTINUE) {
+      handleTap(res, 530, 2050, 'Tapped on vmmv-vmp-continue.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_REC) {
+      handleTap(res, 555, 2030, 'Tapped on vmmv-vmp-rec.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_MULTIVM_OPEN) {
+      handleTap(res, 100, 1680, 'Tapped on vmmv-multivm-open.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_MULTIVM_CLOSE) {
+      handleTap(res, 100, 1680, 'Tapped on vmmv-multivm-close.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMCORE_VMP_PDPLIGHT) {
       handleTap(res, 540, 1240, 'Tapped on vmcore-vmp-pdplight.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMCORE_VMP_REC) {
