@@ -80,6 +80,34 @@ While the main script (`npm start`, `npm run start:mobile`, or `npm run start:de
 
 Trace files will be saved in your project directory with progressive numbering (e.g., `trace-0.json`, `trace-1.json`).
 
+### 3. Running Test Cases
+
+This project includes a test runner script (`profile.js`) that allows you to execute predefined sequences of commands (test cases) from the `src/testCases.js` file.
+
+#### Running a Test Case
+
+To run a test case, use the following command:
+
+```bash
+node profile.js <test_case_name>
+```
+
+Replace `<test_case_name>` with the name of the test case you want to run (e.g., `vmmv_tc01__tc04`).
+
+#### Running a Test Case with a Custom Trace Name
+
+You can also provide a custom name for the trace file by adding it as a second argument:
+
+```bash
+node profile.js <test_case_name> <custom_trace_name>
+```
+
+For example, to run `vmmv_tc01__tc04` and save the trace as `my-custom-trace.json`, use:
+
+```bash
+node profile.js vmmv_tc01__tc04 my-custom-trace
+```
+
 ## Enabling Memory Profiling on Android device
 
 For mobile devices, you need to manually enable memory profiling in Chrome before you can capture a trace with heap data. Here are the steps:
