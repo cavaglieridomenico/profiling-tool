@@ -24,7 +24,7 @@ function getNextTraceNumber(name = 'trace') {
   return i;
 }
 
-function startCommandServer(pageForTracing) {
+function startCommandServer(pageForTracing, mode) {
   const server = http.createServer(async (req, res) => {
     const requestUrl = new URL(req.url, `http://${req.headers.host}`);
     const { pathname } = requestUrl;
@@ -66,7 +66,7 @@ function startCommandServer(pageForTracing) {
         );
       }
     } else if (pathname === COMMANDS.DEVICE_CLEAN_STATE) {
-      await handleCleanState(pageForTracing, res);
+      await handleCleanState(pageForTracing, res, mode);
     } else if (pathname === COMMANDS.NAVIGATE_REFRESH) {
       if (pageForTracing) {
         await pageForTracing.reload();

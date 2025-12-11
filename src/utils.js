@@ -41,7 +41,13 @@ async function handleNavigation(page, url, res) {
   console.log(`Navigated to ${url}.`);
 }
 
-async function handleCleanState(page, res) {
+async function handleCleanState(page, res, mode) {
+  if (mode !== 'mobile') {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('This command is only available for mobile mode.\n');
+    return;
+  }
+
   if (!page) {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
     res.end('No page available to clean.\n');
@@ -49,6 +55,9 @@ async function handleCleanState(page, res) {
   }
 
   try {
+    await page.goto('about:blank');
+    console.log('Navigated to about:blank.');
+    
     console.log('Starting Mobile Device Clean State...');
 
     // 1. Tab Hygiene: Close background tabs to isolate CPU/Memory

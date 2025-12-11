@@ -9,7 +9,7 @@ const { startCommandServer } = require('./src/server');
   try {
     const browserInstance = await initializeBrowser(mode);
     const pageForTracing = await getTargetPage(browserInstance, url);
-    startCommandServer(pageForTracing);
+    startCommandServer(pageForTracing, mode);
   } catch (err) {
     console.error('Error:', err.message);
     if (mode === 'mobile') {
