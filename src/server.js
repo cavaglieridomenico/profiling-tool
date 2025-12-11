@@ -101,6 +101,8 @@ function startCommandServer(pageForTracing, mode) {
       handleTap(res, 530, 2050, 'Tapped on vmmv-vmp-continue.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMMV_REC) {
       handleTap(res, 555, 2030, 'Tapped on vmmv-vmp-rec.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMMV_VMP_RESTART) {
+      handleTap(res, 970, 1540, 'Tapped on vmmv-vmp-restart.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMMV_MULTIVM_OPEN) {
       handleTap(res, 100, 1680, 'Tapped on vmmv-multivm-open.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMMV_MULTIVM_CLOSE) {
@@ -115,6 +117,8 @@ function startCommandServer(pageForTracing, mode) {
       handleTap(res, 100, 2040, 'Tapped on vmcore-vmp-rec.');
     } else if (pathname === COMMANDS.INPUT_TAP_VMCORE_VMP_IMAGE) {
       handleTap(res, 100, 1680, 'Tapped on vmcore-vmp-image.');
+    } else if (pathname === COMMANDS.INPUT_TAP_VMCORE_VMP_RESTART) {
+      handleTap(res, 330, 1430, 'Tapped on vmcore-vmp-restart.');
     } else {
       res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end(
