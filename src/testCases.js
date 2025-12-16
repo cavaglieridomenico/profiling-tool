@@ -35,6 +35,16 @@ const testCases = {
     { command: 'trace:stop', delay: 0 },
   ],
   vmcore_vmp_tc19_01: [
+    // {
+    //   command:
+    //     'config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js',
+    //   delay: 500,
+    // },
+    // {
+    //   command:
+    //     'config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js',
+    //   delay: 500,
+    // },
     { command: 'input:tap-vmcore-vmp-pdplight', delay: 14000 },
     { command: 'trace:start', delay: 3000 },
     { command: 'input:tap-vmcore-vmp-rec', delay: 50000 },

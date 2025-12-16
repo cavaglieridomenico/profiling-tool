@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
   ? path.resolve(process.cwd(), `.env.${env}`)
@@ -8,6 +9,10 @@ require('dotenv').config({ path: envPath });
 
 const { exec } = require('child_process');
 const { getAdbPath } = require('./browser');
+
+// State to track active overrides
+let activeOverrides = {};
+let isInterceptionEnabled = false;
 
 function handleTap(res, x, y, message) {
   const adbPath = getAdbPath();
@@ -57,7 +62,7 @@ async function handleCleanState(page, res, mode) {
   try {
     await page.goto('about:blank');
     console.log('Navigated to about:blank.');
-    
+
     console.log('Starting Mobile Device Clean State...');
 
     // 1. Tab Hygiene: Close background tabs to isolate CPU/Memory
@@ -102,4 +107,70 @@ async function handleCleanState(page, res, mode) {
   }
 }
 
-module.exports = { handleTap, handleNavigation, handleCleanState };
+async function handleConfigOverrides(page, targetUrl, localFilePath, res) {
+  if (!page) return;
+
+  // If no params provided, disable overrides
+  if (!targetUrl || !localFilePath) {
+    activeOverrides = {};
+    if (isInterceptionEnabled) {
+      await page.setRequestInterception(false);
+      isInterceptionEnabled = false;
+      console.log('Overrides disabled. Request interception turned off.');
+    }
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Overrides disabled.\n');
+    return;
+  }
+
+  // Activate Overrides
+  activeOverrides[targetUrl] = localFilePath;
+  console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
+
+  if (!isInterceptionEnabled) {
+    await page.setRequestInterception(true);
+    isInterceptionEnabled = true;
+
+    page.on('request', (request) => {
+      const url = request.url();
+      // Check if this URL matches any of our overrides
+      // We look for partial matches (contains) or exact matches
+      const matchKey = Object.keys(activeOverrides).find((key) =>
+        url.includes(key)
+      );
+
+      if (matchKey) {
+        const filePath = activeOverrides[matchKey];
+        const absolutePath = path.resolve(process.cwd(), filePath);
+
+        if (fs.existsSync(absolutePath)) {
+          console.log(`[Override] Serving local file for: ${url}`);
+          // Respond with the local file content
+          request.respond({
+            status: 200,
+            contentType: 'application/javascript', // adjust based on file type if needed
+            body: fs.readFileSync(absolutePath),
+          });
+          return;
+        } else {
+          console.error(
+            `[Override Error] Local file not found: ${absolutePath}`
+          );
+        }
+      }
+      // Continue normal network request if no match
+      request.continue();
+    });
+    console.log('Request interception enabled.');
+  }
+
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end(`Override active for ${targetUrl}\n`);
+}
+
+module.exports = {
+  handleTap,
+  handleNavigation,
+  handleCleanState,
+  handleConfigOverrides,
+};

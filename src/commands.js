@@ -5,6 +5,7 @@ const COMMANDS = {
 
   // Maintenance
   DEVICE_CLEAN_STATE: '/device:clean-state',
+  CONFIG_OVERRIDES: '/config:overrides',
 
   // Navigation
   NAVIGATE_REFRESH: '/navigate:refresh',

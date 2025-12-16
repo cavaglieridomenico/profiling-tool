@@ -10,7 +10,12 @@ const http = require('http');
 const fs = require('fs');
 const { URL } = require('url');
 const { COMMANDS } = require('./commands');
-const { handleTap, handleNavigation, handleCleanState } = require('./utils');
+const {
+  handleTap,
+  handleNavigation,
+  handleCleanState,
+  handleConfigOverrides,
+} = require('./utils');
 
 let traceCounter = 0;
 let traceName = '';
@@ -67,6 +72,10 @@ function startCommandServer(pageForTracing, mode) {
       }
     } else if (pathname === COMMANDS.DEVICE_CLEAN_STATE) {
       await handleCleanState(pageForTracing, res, mode);
+    } else if (pathname === COMMANDS.CONFIG_OVERRIDES) {
+      const target = requestUrl.searchParams.get('target');
+      const replacement = requestUrl.searchParams.get('replacement');
+      await handleConfigOverrides(pageForTracing, target, replacement, res);
     } else if (pathname === COMMANDS.NAVIGATE_REFRESH) {
       if (pageForTracing) {
         await pageForTracing.reload();
