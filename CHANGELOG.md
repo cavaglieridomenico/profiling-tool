@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## 1.4.0
+
+### Added
+
+- New override command and logic for configuration overrides
+- Additional commands for device and profile management
+- Support for mobile/desktop mode checks
+- Clean state command for device
+- New and updated URLs for navigation and testing
+
+### Changed
+
+- Updated Puppeteer version
+- Improved command naming consistency
+- Enhanced logic for VM/PDW test environment handling
+
+
 ## 1.3.1
 
 ### Added
