@@ -13,6 +13,7 @@
     "trace:start": "curl http://localhost:8080/trace:start",
     "trace:stop": "curl http://localhost:8080/trace:stop",
     "device:clean": "curl http://localhost:8080/device:clean-state",
+    "config:overrides": "curl http://localhost:8080/config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js",
     "navigate:refresh": "curl http://localhost:8080/navigate:refresh",
     "navigate:url": "node navigate.js",
     "input:tap-vmmv-upload": "curl http://localhost:8080/input:tap-vmmv-upload",
