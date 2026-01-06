@@ -168,9 +168,21 @@ async function handleConfigOverrides(page, targetUrl, localFilePath, res) {
   res.end(`Override active for ${targetUrl}\n`);
 }
 
+// Helper to standardize HTTP responses
+function sendResponse(res, statusCode, message) {
+  res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
+  res.end(message + '\n');
+  if (statusCode < 400) {
+    console.log(message);
+  } else {
+    console.error(message);
+  }
+}
+
 module.exports = {
   handleTap,
   handleNavigation,
   handleCleanState,
   handleConfigOverrides,
+  sendResponse,
 };
