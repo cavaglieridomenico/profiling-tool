@@ -72,9 +72,9 @@ You can start the script in either **mobile** or **desktop** mode. The command s
 
 The script will keep the connection alive. To stop it, press `Ctrl+C`.
 
-### 2. Control Tracing and Input (from a **second terminal**)
+### 2. Control Navigation - Tracing - Input (from a **second terminal**)
 
-While the main script (`npm start`, `npm run start:mobile`, or `npm run start:desktop`) is running in your first terminal, you can use a second terminal to send commands to start and stop performance tracing, and to send input events.
+While the main script (`npm start`, `npm run start:mobile`, or `npm run start:desktop`) is running in your first terminal, you can use a second terminal to send commands to navigate to a specific URL, start and stop performance tracing, and to send input events.
 
 > **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run input:tap-vmmv-video`).
 
@@ -86,7 +86,7 @@ This project includes a test runner script (`profile.js`) that allows you to exe
 
 #### Prerequisite
 
-The mobile device must be connected and ready as per the instructions above, with the page to be tested already open.
+The mobile device must be connected and ready as per the instructions above, with the page to be tested already open (e.g., `npm run navigate:url --  VMMV_TV20`).
 
 #### Running a Test Case
 
