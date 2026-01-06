@@ -84,6 +84,10 @@ Trace files will be saved in your project directory with progressive numbering (
 
 This project includes a test runner script (`profile.js`) that allows you to execute predefined sequences of commands (test cases) from the `src/testCases.js` file.
 
+#### Prerequisite
+
+The mobile device must be connected and ready as per the instructions above, with the page to be tested already open.
+
 #### Running a Test Case
 
 To run a test case, use the following command:
