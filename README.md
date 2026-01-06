@@ -108,6 +108,8 @@ For example, to run `vmmv_tc01__tc04` and save the trace as `my-custom-trace.jso
 node profile.js vmmv_tc01__tc04 my-custom-trace
 ```
 
+> **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available test case commands (e.g., `npm run profile:vmmv-tc01__tc04 my-custom-trace`).
+
 ## Enabling Memory Profiling on Android device
 
 For mobile devices, you need to manually enable memory profiling in Chrome before you can capture a trace with heap data. Here are the steps:
