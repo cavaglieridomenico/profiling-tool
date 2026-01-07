@@ -15,6 +15,11 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-multivm-close', delay: 5000 },
     { command: 'trace:stop', delay: 0 },
   ],
+  vmmv_tc08__tc04: [
+    { command: 'trace:start', delay: 3000 },
+    { command: 'input:tap-vmmv-widget', delay: 20000 },
+    { command: 'trace:stop', delay: 0 },
+  ],
   vmmv_tc09: [
     { command: 'trace:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 20000 },
