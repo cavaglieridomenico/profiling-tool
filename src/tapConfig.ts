@@ -1,6 +1,12 @@
-const { COMMANDS } = require('./commands');
+import { COMMANDS } from './commands';
 
-const TAP_CONFIG = {
+interface TapConfigItem {
+  x: number;
+  y: number;
+  msg: string;
+}
+
+export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_VMMV_UPLOAD]: {
     x: 550,
     y: 370,
@@ -67,5 +73,3 @@ const TAP_CONFIG = {
     msg: 'Tapped on vmcore-vmp-restart.',
   },
 };
-
-module.exports = { TAP_CONFIG };

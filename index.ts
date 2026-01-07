@@ -1,6 +1,6 @@
-const { initializeBrowser } = require('./src/browser');
-const { getTargetPage } = require('./src/page');
-const { startCommandServer } = require('./src/server');
+import { initializeBrowser } from './src/browser';
+import { getTargetPage } from './src/page';
+import { startCommandServer } from './src/server';
 
 (async () => {
   const mode = process.argv[2] || 'mobile'; // Default to mobile
@@ -10,7 +10,7 @@ const { startCommandServer } = require('./src/server');
     const browserInstance = await initializeBrowser(mode);
     const pageForTracing = await getTargetPage(browserInstance, url);
     startCommandServer(pageForTracing, mode);
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error:', err.message);
     if (mode === 'mobile') {
       console.error(

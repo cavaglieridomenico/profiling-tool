@@ -1,9 +1,9 @@
-const puppeteer = require('puppeteer');
-const http = require('http');
-const path = require('path');
+import puppeteer, { Browser } from 'puppeteer';
+import http from 'http';
+import path from 'path';
 
 // Function to determine the path to the adb executable
-const getAdbPath = () => {
+export const getAdbPath = (): string => {
   // 1. Use ADB_PATH environment variable if available
   if (process.env.ADB_PATH) {
     console.log(`Using adb from ADB_PATH: ${process.env.ADB_PATH}`);
@@ -26,7 +26,7 @@ const getAdbPath = () => {
 };
 
 // Helper function to get the WebSocket endpoint for mobile
-function getMobileWebSocketEndpoint() {
+function getMobileWebSocketEndpoint(): Promise<string> {
   return new Promise((resolve, reject) => {
     http
       .get('http://localhost:9222/json/version', (res) => {
@@ -53,8 +53,8 @@ function getMobileWebSocketEndpoint() {
   });
 }
 
-async function initializeBrowser(mode) {
-  let browserInstance;
+export async function initializeBrowser(mode: string): Promise<Browser> {
+  let browserInstance: Browser | undefined;
   if (mode === 'mobile') {
     console.log('Connecting to mobile device...');
     const browserWSEndpoint = await getMobileWebSocketEndpoint();
@@ -79,5 +79,3 @@ async function initializeBrowser(mode) {
   }
   return browserInstance;
 }
-
-module.exports = { initializeBrowser, getAdbPath };

@@ -1,4 +1,4 @@
-const COMMANDS = {
+export const COMMANDS = {
   // Tracing Control
   TRACE_START: '/trace:start',
   TRACE_STOP: '/trace:stop',
@@ -26,5 +26,3 @@ const COMMANDS = {
   INPUT_TAP_VMCORE_VMP_IMAGE: '/input:tap-vmcore-vmp-image',
   INPUT_TAP_VMCORE_VMP_RESTART: '/input:tap-vmcore-vmp-restart',
 };
-
-module.exports = { COMMANDS };

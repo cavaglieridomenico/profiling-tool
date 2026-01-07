@@ -1,13 +1,17 @@
-const fs = require('fs');
+import fs from 'fs';
+import { Page } from 'puppeteer';
 
 class TraceManager {
+  traceCounter: number;
+  traceName: string;
+
   constructor() {
     this.traceCounter = 0;
     this.traceName = '';
   }
 
   // Function to find the next available trace file number
-  getNextTraceNumber(name = 'trace') {
+  getNextTraceNumber(name: string = 'trace'): number {
     let i = 1;
     while (fs.existsSync(`${name}-${i}.json`)) {
       i++;
@@ -15,7 +19,7 @@ class TraceManager {
     return i;
   }
 
-  async startTrace(page, name) {
+  async startTrace(page: Page, name: string | null): Promise<string> {
     if (!page) {
       throw new Error('No page available for tracing.');
     }
@@ -31,7 +35,7 @@ class TraceManager {
     return tracePath;
   }
 
-  async stopTrace(page) {
+  async stopTrace(page: Page): Promise<string> {
     if (!page) {
       throw new Error('No page available for tracing (was tracing ever started?).');
     }
@@ -40,4 +44,4 @@ class TraceManager {
   }
 }
 
-module.exports = new TraceManager();
+export default new TraceManager();

@@ -1,19 +1,30 @@
-const { COMMANDS } = require('./commands');
-const traceManager = require('./traceManager');
-const {
+import { IncomingMessage, ServerResponse } from 'http';
+import { Page } from 'puppeteer';
+import { URL } from 'url';
+import { COMMANDS } from './commands';
+import traceManager from './traceManager';
+import {
   handleNavigation,
   handleCleanState,
   handleConfigOverrides,
   sendResponse,
-} = require('./utils');
+} from './utils';
 
-const routeHandlers = {
+type RouteHandler = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  page: Page,
+  url: URL,
+  mode?: string
+) => Promise<void>;
+
+export const routeHandlers: Record<string, RouteHandler> = {
   [COMMANDS.TRACE_START]: async (req, res, page, url) => {
     try {
       const traceName = url.searchParams.get('name');
       const tracePath = await traceManager.startTrace(page, traceName);
       sendResponse(res, 200, `Tracing started. Saving to ${tracePath}`);
-    } catch (error) {
+    } catch (error: any) {
       sendResponse(res, 404, error.message);
     }
   },
@@ -22,12 +33,16 @@ const routeHandlers = {
       console.log(`Tracing stopped... Saving...`);
       const traceFile = await traceManager.stopTrace(page);
       sendResponse(res, 200, `Tracing stopped. File ${traceFile} saved.`);
-    } catch (error) {
+    } catch (error: any) {
       sendResponse(res, 404, error.message);
     }
   },
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {
-    await handleCleanState(page, res, mode);
+    if (mode) {
+        await handleCleanState(page, res, mode);
+    } else {
+        sendResponse(res, 400, 'Mode is required for clean state.');
+    }
   },
   [COMMANDS.CONFIG_OVERRIDES]: async (req, res, page, url) => {
     const target = url.searchParams.get('target');
@@ -55,5 +70,3 @@ const routeHandlers = {
     }
   },
 };
-
-module.exports = { routeHandlers };

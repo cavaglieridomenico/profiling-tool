@@ -1,4 +1,4 @@
-const urls = {
+export const urls: Record<string, string> = {
   VMCORE_BYPASS: 'https://vmcore.luxottica.com/luxotticabypass',
   VMMV_TV20:
     'https://vmmv-uat.luxottica.com/v/5.5.2/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E31',
@@ -14,5 +14,3 @@ const urls = {
   PDWCORE_TV09: 'https://pdweb.luxottica.com/p/core/demo/2.0.9/inittime.html',
   PDWMV_TV10: 'https://pdweb-uat.luxottica.com/p/master/1.1.5/index.html',
 };
-
-module.exports = { urls };

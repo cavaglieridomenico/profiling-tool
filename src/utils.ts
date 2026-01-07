@@ -1,20 +1,23 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import dotenv from 'dotenv';
+import { exec } from 'child_process';
+import { Page, HTTPRequest } from 'puppeteer';
+import { ServerResponse } from 'http';
+import { getAdbPath } from './browser';
+
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
   ? path.resolve(process.cwd(), `.env.${env}`)
   : path.resolve(process.cwd(), '.env');
 
-require('dotenv').config({ path: envPath });
-
-const { exec } = require('child_process');
-const { getAdbPath } = require('./browser');
+dotenv.config({ path: envPath });
 
 // State to track active overrides
-let activeOverrides = {};
+let activeOverrides: Record<string, string> = {};
 let isInterceptionEnabled = false;
 
-function handleTap(res, x, y, message) {
+export function handleTap(res: ServerResponse, x: number, y: number, message: string): void {
   const adbPath = getAdbPath();
   exec(`${adbPath} shell input tap ${x} ${y}`, (error, stdout, stderr) => {
     if (error) {
@@ -29,7 +32,7 @@ function handleTap(res, x, y, message) {
   });
 }
 
-async function handleNavigation(page, url, res) {
+export async function handleNavigation(page: Page, url: string, res: ServerResponse): Promise<void> {
   const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
 
   if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
@@ -46,7 +49,7 @@ async function handleNavigation(page, url, res) {
   console.log(`Navigated to ${url}.`);
 }
 
-async function handleCleanState(page, res, mode) {
+export async function handleCleanState(page: Page, res: ServerResponse, mode: string): Promise<void> {
   if (mode !== 'mobile') {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
     res.end('This command is only available for mobile mode.\n');
@@ -100,14 +103,14 @@ async function handleCleanState(page, res, mode) {
       `Mobile Clean State complete: GC executed, Cache disabled, ${closedCount} bg tabs closed.\n`
     );
     console.log('Mobile Clean State complete.');
-  } catch (err) {
+  } catch (err: any) {
     console.error(`Clean State Error: ${err.message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Clean State failed: ${err.message}\n`);
   }
 }
 
-async function handleConfigOverrides(page, targetUrl, localFilePath, res) {
+export async function handleConfigOverrides(page: Page, targetUrl: string | null, localFilePath: string | null, res: ServerResponse): Promise<void> {
   if (!page) return;
 
   // If no params provided, disable overrides
@@ -131,7 +134,7 @@ async function handleConfigOverrides(page, targetUrl, localFilePath, res) {
     await page.setRequestInterception(true);
     isInterceptionEnabled = true;
 
-    page.on('request', (request) => {
+    page.on('request', (request: HTTPRequest) => {
       const url = request.url();
       // Check if this URL matches any of our overrides
       // We look for partial matches (contains) or exact matches
@@ -169,7 +172,7 @@ async function handleConfigOverrides(page, targetUrl, localFilePath, res) {
 }
 
 // Helper to standardize HTTP responses
-function sendResponse(res, statusCode, message) {
+export function sendResponse(res: ServerResponse, statusCode: number, message: string): void {
   res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
   res.end(message + '\n');
   if (statusCode < 400) {
@@ -178,11 +181,3 @@ function sendResponse(res, statusCode, message) {
     console.error(message);
   }
 }
-
-module.exports = {
-  handleTap,
-  handleNavigation,
-  handleCleanState,
-  handleConfigOverrides,
-  sendResponse,
-};

@@ -1,5 +1,5 @@
-const http = require('http');
-const { urls } = require('./src/urls.js');
+import http from 'http';
+import { urls } from './src/urls';
 
 const urlArg = process.argv[2];
 

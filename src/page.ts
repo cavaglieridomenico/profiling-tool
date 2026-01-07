@@ -1,5 +1,7 @@
-async function getTargetPage(browserInstance, url) {
-  let pageForTracing;
+import { Browser, Page } from 'puppeteer';
+
+export async function getTargetPage(browserInstance: Browser, url: string): Promise<Page> {
+  let pageForTracing: Page;
   const pages = await browserInstance.pages();
   if (url) {
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
@@ -26,5 +28,3 @@ async function getTargetPage(browserInstance, url) {
   }
   return pageForTracing;
 }
-
-module.exports = { getTargetPage };

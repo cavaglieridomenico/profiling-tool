@@ -1,20 +1,22 @@
-const path = require('path');
+import path from 'path';
+import dotenv from 'dotenv';
+import http, { IncomingMessage, ServerResponse } from 'http';
+import { URL } from 'url';
+import { Page } from 'puppeteer';
+import { handleTap, sendResponse } from './utils';
+import { TAP_CONFIG } from './tapConfig';
+import { routeHandlers } from './routes';
+
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
   ? path.resolve(process.cwd(), `.env.${env}`)
   : path.resolve(process.cwd(), '.env');
 
-require('dotenv').config({ path: envPath });
+dotenv.config({ path: envPath });
 
-const http = require('http');
-const { URL } = require('url');
-const { handleTap, sendResponse } = require('./utils');
-const { TAP_CONFIG } = require('./tapConfig');
-const { routeHandlers } = require('./routes');
-
-function startCommandServer(pageForTracing, mode) {
-  const server = http.createServer(async (req, res) => {
-    const requestUrl = new URL(req.url, `http://${req.headers.host}`);
+export function startCommandServer(pageForTracing: Page, mode: string) {
+  const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    const requestUrl = new URL(req.url || '', `http://${req.headers.host}`);
     const { pathname } = requestUrl;
 
     const handler = routeHandlers[pathname];
@@ -45,6 +47,3 @@ function startCommandServer(pageForTracing, mode) {
     );
   });
 }
-
-module.exports = { startCommandServer };
-

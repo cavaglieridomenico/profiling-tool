@@ -1,4 +1,9 @@
-const testCases = {
+export interface TestCaseStep {
+  command: string;
+  delay: number;
+}
+
+export const testCases: Record<string, TestCaseStep[]> = {
   vmmv_tc01__tc04: [
     { command: 'trace:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 20000 },
@@ -61,5 +66,3 @@ const testCases = {
     { command: 'trace:stop', delay: 0 },
   ],
 };
-
-module.exports = { testCases };

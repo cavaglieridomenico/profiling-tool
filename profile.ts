@@ -1,7 +1,7 @@
-const { testCases } = require('./src/testCases');
-const http = require('http');
+import { testCases } from './src/testCases';
+import http from 'http';
 
-function sendCommand(command) {
+function sendCommand(command: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const req = http.get(`http://localhost:8080/${command}`, (res) => {
       let data = '';
@@ -21,12 +21,12 @@ function sendCommand(command) {
   });
 }
 
-function sleep(ms) {
+function sleep(ms: number): Promise<void> {
   if (ms === 0) return Promise.resolve();
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function runTestCase(name, traceName) {
+async function runTestCase(name: string, traceName?: string) {
   const steps = testCases[name];
   if (!steps) {
     console.error(`Test case "${name}" not found.`);
