@@ -23,9 +23,13 @@ The system operates on a client-server model:
 *   `src/`: Core logic modules.
     *   `browser.js`: Handles Puppeteer connection logic (WebSocket discovery for Android, launching for Desktop).
     *   `testCases.js`: Defines automation scenarios (steps with commands and delays).
-    *   `server.js`: Sets up the HTTP server to listen for control commands.
-    *   `commands.js`: Implementations of the specific actions (e.g., input simulation, tracing).
+    *   `server.js`: Main server entry point; orchestrates routing and configuration.
+    *   `routes.js`: Defines the HTTP route handlers for the command server.
+    *   `tapConfig.js`: Configuration object for input tap commands.
+    *   `traceManager.js`: Encapsulates logic for starting, stopping, and naming performance traces.
+    *   `commands.js`: Defines constant strings for command endpoints.
     *   `page.js`: Manages the target Puppeteer page instance.
+    *   `utils.js`: Helper functions for navigation, state cleaning, and responses.
 
 ## Setup and Installation
 
