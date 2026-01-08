@@ -1,4 +1,8 @@
 export const COMMANDS = {
+  // Perfetto Tracing Control
+  PERFETTO_START: '/perfetto:start',
+  PERFETTO_STOP: '/perfetto:stop',
+
   // Tracing Control
   TRACE_START: '/trace:start',
   TRACE_STOP: '/trace:stop',

@@ -1,0 +1,92 @@
+# 1. RECORDING SETTINGS
+# write_into_file: true reduces USB overhead.
+write_into_file: true
+file_write_period_ms: 2500
+flush_period_ms: 30000
+
+# 2. BUFFERS (64MB Ring Buffer)
+buffers: {
+    size_kb: 65536
+    fill_policy: RING_BUFFER
+}
+
+# --- DATA SOURCES ---
+
+# 3. FRAME TIMELINE (The "True FPS" Tracker)
+# Critical for measuring Jank on Android 12+
+data_sources: {
+    config: {
+        name: "android.surfaceflinger.frametimeline"
+    }
+}
+
+# 4. CHROME / WEBVIEW (Optimized for CV)
+# REMOVED: ["*"] (The "Nuclear Option")
+# ADDED: Specific categories for JS, Rendering, and Input only.
+data_sources: {
+    config: {
+        name: "org.chromium"
+        chrome_config: {
+            trace_config: "{\"record_mode\":\"record-as-much-as-possible\",\"included_categories\":[\"toplevel\",\"blink\",\"cc\",\"gpu\",\"v8.execute\",\"v8\",\"mojom\",\"input\",\"latency\",\"scheduler\",\"disabled-by-default-gpu.service\",\"disabled-by-default-devtools.timeline\"]}"
+        }
+    }
+}
+
+# 5. SYSTEM SCHEDULER & THERMAL (The "Constraint" Tracker)
+data_sources: {
+    config: {
+        name: "linux.ftrace"
+        ftrace_config: {
+            # CPU & Scheduling (Standard)
+            ftrace_events: "sched/sched_switch"
+            ftrace_events: "power/cpu_frequency"
+            ftrace_events: "power/cpu_idle"
+
+            # THERMAL & CLOCK (New: Critical for your scope)
+            # Tracks when the OS throttles CPU/GPU due to heat
+            ftrace_events: "thermal/thermal_temperature"
+            ftrace_events: "thermal/cdev_update"
+            ftrace_events: "power/gpu_frequency"
+            
+            # ANDROID SYSTEM TAGS
+            atrace_categories: "gfx"
+            atrace_categories: "input"
+            atrace_categories: "view"
+            atrace_categories: "wm"
+            atrace_categories: "am"
+            atrace_categories: "dalvik"
+            atrace_categories: "power" 
+            atrace_categories: "freq"
+        }
+    }
+}
+
+# 6. PROCESS STATS (CPU/RAM usage per process)
+data_sources: {
+    config: {
+        name: "linux.process_stats"
+        process_stats_config {
+            scan_all_processes_on_start: true
+            proc_stats_poll_ms: 1000
+        }
+    }
+}
+
+# 7. GPU MEMORY & PROFILING
+data_sources: {
+    config: {
+        name: "android.gpu.profiling"
+    }
+}
+data_sources: {
+    config: {
+        name: "android.gpu.memory"
+    }
+}
+
+# 8. POWER RAILS (If supported by your specific device hardware)
+data_sources: {
+    config: {
+        name: "android.power.rails"
+    }
+}

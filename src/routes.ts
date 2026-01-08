@@ -3,6 +3,7 @@ import { Page } from 'puppeteer';
 import { URL } from 'url';
 import { COMMANDS } from './commands';
 import traceManager from './traceManager';
+import { startPerfetto, stopPerfetto } from './perfetto';
 import {
   handleNavigation,
   handleCleanState,
@@ -19,6 +20,23 @@ type RouteHandler = (
 ) => Promise<void>;
 
 export const routeHandlers: Record<string, RouteHandler> = {
+  [COMMANDS.PERFETTO_START]: async (req, res) => {
+    try {
+      startPerfetto();
+      sendResponse(res, 200, 'Perfetto tracing started (background).');
+    } catch (error: any) {
+      sendResponse(res, 500, `Failed to start Perfetto: ${error.message}`);
+    }
+  },
+  [COMMANDS.PERFETTO_STOP]: async (req, res, page, url) => {
+    try {
+      const traceName = url.searchParams.get('name') || undefined;
+      const tracePath = stopPerfetto(traceName);
+      sendResponse(res, 200, `Perfetto tracing stopped. Saved to: ${tracePath}`);
+    } catch (error: any) {
+      sendResponse(res, 500, `Failed to stop Perfetto: ${error.message}`);
+    }
+  },
   [COMMANDS.TRACE_START]: async (req, res, page, url) => {
     try {
       const traceName = url.searchParams.get('name');

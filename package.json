@@ -10,6 +10,8 @@
     "start:mobile:vmcore": "cross-env PUPPETEER_ENV=vmcore ts-node index.ts mobile",
     "start:mobile:pdwuat": "cross-env PUPPETEER_ENV=pdwuat ts-node index.ts mobile",
     "start:desktop": "ts-node index.ts desktop",
+    "perfetto:start": "curl http://localhost:8080/perfetto:start",
+    "perfetto:stop": "curl http://localhost:8080/perfetto:stop",
     "trace:start": "curl http://localhost:8080/trace:start",
     "trace:stop": "curl http://localhost:8080/trace:stop",
     "device:clean": "curl http://localhost:8080/device:clean-state",
