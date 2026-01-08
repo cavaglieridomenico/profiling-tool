@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import { exec } from 'child_process';
-import { Page, HTTPRequest } from 'puppeteer';
+import { Page, HTTPRequest, Protocol } from 'puppeteer';
 import { ServerResponse } from 'http';
 import { getAdbPath } from './browser';
 
@@ -88,7 +88,9 @@ export async function handleCleanState(page: Page, res: ServerResponse, mode: st
 
     // 3. Network Enforcement: "Disable cache" (Matches DevTools checkbox)
     // This affects this session only. It does not delete your history.
-    await client.send('Network.setCacheDisabled', { cacheDisabled: true });
+    await client.send('Network.setCacheDisabled', {
+      cacheDisabled: true,
+    } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 
     // 4. Memory Sanitization: "Collect garbage" (Matches Trash Icon)
@@ -148,10 +150,18 @@ export async function handleConfigOverrides(page: Page, targetUrl: string | null
 
         if (fs.existsSync(absolutePath)) {
           console.log(`[Override] Serving local file for: ${url}`);
+
+          // Determine correct MIME type
+          const ext = path.extname(absolutePath).toLowerCase();
+          let contentType = 'application/javascript'; // Default
+          if (ext === '.wasm') contentType = 'application/wasm';
+          if (ext === '.css') contentType = 'text/css';
+          if (ext === '.json') contentType = 'application/json';
+
           // Respond with the local file content
           request.respond({
             status: 200,
-            contentType: 'application/javascript', // adjust based on file type if needed
+            contentType: contentType,
             body: fs.readFileSync(absolutePath),
           });
           return;
