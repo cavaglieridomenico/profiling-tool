@@ -1,4 +1,5 @@
 import { testCases } from './src/testCases';
+import { ensureDeviceIsCool } from './src/thermal';
 import http from 'http';
 
 function sendCommand(command: string): Promise<void> {
@@ -36,6 +37,8 @@ async function runTestCase(name: string, traceName?: string) {
 
   console.log(`Running test case: ${name}`);
   try {
+    await ensureDeviceIsCool();
+
     for (const step of steps) {
       let { command } = step;
       if (
