@@ -192,19 +192,22 @@ Now you can start and stop tracing, and the trace files will include memory prof
 1.  **Disable Virtual Memory:** Ensure "RAM Plus" (Samsung) or "Memory Extension" is **OFF** in device settings.
 2.  **Set "Do Not Disturb":** Enable this mode to prevent notification interference.
 3.  **Network Setup:** Connect to the specific network (WiFi/5G) required by the Performance Test Book.
-4.  **Check Chrome Version:** Ensure the major version aligns with the Test Book requirements.
+4.  **Check Chrome Version:** Open Chrome and ensure the major version aligns with the Test Book requirements.
 5.  **Clean Environment:**
     - Close **all** other applications.
     - Close **all** Chrome tabs.
     - **Clean RAM:** Use OS functionality (e.g., _Device Care > Memory > Clean now_).
 6.  **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
-7.  **Device Performance Baseline:**
+7.  **Connection:** Connect the device to the desktop via USB.
+8.  **Check device connection:** Run `adb devices`
+9.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
+10. **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
+11. **Device Performance Baseline:**
     - Go to `browserbench.org/Speedometer3.0/` and run the test.
     - **Verify Score:** Must be near the average defined in the Test Book.
     - _Note:_ If the score is low, use the **"Optimize now"** feature (in _Settings > Device Care_) and re-run the test.
-8.  **Navigation:** Navigate to the target page to be analyzed.
-9.  **Desktop Health Check:** On the recording machine, check Task Manager:
+12. **Navigation:** Navigate to the target page to be analyzed.
+13. **Desktop Health Check:** On the recording machine, check Task Manager:
     - **CPU:** < 15%
     - **Memory:** < 70%
     - **Network:** < 5%
-10. **Connection:** Connect the device to the desktop via USB.
