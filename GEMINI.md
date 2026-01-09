@@ -28,6 +28,7 @@ The system operates on a client-server model:
   - `routes.ts`: Defines the HTTP route handlers for the command server.
   - `tapConfig.ts`: Configuration object for input tap commands.
   - `traceManager.ts`: Encapsulates logic for starting, stopping, and naming performance traces.
+  - `perfetto.ts`: Manages Perfetto tracing sessions (start, stop, naming).
   - `commands.ts`: Defines constant strings for command endpoints.
   - `page.ts`: Manages the target Puppeteer page instance.
   - `utils.ts`: Helper functions for navigation, state cleaning, and responses.
@@ -102,4 +103,6 @@ You can manually trigger actions by sending HTTP requests to `localhost:8080`.
 - **Build:** Run `npm run build` to compile TypeScript to JavaScript (output in `dist/`).
 - **Code Style:** The project uses Prettier. Run `npm run format` to ensure consistency.
 - **Test Cases:** New automation scenarios should be added to `src/testCases.ts`.
-- **Trace Files:** Performance traces are saved in the project root with incremental naming (e.g., `trace-0.json`) unless a custom name is provided.
+- **Trace Files:**
+  - **DevTools Traces:** Saved in the project root (e.g., `trace-1.json`, `customName-1.json`).
+  - **Perfetto Traces:** Saved in `perfetto-output/` (e.g., `trace-1.pftrace`, `customName-1.pftrace`).

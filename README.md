@@ -108,11 +108,16 @@ You can also provide a custom name for the trace file by adding it as a second a
 node profile.js <test_case_name> <custom_trace_name>
 ```
 
-For example, to run `vmmv_tc01__tc04` and save the trace as `my-custom-trace.json`, use:
+For example, to run `vmmv_tc01__tc04` and save the traces as `my-custom-trace-1.json` (Puppeteer) and `my-custom-trace-1.pftrace` (Perfetto, if enabled), use:
 
 ```bash
 node profile.js vmmv_tc01__tc04 my-custom-trace
 ```
+
+**Note on Trace Files:**
+
+- **DevTools Traces:** Saved in the project root.
+- **Perfetto Traces:** Saved in the `perfetto-output/` directory.
 
 > **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available test case commands (e.g., `npm run profile:vmmv-tc01__tc04 my-custom-trace`).
 
