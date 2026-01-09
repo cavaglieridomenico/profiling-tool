@@ -32,7 +32,11 @@ export const routeHandlers: Record<string, RouteHandler> = {
     try {
       const traceName = url.searchParams.get('name') || undefined;
       const tracePath = stopPerfetto(traceName);
-      sendResponse(res, 200, `Perfetto tracing stopped. Saved to: ${tracePath}`);
+      sendResponse(
+        res,
+        200,
+        `Perfetto tracing stopped. Saved to: ${tracePath}`
+      );
     } catch (error: any) {
       sendResponse(res, 500, `Failed to stop Perfetto: ${error.message}`);
     }
@@ -57,9 +61,9 @@ export const routeHandlers: Record<string, RouteHandler> = {
   },
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {
     if (mode) {
-        await handleCleanState(page, res, mode);
+      await handleCleanState(page, res, mode);
     } else {
-        sendResponse(res, 400, 'Mode is required for clean state.');
+      sendResponse(res, 400, 'Mode is required for clean state.');
     }
   },
   [COMMANDS.CONFIG_OVERRIDES]: async (req, res, page, url) => {

@@ -15,25 +15,27 @@ const envPath = env
 dotenv.config({ path: envPath });
 
 export function startCommandServer(pageForTracing: Page, mode: string) {
-  const server = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
-    const requestUrl = new URL(req.url || '', `http://${req.headers.host}`);
-    const { pathname } = requestUrl;
+  const server = http.createServer(
+    async (req: IncomingMessage, res: ServerResponse) => {
+      const requestUrl = new URL(req.url || '', `http://${req.headers.host}`);
+      const { pathname } = requestUrl;
 
-    const handler = routeHandlers[pathname];
+      const handler = routeHandlers[pathname];
 
-    if (handler) {
-      await handler(req, res, pageForTracing, requestUrl, mode);
-    } else if (TAP_CONFIG[pathname]) {
-      const { x, y, msg } = TAP_CONFIG[pathname];
-      handleTap(res, x, y, msg);
-    } else {
-      sendResponse(
-        res,
-        404,
-        'Not Found. See README.md for a full list of available commands.'
-      );
+      if (handler) {
+        await handler(req, res, pageForTracing, requestUrl, mode);
+      } else if (TAP_CONFIG[pathname]) {
+        const { x, y, msg } = TAP_CONFIG[pathname];
+        handleTap(res, x, y, msg);
+      } else {
+        sendResponse(
+          res,
+          404,
+          'Not Found. See README.md for a full list of available commands.'
+        );
+      }
     }
-  });
+  );
 
   const PORT = 8080;
   server.listen(PORT, () => {

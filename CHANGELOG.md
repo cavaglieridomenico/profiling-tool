@@ -16,7 +16,6 @@
 - Improved command naming consistency
 - Enhanced logic for VM/PDW test environment handling
 
-
 ## 1.3.1
 
 ### Added

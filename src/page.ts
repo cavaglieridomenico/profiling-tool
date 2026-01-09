@@ -1,6 +1,9 @@
 import { Browser, Page } from 'puppeteer';
 
-export async function getTargetPage(browserInstance: Browser, url: string): Promise<Page> {
+export async function getTargetPage(
+  browserInstance: Browser,
+  url: string
+): Promise<Page> {
   let pageForTracing: Page;
   const pages = await browserInstance.pages();
   if (url) {

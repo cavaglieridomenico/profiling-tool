@@ -17,7 +17,12 @@ dotenv.config({ path: envPath });
 let activeOverrides: Record<string, string> = {};
 let isInterceptionEnabled = false;
 
-export function handleTap(res: ServerResponse, x: number, y: number, message: string): void {
+export function handleTap(
+  res: ServerResponse,
+  x: number,
+  y: number,
+  message: string
+): void {
   const adbPath = getAdbPath();
   exec(`${adbPath} shell input tap ${x} ${y}`, (error, stdout, stderr) => {
     if (error) {
@@ -32,7 +37,11 @@ export function handleTap(res: ServerResponse, x: number, y: number, message: st
   });
 }
 
-export async function handleNavigation(page: Page, url: string, res: ServerResponse): Promise<void> {
+export async function handleNavigation(
+  page: Page,
+  url: string,
+  res: ServerResponse
+): Promise<void> {
   const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
 
   if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
@@ -49,7 +58,11 @@ export async function handleNavigation(page: Page, url: string, res: ServerRespo
   console.log(`Navigated to ${url}.`);
 }
 
-export async function handleCleanState(page: Page, res: ServerResponse, mode: string): Promise<void> {
+export async function handleCleanState(
+  page: Page,
+  res: ServerResponse,
+  mode: string
+): Promise<void> {
   if (mode !== 'mobile') {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
     res.end('This command is only available for mobile mode.\n');
@@ -112,7 +125,12 @@ export async function handleCleanState(page: Page, res: ServerResponse, mode: st
   }
 }
 
-export async function handleConfigOverrides(page: Page, targetUrl: string | null, localFilePath: string | null, res: ServerResponse): Promise<void> {
+export async function handleConfigOverrides(
+  page: Page,
+  targetUrl: string | null,
+  localFilePath: string | null,
+  res: ServerResponse
+): Promise<void> {
   if (!page) return;
 
   // If no params provided, disable overrides
@@ -182,7 +200,11 @@ export async function handleConfigOverrides(page: Page, targetUrl: string | null
 }
 
 // Helper to standardize HTTP responses
-export function sendResponse(res: ServerResponse, statusCode: number, message: string): void {
+export function sendResponse(
+  res: ServerResponse,
+  statusCode: number,
+  message: string
+): void {
   res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
   res.end(message + '\n');
   if (statusCode < 400) {

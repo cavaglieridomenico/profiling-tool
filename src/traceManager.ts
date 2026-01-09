@@ -26,18 +26,20 @@ class TraceManager {
     this.traceName = name || 'trace';
     this.traceCounter = this.getNextTraceNumber(this.traceName);
     const tracePath = `${this.traceName}-${this.traceCounter}.json`;
-    
+
     await page.tracing.start({
       path: tracePath,
       screenshots: true,
     });
-    
+
     return tracePath;
   }
 
   async stopTrace(page: Page): Promise<string> {
     if (!page) {
-      throw new Error('No page available for tracing (was tracing ever started?).');
+      throw new Error(
+        'No page available for tracing (was tracing ever started?).'
+      );
     }
     await page.tracing.stop();
     return `${this.traceName}-${this.traceCounter}.json`;
