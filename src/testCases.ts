@@ -4,6 +4,10 @@ export interface TestCaseStep {
 }
 
 export const testCases: Record<string, TestCaseStep[]> = {
+  perfetto_tc04: [
+    { command: 'perfetto:start', delay: 10000 },
+    { command: 'perfetto:stop', delay: 0 },
+  ],
   vmmv_tc01__tc04: [
     { command: 'trace:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 20000 },

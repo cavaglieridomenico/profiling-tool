@@ -38,7 +38,11 @@ async function runTestCase(name: string, traceName?: string) {
   try {
     for (const step of steps) {
       let { command } = step;
-      if (command.startsWith('trace:start') && traceName) {
+      if (
+        (command.startsWith('trace:start') ||
+          command.startsWith('perfetto:start')) &&
+        traceName
+      ) {
         command = `${command}?name=${traceName}`;
       }
       await sendCommand(command);

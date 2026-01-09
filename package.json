@@ -31,6 +31,7 @@
     "input:tap-vmcore-vmp-rec": "curl http://localhost:8080/input:tap-vmcore-vmp-rec",
     "input:tap-vmcore-vmp-image": "curl http://localhost:8080/input:tap-vmcore-vmp-image",
     "input:tap-vmcore-vmp-restart": "curl http://localhost:8080/input:tap-vmcore-vmp-restart",
+    "profile:perfetto_tc04": "ts-node profile.ts perfetto_tc04",
     "profile:vmmv-tc01__tc04": "ts-node profile.ts vmmv_tc01__tc04",
     "profile:vmmv-tc05__tc06": "ts-node profile.ts vmmv_tc05__tc06",
     "profile:vmmv-tc08__tc04": "ts-node profile.ts vmmv_tc08__tc04",

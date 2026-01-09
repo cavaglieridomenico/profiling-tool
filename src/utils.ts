@@ -17,6 +17,18 @@ dotenv.config({ path: envPath });
 let activeOverrides: Record<string, string> = {};
 let isInterceptionEnabled = false;
 
+export function getNextTraceNumber(
+  name: string,
+  dir: string,
+  ext: string
+): number {
+  let i = 1;
+  while (fs.existsSync(path.join(dir, `${name}-${i}.${ext}`))) {
+    i++;
+  }
+  return i;
+}
+
 export function handleTap(
   res: ServerResponse,
   x: number,
