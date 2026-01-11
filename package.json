@@ -14,6 +14,7 @@
     "perfetto:stop": "curl http://localhost:8080/perfetto:stop",
     "trace:start": "curl http://localhost:8080/trace:start",
     "trace:stop": "curl http://localhost:8080/trace:stop",
+    "device:get-temperature": "curl http://localhost:8080/device:get-temperature",
     "device:clean": "curl http://localhost:8080/device:clean-state",
     "config:overrides": "curl http://localhost:8080/config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js",
     "navigate:refresh": "curl http://localhost:8080/navigate:refresh",

@@ -10,6 +10,7 @@ import {
   handleConfigOverrides,
   sendResponse,
 } from './utils';
+import { getDeviceTemperature } from './thermal';
 
 type RouteHandler = (
   req: IncomingMessage,
@@ -57,6 +58,15 @@ export const routeHandlers: Record<string, RouteHandler> = {
       sendResponse(res, 200, `Tracing stopped. File ${traceFile} saved.`);
     } catch (error: any) {
       sendResponse(res, 404, error.message);
+    }
+  },
+  [COMMANDS.DEVICE_GET_TEMPERATURE]: async (req, res) => {
+    try {
+      const temp = await getDeviceTemperature();
+      console.log(`Device temperature: ${temp.toFixed(1)}°C`);
+      sendResponse(res, 200, `Device temperature: ${temp.toFixed(1)}°C`);
+    } catch (error: any) {
+      sendResponse(res, 500, `Failed to get device temperature`);
     }
   },
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {

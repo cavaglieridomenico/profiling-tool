@@ -4,23 +4,44 @@ import { getAdbPath } from './browser';
 // Samsung devices usually map the main SoC temp to zone 0 or 1.
 // We divide by 1000 because raw value is in millidegrees (e.g., 42000 = 42°C).
 const THERMAL_ZONE_CMD = 'cat /sys/class/thermal/thermal_zone0/temp';
+const BATTERY_CMD = 'dumpsys battery';
 
 // Threshold: 40°C is a safe starting point.
 // Above 42-45°C, most phones start mild throttling.
 const MAX_START_TEMP = 40;
 
-function getDeviceTemperature(): Promise<number> {
+/**
+ * Gets the device temperature.
+ * Tries 'dumpsys battery' first (standard API, returns 10ths of a degree).
+ * Falls back to 'thermal_zone0' (SoC temp, returns millidegrees).
+ */
+export function getDeviceTemperature(): Promise<number> {
   const adbPath = getAdbPath();
-  return new Promise((resolve, reject) => {
-    exec(`${adbPath} shell ${THERMAL_ZONE_CMD}`, (error, stdout) => {
-      if (error) {
-        console.warn('[Thermal] Could not read temp, assuming safe.');
-        return resolve(0);
+  return new Promise((resolve) => {
+    // Strategy 1: dumpsys battery
+    exec(`${adbPath} shell ${BATTERY_CMD}`, (error, stdout) => {
+      if (!error && stdout) {
+        const match = stdout.match(/temperature:\s*(\d+)/);
+        if (match && match[1]) {
+          const raw = parseInt(match[1], 10);
+          if (!isNaN(raw) && raw > 0) {
+            // dumpsys battery is in 10ths of a degree C
+            return resolve(raw / 10);
+          }
+        }
       }
-      const raw = parseInt(stdout.trim(), 10);
-      // Handle potential bad data or different units
-      const temp = isNaN(raw) ? 0 : raw > 1000 ? raw / 1000 : raw;
-      resolve(temp);
+
+      // Strategy 2: Fallback to thermal_zone0
+      exec(`${adbPath} shell ${THERMAL_ZONE_CMD}`, (err, out) => {
+        if (err) {
+          console.warn('[Thermal] Could not read temp, assuming safe (0°C).');
+          return resolve(0);
+        }
+        const raw = parseInt(out.trim(), 10);
+        // Handle potential bad data or different units (millidegrees usually)
+        const temp = isNaN(raw) ? 0 : raw > 1000 ? raw / 1000 : raw;
+        resolve(temp);
+      });
     });
   });
 }

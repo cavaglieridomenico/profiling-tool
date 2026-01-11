@@ -31,8 +31,9 @@ The system operates on a client-server model:
   - `perfetto.ts`: Manages Perfetto tracing sessions (start, stop, naming).
   - `commands.ts`: Defines constant strings for command endpoints.
   - `page.ts`: Manages the target Puppeteer page instance.
-  - `utils.ts`: Helper functions for navigation, state cleaning, and responses.
   - `urls.ts`: Defines URL aliases for navigation.
+  - `thermal.ts`: Manages device temperature monitoring and cooldown logic.
+  - `utils.ts`: Helper functions for navigation, state cleaning, and responses.
 
 ## Setup and Installation
 
@@ -96,6 +97,7 @@ You can manually trigger actions by sending HTTP requests to `localhost:8080`.
 - **Start Tracing:** `curl http://localhost:8080/trace:start`
 - **Stop Tracing:** `curl http://localhost:8080/trace:stop`
 - **Simulate Input:** `curl http://localhost:8080/input:tap-vmmv-video`
+- **Get Temperature:** `curl http://localhost:8080/device:get-temperature`
 
 ## Development Conventions
 

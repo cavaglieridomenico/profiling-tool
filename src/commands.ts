@@ -8,6 +8,7 @@ export const COMMANDS = {
   TRACE_STOP: '/trace:stop',
 
   // Maintenance
+  DEVICE_GET_TEMPERATURE: '/device:get-temperature', // Returns device temp (e.g. from dumpsys battery)
   DEVICE_CLEAN_STATE: '/device:clean-state',
   CONFIG_OVERRIDES: '/config:overrides',
 
