@@ -42,7 +42,7 @@ async function runTestCase(name: string, traceName?: string) {
     for (const step of steps) {
       let { command } = step;
       if (
-        (command.startsWith('trace:start') ||
+        (command.startsWith('devtools:start') ||
           command.startsWith('perfetto:start')) &&
         traceName
       ) {

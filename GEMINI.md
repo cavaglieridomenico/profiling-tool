@@ -106,5 +106,5 @@ You can manually trigger actions by sending HTTP requests to `localhost:8080`.
 - **Code Style:** The project uses Prettier. Run `npm run format` to ensure consistency.
 - **Test Cases:** New automation scenarios should be added to `src/testCases.ts`.
 - **Trace Files:**
-  - **DevTools Traces:** Saved in the project root (e.g., `trace-1.json`, `customName-1.json`).
+  - **DevTools Traces:** Saved in `perfetto-output/` (e.g., `trace-1.json`, `customName-1.json`).
   - **Perfetto Traces:** Saved in `perfetto-output/` (e.g., `trace-1.pftrace`, `customName-1.pftrace`).

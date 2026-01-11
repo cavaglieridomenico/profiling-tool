@@ -2,8 +2,8 @@ import { IncomingMessage, ServerResponse } from 'http';
 import { Page } from 'puppeteer';
 import { URL } from 'url';
 import { COMMANDS } from './commands';
-import traceManager from './traceManager';
-import perfettoManager from './perfetto';
+import devtoolsTraceManager from './devtools-trace-manager';
+import perfettoTraceManager from './perfetto-trace-manager';
 import {
   handleNavigation,
   handleCleanState,
@@ -24,7 +24,7 @@ export const routeHandlers: Record<string, RouteHandler> = {
   [COMMANDS.PERFETTO_START]: async (req, res, page, url) => {
     try {
       const traceName = url.searchParams.get('name') || undefined;
-      perfettoManager.startPerfetto(traceName || null);
+      perfettoTraceManager.startPerfetto(traceName || null);
       sendResponse(res, 200, 'Perfetto tracing started (background).');
     } catch (error: any) {
       sendResponse(res, 500, `Failed to start Perfetto: ${error.message}`);
@@ -32,7 +32,7 @@ export const routeHandlers: Record<string, RouteHandler> = {
   },
   [COMMANDS.PERFETTO_STOP]: async (req, res, page, url) => {
     try {
-      const tracePath = perfettoManager.stopPerfetto();
+      const tracePath = perfettoTraceManager.stopPerfetto();
       sendResponse(
         res,
         200,
@@ -42,19 +42,19 @@ export const routeHandlers: Record<string, RouteHandler> = {
       sendResponse(res, 500, `Failed to stop Perfetto: ${error.message}`);
     }
   },
-  [COMMANDS.TRACE_START]: async (req, res, page, url) => {
+  [COMMANDS.DEVTOOLS_START]: async (req, res, page, url) => {
     try {
       const traceName = url.searchParams.get('name');
-      const tracePath = await traceManager.startTrace(page, traceName);
+      const tracePath = await devtoolsTraceManager.startTrace(page, traceName);
       sendResponse(res, 200, `Tracing started. Saving to ${tracePath}`);
     } catch (error: any) {
       sendResponse(res, 404, error.message);
     }
   },
-  [COMMANDS.TRACE_STOP]: async (req, res, page) => {
+  [COMMANDS.DEVTOOLS_STOP]: async (req, res, page) => {
     try {
       console.log(`Tracing stopped... Saving...`);
-      const traceFile = await traceManager.stopTrace(page);
+      const traceFile = await devtoolsTraceManager.stopTrace(page);
       sendResponse(res, 200, `Tracing stopped. File ${traceFile} saved.`);
     } catch (error: any) {
       sendResponse(res, 404, error.message);

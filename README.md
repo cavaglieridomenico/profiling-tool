@@ -116,7 +116,7 @@ node profile.js vmmv_tc01__tc04 my-custom-trace
 
 **Note on Trace Files:**
 
-- **DevTools Traces:** Saved in the project root.
+- **DevTools Traces:** Saved in the `devtools-output/` directory.
 - **Perfetto Traces:** Saved in the `perfetto-output/` directory.
 
 > **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available test case commands (e.g., `npm run profile:vmmv-tc01__tc04 my-custom-trace`).

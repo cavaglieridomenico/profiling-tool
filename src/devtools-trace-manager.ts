@@ -1,8 +1,11 @@
 import fs from 'fs';
+import path from 'path';
 import { Page } from 'puppeteer';
 import { getNextTraceNumber } from './utils';
 
-class TraceManager {
+const DEVTOOLS_OUTPUT_DIR = path.resolve(process.cwd(), 'devtools-output');
+
+class DevtoolsTraceManager {
   traceCounter: number;
   traceName: string;
 
@@ -16,12 +19,21 @@ class TraceManager {
       throw new Error('No page available for tracing.');
     }
     this.traceName = name || 'trace';
+
+    // Ensure output directory exists before we start
+    if (!fs.existsSync(DEVTOOLS_OUTPUT_DIR)) {
+      fs.mkdirSync(DEVTOOLS_OUTPUT_DIR, { recursive: true });
+    }
+
     this.traceCounter = getNextTraceNumber(
       this.traceName,
-      process.cwd(),
+      DEVTOOLS_OUTPUT_DIR,
       'json'
     );
-    const tracePath = `${this.traceName}-${this.traceCounter}.json`;
+    const tracePath = path.join(
+      DEVTOOLS_OUTPUT_DIR,
+      `${this.traceName}-${this.traceCounter}.json`
+    );
 
     await page.tracing.start({
       path: tracePath,
@@ -38,8 +50,11 @@ class TraceManager {
       );
     }
     await page.tracing.stop();
-    return `${this.traceName}-${this.traceCounter}.json`;
+    return path.join(
+      DEVTOOLS_OUTPUT_DIR,
+      `${this.traceName}-${this.traceCounter}.json`
+    );
   }
 }
 
-export default new TraceManager();
+export default new DevtoolsTraceManager();

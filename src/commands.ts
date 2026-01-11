@@ -4,8 +4,8 @@ export const COMMANDS = {
   PERFETTO_STOP: '/perfetto:stop',
 
   // Tracing Control
-  TRACE_START: '/trace:start',
-  TRACE_STOP: '/trace:stop',
+  DEVTOOLS_START: '/devtools:start',
+  DEVTOOLS_STOP: '/devtools:stop',
 
   // Maintenance
   DEVICE_GET_TEMPERATURE: '/device:get-temperature', // Returns device temp (e.g. from dumpsys battery)
