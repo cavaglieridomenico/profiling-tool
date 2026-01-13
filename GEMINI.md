@@ -1,4 +1,4 @@
-# Puppeteer Profiling Project
+# Profiling Tool Project
 
 ## Project Overview
 
