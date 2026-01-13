@@ -1,5 +1,23 @@
 # CHANGELOG
 
+# 1.5.0
+
+### Added
+
+- Perfetto tracing management and related commands
+- Device temperature monitoring and thermal management
+- Enhanced setup instructions for device connection and performance validation
+- New test case profiles and improved test case documentation
+- Support for config overrides with improved MIME type detection and cache handling
+
+### Changed
+
+- Refactored tracing commands and trace management logic
+- Restructured server and utility functions, implemented route handlers for commands
+- Migrated project to TypeScript and restructured codebase
+- Updated .gitignore to include perfetto-output directory and removed obsolete trace files
+- Improved code formatting and documentation
+
 ## 1.4.0
 
 ### Added
