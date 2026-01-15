@@ -17,6 +17,7 @@ export const COMMANDS = {
   NAVIGATE_URL: '/navigate:url',
 
   // Input Actions (Virtual Mirror / VMP)
+  INPUT_TAP_RX_BOTTOM_CORNER: '/input:tap-rx-bottom-corner',
   INPUT_TAP_VMMV_UPLOAD: '/input:tap-vmmv-upload',
   INPUT_TAP_VMMV_VIDEO: '/input:tap-vmmv-video',
   INPUT_TAP_VMMV_CONTINUE: '/input:tap-vmmv-vmp-continue',

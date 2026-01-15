@@ -7,6 +7,11 @@ interface TapConfigItem {
 }
 
 export const TAP_CONFIG: Record<string, TapConfigItem> = {
+  [COMMANDS.INPUT_TAP_RX_BOTTOM_CORNER]: {
+    x: 820,
+    y: 2020,
+    msg: 'Tapped rx-bottom-corner.',
+  },
   [COMMANDS.INPUT_TAP_VMMV_UPLOAD]: {
     x: 550,
     y: 370,
