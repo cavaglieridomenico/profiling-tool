@@ -88,42 +88,58 @@ export async function handleCleanState(
   }
 
   try {
-    await page.goto('about:blank');
+    const browser = page.browser();
+    let pages = await browser.pages();
+    let targetPage = page;
+
+    // Robustness: Check if the passed 'page' is actually still valid/attached
+    // If 'page' is not in the current list of pages, it's likely detached/zombie.
+    if (!pages.includes(page)) {
+      console.warn(
+        'Warning: Current page reference is stale or detached. Switching to first available page.'
+      );
+      if (pages.length > 0) {
+        targetPage = pages[0];
+      } else {
+        targetPage = await browser.newPage();
+        pages = await browser.pages(); // refresh list
+      }
+    }
+
+    // Use targetPage for navigation
+    await targetPage.goto('about:blank');
     console.log('Navigated to about:blank.');
 
     console.log('Starting Mobile Device Clean State...');
 
-    // 1. Tab Hygiene: Close background tabs to isolate CPU/Memory
-    // We iterate through all open pages and close anything that isn't the current one.
-    const browser = page.browser();
-    const pages = await browser.pages();
+    // 1. Tab Hygiene: Close background tabs
     let closedCount = 0;
 
     for (const p of pages) {
-      if (p !== page) {
-        await p.close();
-        closedCount++;
+      if (p !== targetPage) {
+        try {
+          await p.close();
+          closedCount++;
+        } catch (e) {
+          console.warn('Failed to close a background tab:', e);
+        }
       }
     }
     if (closedCount > 0)
       console.log(`- Closed ${closedCount} background tabs.`);
 
     // 2. Connect to CDP for Low-Level Control
-    const client = await page.target().createCDPSession();
+    const client = await targetPage.target().createCDPSession();
 
     // 3. Network Enforcement: "Disable cache" (Matches DevTools checkbox)
-    // This affects this session only. It does not delete your history.
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true,
     } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 
     // 4. Memory Sanitization: "Collect garbage" (Matches Trash Icon)
-    // This forces the V8 engine to release memory immediately.
     await client.send('HeapProfiler.collectGarbage');
     console.log('- Garbage Collection forced (Heap cleared).');
-
-    // NOTE: We intentionally skip Storage/Cookie clearing to keep you logged in.
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
