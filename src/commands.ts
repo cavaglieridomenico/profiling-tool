@@ -3,7 +3,7 @@ export const COMMANDS = {
   PERFETTO_START: '/perfetto:start',
   PERFETTO_STOP: '/perfetto:stop',
 
-  // Tracing Control
+  // DevTools Tracing Control
   DEVTOOLS_START: '/devtools:start',
   DEVTOOLS_STOP: '/devtools:stop',
 
@@ -16,7 +16,7 @@ export const COMMANDS = {
   NAVIGATE_REFRESH: '/navigate:refresh',
   NAVIGATE_URL: '/navigate:url',
 
-  // Input Actions (Virtual Mirror / VMP)
+  // Input Actions
   INPUT_TAP_RX_BOTTOM_CORNER: '/input:tap-rx-bottom-corner',
   INPUT_TAP_VMMV_UPLOAD: '/input:tap-vmmv-upload',
   INPUT_TAP_VMMV_VIDEO: '/input:tap-vmmv-video',
