@@ -83,8 +83,12 @@ export const routeHandlers: Record<string, RouteHandler> = {
   },
   [COMMANDS.NAVIGATE_REFRESH]: async (req, res, page) => {
     if (page) {
-      await page.reload();
-      sendResponse(res, 200, 'Page refreshed.');
+      try {
+        await page.reload();
+        sendResponse(res, 200, 'Page refreshed.');
+      } catch (error: any) {
+        sendResponse(res, 500, `Failed to refresh page: ${error.message}`);
+      }
     } else {
       sendResponse(res, 404, 'No page available for refreshing.');
     }

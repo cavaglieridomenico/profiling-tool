@@ -54,20 +54,28 @@ export async function handleNavigation(
   url: string,
   res: ServerResponse
 ): Promise<void> {
-  const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
+  try {
+    const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
 
-  if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
-    await page.authenticate({
-      username: PUPPETEER_USERNAME,
-      password: PUPPETEER_PASSWORD,
-    });
-    console.log('Using authentication credentials from environment variables.');
+    if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
+      await page.authenticate({
+        username: PUPPETEER_USERNAME,
+        password: PUPPETEER_PASSWORD,
+      });
+      console.log(
+        'Using authentication credentials from environment variables.'
+      );
+    }
+
+    await page.goto(url);
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`Navigated to ${url}.\n`);
+    console.log(`Navigated to ${url}.`);
+  } catch (err: any) {
+    console.error(`Navigation Error: ${err.message}`);
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end(`Navigation failed: ${err.message}\n`);
   }
-
-  await page.goto(url);
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(`Navigated to ${url}.\n`);
-  console.log(`Navigated to ${url}.`);
 }
 
 export async function handleCleanState(
@@ -161,70 +169,76 @@ export async function handleConfigOverrides(
 ): Promise<void> {
   if (!page) return;
 
-  // If no params provided, disable overrides
-  if (!targetUrl || !localFilePath) {
-    activeOverrides = {};
-    if (isInterceptionEnabled) {
-      await page.setRequestInterception(false);
-      isInterceptionEnabled = false;
-      console.log('Overrides disabled. Request interception turned off.');
-    }
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Overrides disabled.\n');
-    return;
-  }
-
-  // Activate Overrides
-  activeOverrides[targetUrl] = localFilePath;
-  console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
-
-  if (!isInterceptionEnabled) {
-    await page.setRequestInterception(true);
-    isInterceptionEnabled = true;
-
-    page.on('request', (request: HTTPRequest) => {
-      const url = request.url();
-      // Check if this URL matches any of our overrides
-      // We look for partial matches (contains) or exact matches
-      const matchKey = Object.keys(activeOverrides).find((key) =>
-        url.includes(key)
-      );
-
-      if (matchKey) {
-        const filePath = activeOverrides[matchKey];
-        const absolutePath = path.resolve(process.cwd(), filePath);
-
-        if (fs.existsSync(absolutePath)) {
-          console.log(`[Override] Serving local file for: ${url}`);
-
-          // Determine correct MIME type
-          const ext = path.extname(absolutePath).toLowerCase();
-          let contentType = 'application/javascript'; // Default
-          if (ext === '.wasm') contentType = 'application/wasm';
-          if (ext === '.css') contentType = 'text/css';
-          if (ext === '.json') contentType = 'application/json';
-
-          // Respond with the local file content
-          request.respond({
-            status: 200,
-            contentType: contentType,
-            body: fs.readFileSync(absolutePath),
-          });
-          return;
-        } else {
-          console.error(
-            `[Override Error] Local file not found: ${absolutePath}`
-          );
-        }
+  try {
+    // If no params provided, disable overrides
+    if (!targetUrl || !localFilePath) {
+      activeOverrides = {};
+      if (isInterceptionEnabled) {
+        await page.setRequestInterception(false);
+        isInterceptionEnabled = false;
+        console.log('Overrides disabled. Request interception turned off.');
       }
-      // Continue normal network request if no match
-      request.continue();
-    });
-    console.log('Request interception enabled.');
-  }
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('Overrides disabled.\n');
+      return;
+    }
 
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end(`Override active for ${targetUrl}\n`);
+    // Activate Overrides
+    activeOverrides[targetUrl] = localFilePath;
+    console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
+
+    if (!isInterceptionEnabled) {
+      await page.setRequestInterception(true);
+      isInterceptionEnabled = true;
+
+      page.on('request', (request: HTTPRequest) => {
+        const url = request.url();
+        // Check if this URL matches any of our overrides
+        // We look for partial matches (contains) or exact matches
+        const matchKey = Object.keys(activeOverrides).find((key) =>
+          url.includes(key)
+        );
+
+        if (matchKey) {
+          const filePath = activeOverrides[matchKey];
+          const absolutePath = path.resolve(process.cwd(), filePath);
+
+          if (fs.existsSync(absolutePath)) {
+            console.log(`[Override] Serving local file for: ${url}`);
+
+            // Determine correct MIME type
+            const ext = path.extname(absolutePath).toLowerCase();
+            let contentType = 'application/javascript'; // Default
+            if (ext === '.wasm') contentType = 'application/wasm';
+            if (ext === '.css') contentType = 'text/css';
+            if (ext === '.json') contentType = 'application/json';
+
+            // Respond with the local file content
+            request.respond({
+              status: 200,
+              contentType: contentType,
+              body: fs.readFileSync(absolutePath),
+            });
+            return;
+          } else {
+            console.error(
+              `[Override Error] Local file not found: ${absolutePath}`
+            );
+          }
+        }
+        // Continue normal network request if no match
+        request.continue();
+      });
+      console.log('Request interception enabled.');
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`Override active for ${targetUrl}\n`);
+  } catch (err: any) {
+    console.error(`Config Overrides Error: ${err.message}`);
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end(`Config Overrides failed: ${err.message}\n`);
+  }
 }
 
 // Helper to standardize HTTP responses
