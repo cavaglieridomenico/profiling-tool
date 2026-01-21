@@ -78,4 +78,25 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmcore-vmp-image', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  pdwmv_tc01: [
+    { command: 'input:tap-bottom-center', delay: 25000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 35000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc02: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc04: [
+    { command: 'devtools:start', delay: 2000 },
+    { command: 'navigate:refresh', delay: 15000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc05: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 25000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
 };

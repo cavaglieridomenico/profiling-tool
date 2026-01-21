@@ -11,6 +11,11 @@ export const urls: Record<string, string> = {
   VMCORE_VMP_TV27_04:
     'https://vmcore-test.luxottica.com/demo/VMP-UI/feature/PICOMMON-4304-video-processing-fps-investigation/index.html#/',
   PDW_BYPASS: 'https://pdweb.luxottica.com/luxotticabypass',
-  PDWCORE_TV09: 'https://pdweb.luxottica.com/p/core/demo/2.0.9/inittime.html',
-  PDWMV_TV10: 'https://pdweb-uat.luxottica.com/p/master/1.1.5/index.html',
+  PDWCORE_TV20: 'https://pdweb.luxottica.com/p/core/demo/2.1.0/inittime.html',
+  PDWMV_TV19: 'https://pdweb-uat.luxottica.com/p/master/1.2.2/index.html',
+  PDWMV_TV21: 'https://www.sunglasshut.com/us/ray-ban/rb3565-8056597586030',
+  PDWMV_TV22: 'https://pdweb-uat.luxottica.com/p/master/1.2.3/index.html',
+  SPEEDOMETER: 'https://browserbench.org/Speedometer3.1/',
+  SPEED_TEST:
+    'https://www.google.com/search?q=speed+test&oq=speed+&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg80gEINDI1MGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8',
 };

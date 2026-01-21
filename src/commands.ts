@@ -8,7 +8,7 @@ export const COMMANDS = {
   DEVTOOLS_STOP: '/devtools:stop',
 
   // Maintenance
-  DEVICE_GET_TEMPERATURE: '/device:get-temperature', // Returns device temp (e.g. from dumpsys battery)
+  DEVICE_GET_TEMPERATURE: '/device:get-temperature',
   DEVICE_CLEAN_STATE: '/device:clean-state',
   CONFIG_OVERRIDES: '/config:overrides',
 
@@ -17,7 +17,10 @@ export const COMMANDS = {
   NAVIGATE_URL: '/navigate:url',
 
   // Input Actions
-  INPUT_TAP_RX_BOTTOM_CORNER: '/input:tap-rx-bottom-corner',
+  INPUT_TAP_TOP_RX: '/input:tap-top-rx',
+  INPUT_TAP_CENTER_CENTER: '/input:tap-center-center',
+  INPUT_TAP_BOTTOM_CENTER: '/input:tap-bottom-center',
+  INPUT_TAP_BOTTOM_RX: '/input:tap-bottom-rx',
   INPUT_TAP_VMMV_UPLOAD: '/input:tap-vmmv-upload',
   INPUT_TAP_VMMV_VIDEO: '/input:tap-vmmv-video',
   INPUT_TAP_VMMV_CONTINUE: '/input:tap-vmmv-vmp-continue',
@@ -25,7 +28,6 @@ export const COMMANDS = {
   INPUT_TAP_VMMV_VMP_RESTART: '/input:tap-vmmv-vmp-restart',
   INPUT_TAP_VMMV_MULTIVM_OPEN: '/input:tap-vmmv-multivm-open',
   INPUT_TAP_VMMV_MULTIVM_CLOSE: '/input:tap-vmmv-multivm-close',
-  INPUT_TAP_VMMV_CLOSE: '/input:tap-vmmv-close',
   INPUT_TAP_VMMV_WIDGET: '/input:tap-vmmv-widget',
   INPUT_TAP_VMCORE_VMP_PDPLIGHT: '/input:tap-vmcore-vmp-pdplight',
   INPUT_TAP_VMCORE_VMP_REC: '/input:tap-vmcore-vmp-rec',

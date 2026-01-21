@@ -7,10 +7,25 @@ interface TapConfigItem {
 }
 
 export const TAP_CONFIG: Record<string, TapConfigItem> = {
-  [COMMANDS.INPUT_TAP_RX_BOTTOM_CORNER]: {
+  [COMMANDS.INPUT_TAP_TOP_RX]: {
+    x: 980,
+    y: 360,
+    msg: 'Tapped on vmmv-close.',
+  },
+  [COMMANDS.INPUT_TAP_CENTER_CENTER]: {
+    x: 980,
+    y: 360,
+    msg: 'Tapped on vmmv-close.',
+  },
+  [COMMANDS.INPUT_TAP_BOTTOM_CENTER]: {
+    x: 550,
+    y: 2100,
+    msg: 'Tapped bottom-center.',
+  },
+  [COMMANDS.INPUT_TAP_BOTTOM_RX]: {
     x: 820,
     y: 2020,
-    msg: 'Tapped rx-bottom-corner.',
+    msg: 'Tapped bottom-rx.',
   },
   [COMMANDS.INPUT_TAP_VMMV_UPLOAD]: {
     x: 550,
@@ -45,11 +60,6 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_VMMV_MULTIVM_CLOSE]: {
     x: 100,
     y: 1680,
-    msg: 'Tapped on vmmv-close.',
-  },
-  [COMMANDS.INPUT_TAP_VMMV_CLOSE]: {
-    x: 980,
-    y: 360,
     msg: 'Tapped on vmmv-close.',
   },
   [COMMANDS.INPUT_TAP_VMMV_WIDGET]: {
