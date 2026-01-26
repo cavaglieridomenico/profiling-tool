@@ -25,17 +25,17 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   vmmv_tc08__tc04: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-widget', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc08__tc04_sgh: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-widget-sgh', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-sgh', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc08__tc04_rb: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-widget-rb', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-rb', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc09: [
