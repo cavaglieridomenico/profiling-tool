@@ -19,8 +19,8 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   vmmv_tc05__tc06: [
     { command: 'devtools:start', delay: 2000 },
-    { command: 'input:tap-vmmv-multivm-open', delay: 13000 },
-    { command: 'input:tap-vmmv-multivm-close', delay: 5000 },
+    { command: 'input:tap-vmmv-multivm', delay: 13000 },
+    { command: 'input:tap-vmmv-multivm', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc08__tc04: [
@@ -50,9 +50,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-vmp-rec', delay: 50000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  vmmv_tc11: [
+    { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   vmmv_tc13: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-upload', delay: 2000 },
+    { command: 'input:tap-top-center', delay: 2000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
