@@ -19,6 +19,8 @@ export const urls: Record<string, string> = {
     'https://vmcore-test.luxottica.com/demo/VMP-UI/feature/PICOMMON-4305-test-faceweb-reset/index.html#/',
   VMCORE_VMP_TV27_04:
     'https://vmcore-test.luxottica.com/demo/VMP-UI/feature/PICOMMON-4304-video-processing-fps-investigation/index.html#/',
+  VMCORE_VMP_TV27_05:
+    'https://vmcore-test.luxottica.com/demo/VMP-UI/feature/2.2.0-25_PICOMMON-4379-requestVideoFrameCallback/index.html#/',
   PDW_BYPASS: 'https://pdweb.luxottica.com/luxotticabypass',
   PDWCORE_TV20: 'https://pdweb.luxottica.com/p/core/demo/2.1.0/inittime.html',
   PDWMV_TV19: 'https://pdweb-uat.luxottica.com/p/master/1.2.2/index.html',
