@@ -9,7 +9,7 @@ import { startCommandServer } from './src/server';
   try {
     const browserInstance = await initializeBrowser(mode);
     const pageForTracing = await getTargetPage(browserInstance, url);
-    startCommandServer(pageForTracing, mode);
+    startCommandServer(browserInstance, pageForTracing, mode);
   } catch (err: any) {
     console.error('Error:', err.message);
     if (mode === 'mobile') {

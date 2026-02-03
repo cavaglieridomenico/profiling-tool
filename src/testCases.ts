@@ -19,13 +19,23 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   vmmv_tc05__tc06: [
     { command: 'devtools:start', delay: 2000 },
-    { command: 'input:tap-vmmv-multivm-open', delay: 13000 },
-    { command: 'input:tap-vmmv-multivm-close', delay: 5000 },
+    { command: 'input:tap-vmmv-multivm', delay: 13000 },
+    { command: 'input:tap-vmmv-multivm', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc08__tc04: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-widget', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton', delay: 20000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  vmmv_tc08__tc04_sgh: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-vmmv-tryonbutton-sgh', delay: 20000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  vmmv_tc08__tc04_rb: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-vmmv-tryonbutton-rb', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc09: [
@@ -40,9 +50,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-vmp-rec', delay: 50000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  vmmv_tc11: [
+    { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   vmmv_tc13: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-upload', delay: 2000 },
+    { command: 'input:tap-top-center', delay: 2000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
@@ -76,6 +90,27 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmcore-vmp-pdplight', delay: 4000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-vmcore-vmp-image', delay: 15000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc01: [
+    { command: 'input:tap-bottom-center', delay: 25000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 35000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc02: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc04: [
+    { command: 'devtools:start', delay: 2000 },
+    { command: 'navigate:refresh', delay: 15000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc05: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-bottom-center', delay: 25000 },
     { command: 'devtools:stop', delay: 0 },
   ],
 };

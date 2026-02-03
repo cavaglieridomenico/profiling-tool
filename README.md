@@ -197,11 +197,12 @@ Now you can start and stop tracing, and the trace files will include memory prof
     - Close **all** other applications.
     - Close **all** Chrome tabs.
     - **Clean RAM:** Use OS functionality (e.g., _Device Care > Memory > Clean now_).
-6.  **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
-7.  **Connection:** Connect the device to the desktop via USB.
-8.  **Check device connection:** Run `adb devices`
-9.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
-10. **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
+    - Close **all** settings pages
+6.  **Connection:** Connect the device to the desktop via USB.
+7.  **Check device connection:** Run `adb devices`
+8.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
+9.  **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
+10. **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
 11. **Device Performance Baseline:**
     - Go to `browserbench.org/Speedometer3.0/` and run the test.
     - **Verify Score:** Must be near the average defined in the Test Book.
