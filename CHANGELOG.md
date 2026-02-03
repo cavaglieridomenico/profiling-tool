@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.6.0
+
+### Added
+
+- New tap commands and configurations
+- Error handling for page reload and navigation functions
+- New URLs
+
 # 1.5.0
 
 ### Added
