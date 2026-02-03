@@ -2,6 +2,8 @@
 
 This project provides a setup to connect Puppeteer to a Chrome instance running on an Android device, allowing for remote debugging and performance tracing.
 
+**Puppeteer Changelog:** https://pptr.dev/CHANGELOG
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
