@@ -1,4 +1,4 @@
-# Puppeteer Profiling
+# Profiling Tool
 
 This project provides a setup to connect Puppeteer to a Chrome instance running on an Android device, allowing for remote debugging and performance tracing.
 

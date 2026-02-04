@@ -1,4 +1,4 @@
-# Profiling Tool
+# Profiling Tool Project
 
 ## Project Overview
 
