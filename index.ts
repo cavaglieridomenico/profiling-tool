@@ -1,10 +1,14 @@
 import { initializeBrowser } from './src/browser';
 import { getTargetPage } from './src/page';
 import { startCommandServer } from './src/server';
+import { checkForPuppeteerUpdates } from './src/version-checker';
 
 (async () => {
   const mode = process.argv[2] || 'mobile'; // Default to mobile
   const url = process.argv[3];
+
+  // Async check for updates (don't await to avoid delaying startup)
+  checkForPuppeteerUpdates();
 
   try {
     const browserInstance = await initializeBrowser(mode);
