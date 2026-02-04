@@ -15,6 +15,7 @@ The system operates on a client-server model:
 - **Browser Automation:** Puppeteer
 - **Mobile Bridge:** Android Debug Bridge (ADB)
 - **Language:** TypeScript
+- **Utilities:** `cross-env` for environment variables, `ts-node` for execution.
 
 ## Directory Structure
 
@@ -27,13 +28,14 @@ The system operates on a client-server model:
   - `server.ts`: Main server entry point; orchestrates routing and configuration.
   - `routes.ts`: Defines the HTTP route handlers for the command server.
   - `tapConfig.ts`: Configuration object for input tap commands.
-  - `traceManager.ts`: Encapsulates logic for starting, stopping, and naming performance traces.
-  - `perfetto.ts`: Manages Perfetto tracing sessions (start, stop, naming).
+  - `devtools-trace-manager.ts`: Encapsulates logic for starting, stopping, and naming standard Chrome DevTools traces.
+  - `perfetto-trace-manager.ts`: Manages Android Perfetto tracing sessions (start, stop, pulling files).
   - `commands.ts`: Defines constant strings for command endpoints.
   - `page.ts`: Manages the target Puppeteer page instance.
   - `urls.ts`: Defines URL aliases for navigation.
   - `thermal.ts`: Manages device temperature monitoring and cooldown logic.
   - `utils.ts`: Helper functions for navigation, state cleaning, and responses.
+  - `perfetto-configs/`: Contains configuration files for Perfetto traces (e.g., `trace_config.pbtxt`).
 
 ## Setup and Installation
 
@@ -60,8 +62,10 @@ Connects to an existing Chrome instance on the connected Android device.
 
 ```bash
 npm start
-# OR
+# OR specific environments
 npm run start:mobile
+npm run start:mobile:vmcore
+npm run start:mobile:pdwuat
 ```
 
 **Desktop Mode:**
@@ -87,6 +91,7 @@ npx ts-node profile.ts <test_case_name> [custom_trace_name]
 
 ```bash
 npm run profile:vmmv-tc01__tc04
+npm run profile:vmcore_vmp-tc19
 npx ts-node profile.ts vmcore_vmp_tc19 my_custom_trace
 ```
 
@@ -94,8 +99,10 @@ npx ts-node profile.ts vmcore_vmp_tc19 my_custom_trace
 
 You can manually trigger actions by sending HTTP requests to `localhost:8080`.
 
-- **Start Tracing:** `curl http://localhost:8080/trace:start`
-- **Stop Tracing:** `curl http://localhost:8080/trace:stop`
+- **Start Tracing (DevTools):** `curl http://localhost:8080/devtools:start`
+- **Stop Tracing (DevTools):** `curl http://localhost:8080/devtools:stop`
+- **Start Tracing (Perfetto):** `curl http://localhost:8080/perfetto:start`
+- **Stop Tracing (Perfetto):** `curl http://localhost:8080/perfetto:stop`
 - **Simulate Input:** `curl http://localhost:8080/input:tap-vmmv-video`
 - **Get Temperature:** `curl http://localhost:8080/device:get-temperature`
 
@@ -106,5 +113,5 @@ You can manually trigger actions by sending HTTP requests to `localhost:8080`.
 - **Code Style:** The project uses Prettier. Run `npm run format` to ensure consistency.
 - **Test Cases:** New automation scenarios should be added to `src/testCases.ts`.
 - **Trace Files:**
-  - **DevTools Traces:** Saved in `perfetto-output/` (e.g., `trace-1.json`, `customName-1.json`).
-  - **Perfetto Traces:** Saved in `perfetto-output/` (e.g., `trace-1.pftrace`, `customName-1.pftrace`).
+  - **DevTools Traces:** Saved in `devtools-output/` (e.g., `trace-1.json`).
+  - **Perfetto Traces:** Saved in `perfetto-output/` (e.g., `trace-1.pftrace`).

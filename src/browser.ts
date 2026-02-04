@@ -64,7 +64,7 @@ export async function initializeBrowser(mode: string): Promise<Browser> {
       browserWSEndpoint,
       defaultViewport: null,
     });
-    console.log('Connected to mobile browser!');
+    console.log(`Connected to mobile browser! version: ${await browserInstance.version()}`);
   } else if (mode === 'desktop') {
     console.log('Launching desktop Chrome...');
     browserInstance = await puppeteer.launch({
@@ -72,7 +72,7 @@ export async function initializeBrowser(mode: string): Promise<Browser> {
       args: ['--start-maximized', '--use-fake-ui-for-media-stream'],
       defaultViewport: null, // Ensure desktop rendering
     });
-    console.log('Desktop Chrome launched!');
+    console.log(`Desktop Chrome launched! version: ${await browserInstance.version()}`);
   } else {
     console.error('Invalid mode specified. Use "mobile" or "desktop".');
     process.exit(1);

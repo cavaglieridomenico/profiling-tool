@@ -1,8 +1,8 @@
 
 {
-  "name": "puppeteer-profiling",
-  "version": "1.6.0",
-  "description": "Puppeteer Profiling",
+  "name": "profiling-tool",
+  "version": "1.7.0",
+  "description": "Chrome Profiling Tool for Desktop and Anroid Devices",
   "main": "index.js",
   "scripts": {
     "test": "echo \"No test specified\"",
@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "puppeteer": "24.32.1"
+    "puppeteer": "24.36.1"
   },
   "keywords": [],
   "author": "",
