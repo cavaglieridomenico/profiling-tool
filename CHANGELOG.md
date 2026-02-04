@@ -1,12 +1,18 @@
 # CHANGELOG
 
+# 1.7.0
+
+### Added
+
+- Initial check for Puppeteer version
+
 # 1.6.0
 
 ### Added
 
 - New tap commands and configurations
 - Error handling for page reload and navigation functions
-- New URLs
+- New URLs to test
 
 # 1.5.0
 
