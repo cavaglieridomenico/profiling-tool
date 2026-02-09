@@ -24,7 +24,7 @@ export async function checkForPuppeteerUpdates(): Promise<void> {
 
     if (latestVersion) {
       console.log(
-        `The latest ${packageName} version (v${latestVersion}) is already installed.`
+        `The latest ${packageName} version available is ${latestVersion}.`
       );
       if (isNewer(latestVersion, currentVersion)) {
         console.log(
