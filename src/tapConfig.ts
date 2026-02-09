@@ -60,7 +60,7 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_VMMV_MULTIVM]: {
     x: 100,
     y: 1680,
-    msg: 'Tapped on vmmv-multivm-open.',
+    msg: 'Tapped on vmmv-multivm.',
   },
   [COMMANDS.INPUT_TAP_VMMV_WIDGET]: {
     x: 550,
