@@ -38,7 +38,7 @@ export function getNextTraceNumber(
 export function resolveUrl(urlOrAlias: string): string {
   const resolved = urls[urlOrAlias] || urlOrAlias;
 
-  // If it's a special URL or already has a protocol, return as is
+  // 1. Return as-is if a protocol is already explicitly defined
   if (
     resolved.startsWith('http://') ||
     resolved.startsWith('https://') ||
@@ -49,7 +49,17 @@ export function resolveUrl(urlOrAlias: string): string {
     return resolved;
   }
 
-  // Otherwise, default to https://
+  // 2. Default to http:// for local testing environments
+  if (
+    resolved.startsWith('localhost') ||
+    resolved.startsWith('127.0.0.1') ||
+    resolved.match(/^192\.168\./) ||
+    resolved.match(/^10\./)
+  ) {
+    return `http://${resolved}`;
+  }
+
+  // 3. Otherwise, safely default to https:// for production/staging domains
   return `https://${resolved}`;
 }
 
@@ -172,7 +182,8 @@ export async function handleCleanState(
         }
       }
     }
-    if (closedCount > 0) console.log(`- Closed ${closedCount} background tabs.`);
+    if (closedCount > 0)
+      console.log(`- Closed ${closedCount} background tabs.`);
 
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true,
