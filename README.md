@@ -80,16 +80,31 @@ While the main script (`npm start`, `npm run start:mobile`, or `npm run start:de
 
 > **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run input:tap-vmmv-video`, `npm run device:clean -- <url>`).
 
-#### Override command example: `config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js`
+#### Override
 
-#### Device Clean Process:
+command example: `config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js`
 
-1. **Targeted Storage Wipe**: Executes `Storage.clearDataForOrigin` (passing storageTypes: 'all') to obliterate persistent storage—such as IndexedDB, Service Workers, and CacheStorage exclusively for the provided target origin.
-2. **Environment Hygiene**: Identifies and closes all background tabs to prevent external memory interference, and enforces `Network.setCacheDisabled` to suspend HTTP caching for the active session.
-3. **Active View Reset**: Navigates the active execution tab directly to about:blank (via Page.navigate).
-4. **Memory Sanitization**: Forces a low-level V8 garbage collection by executing `HeapProfiler.collectGarbage` to ensure a non-inflated baseline heap before the next profiling iteration. Finally, it cleanly detaches the CDP session to prevent tooling-induced memory leaks.
+<br/>
+
+#### Device Clean Process
+
+Performing this operation before each profiling iteration guarantees an accurate, non-inflated memory baseline by neutralizing the application environment without destroying the tester's personal Chrome data on the physical device.
+Execution Sequence:
+
+1. Storage cleared for origin: Obliterates persistent data (IndexedDB, Service Workers, CacheStorage) strictly for the target domain.
+2. Network Cache disabled: Suspends HTTP caching to enforce a true cold-start payload fetch for the next iteration.
+3. CDP Session detached from polluted tab: Drops the Chrome DevTools Protocol listener to prevent tooling-induced memory leaks.
+4. Polluted execution tab destroyed: Physically closes the active tab to force the Android OS to release the associated V8 Isolate and orphaned WebAssembly memory boundaries.
+5. Spawned fresh tab and navigated to about:blank: Establishes a neutral, pristine rendering frame.
+6. Garbage Collection forced on fresh tab: Executes a low-level V8 memory sweep to ensure a perfect zero-state baseline before the next profiling run begins.
+
+<br/>
+
+#### Saving trace files
 
 Trace files will be saved in your project directory with progressive numbering (e.g., `trace-0.json`, `trace-1.json`).
+
+<br/>
 
 ### 3. Running Test Cases
 

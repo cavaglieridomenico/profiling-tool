@@ -144,7 +144,6 @@ export async function handleCleanState(
     let targetPage = page;
 
     // Robustness: Check if the passed 'page' is actually still valid/attached
-    // If 'page' is not in the current list of pages, it's likely detached/zombie.
     if (!pages.includes(page)) {
       console.warn(
         'Warning: Current page reference is stale or detached. Switching to first available page.'
@@ -162,8 +161,16 @@ export async function handleCleanState(
     // 1. Connect to CDP for Low-Level Control
     const client = await targetPage.target().createCDPSession();
 
-    // 2. Targeted Storage Wipe
-    const origin = new URL(resolvedUrl).origin;
+    // 2. Targeted Storage Wipe (with robust URL parsing)
+    let origin: string;
+    try {
+      origin = new URL(resolvedUrl).origin;
+    } catch (e) {
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      res.end(`Invalid targetUrl format provided: ${resolvedUrl}\n`);
+      return;
+    }
+
     await client.send('Storage.clearDataForOrigin', {
       origin: origin,
       storageTypes: 'all',
@@ -190,21 +197,26 @@ export async function handleCleanState(
     } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 
-    // 4. Active View Reset: Navigate to about:blank
-    await targetPage.goto('about:blank');
-    console.log('- Navigated to about:blank.');
+    // 4. Tab Destruction & Active View Reset
+    await client.detach(); // Detach from the polluted tab first
+    console.log('- CDP Session detached from polluted tab.');
 
-    // 5. Memory Sanitization: "Collect garbage"
-    await client.send('HeapProfiler.collectGarbage');
-    console.log('- Garbage Collection forced (Heap cleared).');
+    await targetPage.close(); // Destroy the tab to drop V8 Isolates and Wasm memory
+    console.log('- Polluted execution tab destroyed.');
 
-    // 6. Detach CDP Session
-    await client.detach();
-    console.log('- CDP Session detached.');
+    const pristinePage = await browser.newPage(); // Spawn a fresh tab
+    await pristinePage.goto('about:blank');
+    console.log('- Spawned fresh tab and navigated to about:blank.');
+
+    // 5. Memory Sanitization on the Pristine Tab
+    const pristineClient = await pristinePage.target().createCDPSession();
+    await pristineClient.send('HeapProfiler.collectGarbage');
+    await pristineClient.detach();
+    console.log('- Garbage Collection forced on fresh tab.');
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
-      `Mobile Clean State complete for ${origin}: Storage wiped, Cache disabled, bg tabs closed, GC executed.\n`
+      `Mobile Clean State complete for ${origin}: Storage wiped, Tab recreated, Cache disabled, bg tabs closed, GC executed.\n`
     );
     console.log('Mobile Clean State complete.');
   } catch (err: any) {
