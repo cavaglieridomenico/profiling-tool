@@ -54,9 +54,11 @@
     "profile:vmcore_vmp-tc19_02": "ts-node bin/profile.ts vmcore_vmp_tc19_02",
     "profile:vmcore_vmp-tc19_03": "ts-node bin/profile.ts vmcore_vmp_tc19_03",
     "profile:pdwmv_tc01": "ts-node bin/profile.ts pdwmv_tc01",
+    "profile:pdwmv_tc01_end": "ts-node bin/profile.ts pdwmv_tc01_end",
     "profile:pdwmv_tc02": "ts-node bin/profile.ts pdwmv_tc02",
     "profile:pdwmv_tc04": "ts-node bin/profile.ts pdwmv_tc04",
     "profile:pdwmv_tc05": "ts-node bin/profile.ts pdwmv_tc05",
+    "profile:pdwmv_tc05_end": "ts-node bin/profile.ts pdwmv_tc05_end",
     "build": "tsc",
     "format": "prettier --write ."
   },

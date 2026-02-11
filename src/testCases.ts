@@ -98,6 +98,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-bottom-center', delay: 35000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  pdwmv_tc01_end: [
+    { command: 'input:tap-bottom-center', delay: 25000 },
+    { command: 'input:tap-bottom-center', delay: 20000 },
+    { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   pdwmv_tc02: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-bottom-center', delay: 5000 },
@@ -111,6 +117,11 @@ export const testCases: Record<string, TestCaseStep[]> = {
   pdwmv_tc05: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-bottom-center', delay: 25000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  pdwmv_tc05_end: [
+    { command: 'input:tap-bottom-center', delay: 15000 },
+    { command: 'devtools:start', delay: 10000 },
     { command: 'devtools:stop', delay: 0 },
   ],
 };
