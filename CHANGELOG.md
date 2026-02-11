@@ -1,5 +1,12 @@
 # CHANGELOG
 
+# 1.8.0
+
+### Added
+
+- Clean device state optimizzation
+- /bin folder for CLI command script
+
 # 1.7.0
 
 ### Added
