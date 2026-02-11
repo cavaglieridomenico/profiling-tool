@@ -5,6 +5,7 @@ import { exec } from 'child_process';
 import { Page, HTTPRequest, Protocol } from 'puppeteer';
 import { ServerResponse } from 'http';
 import { getAdbPath } from './browser';
+import { urls } from './urls';
 
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
@@ -27,6 +28,29 @@ export function getNextTraceNumber(
     i++;
   }
   return i;
+}
+
+/**
+ * Resolves a URL from the predefined list of aliases or returns the original string.
+ * @param urlOrAlias The URL or alias to resolve.
+ * @returns The resolved URL string.
+ */
+export function resolveUrl(urlOrAlias: string): string {
+  const resolved = urls[urlOrAlias] || urlOrAlias;
+
+  // If it's a special URL or already has a protocol, return as is
+  if (
+    resolved.startsWith('http://') ||
+    resolved.startsWith('https://') ||
+    resolved.startsWith('about:') ||
+    resolved.startsWith('file://') ||
+    resolved.startsWith('data:')
+  ) {
+    return resolved;
+  }
+
+  // Otherwise, default to https://
+  return `https://${resolved}`;
 }
 
 export function handleTap(
@@ -56,6 +80,7 @@ export async function handleNavigation(
 ): Promise<void> {
   try {
     const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
+    const resolvedUrl = resolveUrl(url);
 
     if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
       await page.authenticate({
@@ -67,10 +92,10 @@ export async function handleNavigation(
       );
     }
 
-    await page.goto(url);
+    await page.goto(resolvedUrl);
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`Navigated to ${url}.\n`);
-    console.log(`Navigated to ${url}.`);
+    res.end(`Navigated to ${resolvedUrl}.\n`);
+    console.log(`Navigated to ${resolvedUrl}.`);
   } catch (err: any) {
     console.error(`Navigation Error: ${err.message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
@@ -81,7 +106,8 @@ export async function handleNavigation(
 export async function handleCleanState(
   page: Page,
   res: ServerResponse,
-  mode: string
+  mode: string,
+  targetUrl: string | null
 ): Promise<void> {
   if (mode !== 'mobile') {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -95,7 +121,14 @@ export async function handleCleanState(
     return;
   }
 
+  if (!targetUrl) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('Target URL is required for clean state.\n');
+    return;
+  }
+
   try {
+    const resolvedUrl = resolveUrl(targetUrl);
     const browser = page.browser();
     let pages = await browser.pages();
     let targetPage = page;
@@ -114,15 +147,21 @@ export async function handleCleanState(
       }
     }
 
-    // Use targetPage for navigation
-    await targetPage.goto('about:blank');
-    console.log('Navigated to about:blank.');
-
     console.log('Starting Mobile Device Clean State...');
 
-    // 1. Tab Hygiene: Close background tabs
-    let closedCount = 0;
+    // 1. Connect to CDP for Low-Level Control
+    const client = await targetPage.target().createCDPSession();
 
+    // 2. Targeted Storage Wipe
+    const origin = new URL(resolvedUrl).origin;
+    await client.send('Storage.clearDataForOrigin', {
+      origin: origin,
+      storageTypes: 'all',
+    });
+    console.log(`- Storage cleared for origin: ${origin}`);
+
+    // 3. Environment Hygiene: Close background tabs & Disable Cache
+    let closedCount = 0;
     for (const p of pages) {
       if (p !== targetPage) {
         try {
@@ -133,25 +172,28 @@ export async function handleCleanState(
         }
       }
     }
-    if (closedCount > 0)
-      console.log(`- Closed ${closedCount} background tabs.`);
+    if (closedCount > 0) console.log(`- Closed ${closedCount} background tabs.`);
 
-    // 2. Connect to CDP for Low-Level Control
-    const client = await targetPage.target().createCDPSession();
-
-    // 3. Network Enforcement: "Disable cache" (Matches DevTools checkbox)
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true,
     } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 
-    // 4. Memory Sanitization: "Collect garbage" (Matches Trash Icon)
+    // 4. Active View Reset: Navigate to about:blank
+    await targetPage.goto('about:blank');
+    console.log('- Navigated to about:blank.');
+
+    // 5. Memory Sanitization: "Collect garbage"
     await client.send('HeapProfiler.collectGarbage');
     console.log('- Garbage Collection forced (Heap cleared).');
 
+    // 6. Detach CDP Session
+    await client.detach();
+    console.log('- CDP Session detached.');
+
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
-      `Mobile Clean State complete: GC executed, Cache disabled, ${closedCount} bg tabs closed.\n`
+      `Mobile Clean State complete for ${origin}: Storage wiped, Cache disabled, bg tabs closed, GC executed.\n`
     );
     console.log('Mobile Clean State complete.');
   } catch (err: any) {

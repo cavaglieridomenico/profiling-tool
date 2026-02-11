@@ -71,7 +71,8 @@ export const routeHandlers: Record<string, RouteHandler> = {
   },
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {
     if (mode) {
-      await handleCleanState(page, res, mode);
+      const targetUrl = url.searchParams.get('url');
+      await handleCleanState(page, res, mode, targetUrl);
     } else {
       sendResponse(res, 400, 'Mode is required for clean state.');
     }

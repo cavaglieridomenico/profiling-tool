@@ -11,7 +11,7 @@ if (!urlArg) {
 const url = resolveUrl(urlArg);
 
 const req = http.get(
-  `http://localhost:8080/navigate:url?url=${encodeURIComponent(url)}`,
+  `http://localhost:8080/device:clean-state?url=${encodeURIComponent(url)}`,
   (res) => {
     let data = '';
     res.on('data', (chunk) => {
@@ -24,5 +24,5 @@ const req = http.get(
 );
 
 req.on('error', (err) => {
-  console.error(`Error sending navigation command:`, err.message);
+  console.error(`Error sending clean state command:`, err.message);
 });
