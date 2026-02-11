@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import { exec } from 'child_process';
+import http from 'http';
 import { Page, HTTPRequest, Protocol } from 'puppeteer';
 import { ServerResponse } from 'http';
 import { getAdbPath } from './browser';
@@ -17,6 +18,29 @@ dotenv.config({ path: envPath });
 // State to track active overrides
 let activeOverrides: Record<string, string> = {};
 let isInterceptionEnabled = false;
+
+/**
+ * Sends a command to the local HTTP server.
+ * @param command The command path (e.g., 'navigate:url?url=...')
+ * @returns A promise that resolves when the command is complete.
+ */
+export function sendCommand(command: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const req = http.get(`http://localhost:8080/${command}`, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        resolve(data.trim());
+      });
+    });
+
+    req.on('error', (err) => {
+      reject(err);
+    });
+  });
+}
 
 export function getNextTraceNumber(
   name: string,

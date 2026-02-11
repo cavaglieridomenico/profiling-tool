@@ -20,8 +20,10 @@ The system operates on a client-server model:
 ## Directory Structure
 
 - `index.ts`: Main entry point. Initializes the browser connection and starts the command server.
-- `profile.ts`: A CLI runner for executing predefined test cases found in `src/testCases.ts`.
-- `navigate.ts`: A utility script for simple URL navigation.
+- `bin/`: CLI tools for interacting with the server.
+  - `profile.ts`: A CLI runner for executing predefined test cases found in `src/testCases.ts`.
+  - `navigate.ts`: A utility script for simple URL navigation.
+  - `clean.ts`: A utility script for cleaning device state.
 - `src/`: Core logic modules.
   - `browser.ts`: Handles Puppeteer connection logic (WebSocket discovery for Android, launching for Desktop).
   - `testCases.ts`: Defines automation scenarios (steps with commands and delays).
@@ -84,7 +86,7 @@ In a separate terminal, use the `profile.ts` script to execute scenarios defined
 ```bash
 npm run profile:<test_case_name>
 # OR directly via ts-node
-npx ts-node profile.ts <test_case_name> [custom_trace_name]
+npx ts-node bin/profile.ts <test_case_name> [custom_trace_name]
 ```
 
 **Examples:**
@@ -92,7 +94,7 @@ npx ts-node profile.ts <test_case_name> [custom_trace_name]
 ```bash
 npm run profile:vmmv-tc01__tc04
 npm run profile:vmcore_vmp-tc19
-npx ts-node profile.ts vmcore_vmp_tc19 my_custom_trace
+npx ts-node bin/profile.ts vmcore_vmp_tc19 my_custom_trace
 ```
 
 ### 3. Manual Control

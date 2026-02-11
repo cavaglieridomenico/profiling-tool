@@ -108,7 +108,7 @@ Trace files will be saved in your project directory with progressive numbering (
 
 ### 3. Running Test Cases
 
-This project includes a test runner script (`profile.js`) that allows you to execute predefined sequences of commands (test cases) from the `src/testCases.js` file.
+This project includes a test runner script (`bin/profile.ts`) that allows you to execute predefined sequences of commands (test cases) from the `src/testCases.ts` file.
 
 #### Prerequisite
 
@@ -119,7 +119,7 @@ The mobile device must be connected and ready as per the instructions above, wit
 To run a test case, use the following command:
 
 ```bash
-node profile.js <test_case_name>
+npx ts-node bin/profile.ts <test_case_name>
 ```
 
 Replace `<test_case_name>` with the name of the test case you want to run (e.g., `vmmv_tc01__tc04`).
@@ -129,13 +129,13 @@ Replace `<test_case_name>` with the name of the test case you want to run (e.g.,
 You can also provide a custom name for the trace file by adding it as a second argument:
 
 ```bash
-node profile.js <test_case_name> <custom_trace_name>
+npx ts-node bin/profile.ts <test_case_name> <custom_trace_name>
 ```
 
 For example, to run `vmmv_tc01__tc04` and save the traces as `my-custom-trace-1.json` (Puppeteer) and `my-custom-trace-1.pftrace` (Perfetto, if enabled), use:
 
 ```bash
-node profile.js vmmv_tc01__tc04 my-custom-trace
+npx ts-node bin/profile.ts vmmv_tc01__tc04 my-custom-trace
 ```
 
 **Note on Trace Files:**

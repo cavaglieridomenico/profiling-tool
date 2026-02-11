@@ -1,26 +1,6 @@
-import { testCases } from './src/testCases';
-import { ensureDeviceIsCool } from './src/thermal';
-import http from 'http';
-
-function sendCommand(command: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const req = http.get(`http://localhost:8080/${command}`, (res) => {
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-      res.on('end', () => {
-        console.log(`Response from ${command}: ${data}`);
-        resolve();
-      });
-    });
-
-    req.on('error', (err) => {
-      console.error(`Error sending command ${command}:`, err.message);
-      reject(err);
-    });
-  });
-}
+import { testCases } from '../src/testCases';
+import { ensureDeviceIsCool } from '../src/thermal';
+import { sendCommand } from '../src/utils';
 
 function sleep(ms: number): Promise<void> {
   if (ms === 0) return Promise.resolve();
@@ -48,14 +28,15 @@ async function runTestCase(name: string, traceName?: string) {
       ) {
         command = `${command}?name=${traceName}`;
       }
-      await sendCommand(command);
+      const data = await sendCommand(command);
+      console.log(`Response from ${command}: ${data}`);
       if (step.delay) {
         await sleep(step.delay);
       }
     }
     console.log(`Test case "${name}" completed successfully.`);
-  } catch (error) {
-    console.error(`An error occurred during test case "${name}":`, error);
+  } catch (error: any) {
+    console.error(`An error occurred during test case "${name}":`, error.message || error);
     process.exit(1);
   }
 }
@@ -65,7 +46,7 @@ const traceName = process.argv[3];
 
 if (!testCaseName) {
   console.error('Please provide a test case name to run.');
-  console.log('Usage: node profile.js <test_case_name> [trace_name]');
+  console.log('Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name]');
   console.log('Available test cases:', Object.keys(testCases).join(', '));
   process.exit(1);
 }
