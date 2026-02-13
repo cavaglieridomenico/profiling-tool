@@ -190,24 +190,45 @@ Now you can start and stop tracing, and the trace files will include memory prof
 
 ## Troubleshooting
 
-- **"Cannot connect to the device" error (Mobile Mode):**
-  - Ensure your Android device is connected and USB debugging is enabled.
-  - Verify `adb devices` lists your device.
-  - Confirm that `adb forward tcp:9222 localabstract:chrome_devtools_remote` was executed successfully and Chrome is running on your device.
 - **"Cannot connect to the device" error (Desktop Mode):**
   - Ensure Puppeteer can launch Chrome on your desktop.
 - **`curl` command not found:** If you are on Windows, you might need to use `Invoke-WebRequest` in PowerShell or install `curl` for Windows.
 - **Port 9222 Already in Use:** If you get an error that port 9222 is already in use, you can find the process that is using the port and kill it.
+- **"Cannot connect to the device" error (Mobile Mode):**
+  - Ensure your Android device is connected and USB debugging is enabled.
+  - Verify `adb devices` lists your device.
+  - Confirm that `adb forward tcp:9222 localabstract:chrome_devtools_remote` was executed successfully and Chrome is running on your device.
   - **Find the process ID (PID):**
     ```bash
     netstat -ano | findstr "9222"
     ```
     This will show you the PID of the process using port 9222.
   - **Kill the process:**
+
     ```bash
     taskkill /PID 3596 /F
     ```
+
     Replace `3596` with the actual PID you found in the previous step.
+
+  - Further possible operations:
+
+    ```bash
+    # 1. Kill the Desktop Bridge (The most common culprit)
+    adb disconnect
+    adb kill-server
+
+    # 2. Kill the Phone's Daemon (If ADB is stuck)
+    # (You might need to unplug/replug USB after this step)
+    adb start-server
+
+    # 3. Clear the Port Forwarding (Remove zombie sockets)
+    adb forward --remove-all
+
+    # 4. Re-establish the Link
+    adb devices
+    adb forward tcp:9222 localabstract:chrome_devtools_remote
+    ```
 
 ### DevTools Profiling Procedure: Android
 
