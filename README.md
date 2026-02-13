@@ -188,6 +188,35 @@ For mobile devices, you need to manually enable memory profiling in Chrome befor
 
 Now you can start and stop tracing, and the trace files will include memory profiling data.
 
+## Manual Inspection (Coexistence with Puppeteer)
+
+To inspect the DOM or monitor the Network waterfall while Puppeteer is connected to the Android device, follow this procedure to avoid connection crashes or "Discover USB devices" conflicts.
+
+### 1. Configure Chrome DevTools Discovery
+
+1.  Open **chrome://inspect/#devices** in your desktop Chrome.
+2.  **Uncheck** "Discover USB devices" (this prevents the internal Chrome ADB from fighting with the project's ADB tunnel).
+3.  **Check** "Discover network targets".
+4.  Click **Configure...** and add `127.0.0.1:9222`.
+
+### 2. Open the Inspector
+
+Identify the **Remote Target #127.0.0.1** (or `#LOCALHOST`) section. This represents the tunnel established by the project. Click **inspect** on the target tab.
+
+<p>
+  <img src="assets/chrome-inspect-demo.png" alt="Chrome Inspect Demo" width="800">
+</p>
+Click on Configure... button to add 127.0.0.1:9222 and disabled "Enable port forwarding":
+<p>
+  <img src="assets/chrome-inspect-demo-2.png" alt="Chrome Inspect Demo" width="200">
+</p>
+
+### 3. Guidelines for Stable Coexistence
+
+- **Read-Only Mode:** Use the inspector primarily for viewing state. **Do not** manually refresh or navigate the page while a Puppeteer script is running, as this will destroy the execution context Puppeteer is tracking.
+- **Profiling Overhead:** The DevTools UI consumes device resources. For high-precision performance traces (Perfetto or DevTools Traces), close the manual inspector window before starting the recording.
+- **No Breakpoints:** Setting breakpoints will pause the entire page and cause Puppeteer commands to time out.
+
 ## Troubleshooting
 
 - **"Cannot connect to the device" error (Desktop Mode):**
