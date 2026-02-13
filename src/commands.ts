@@ -35,4 +35,6 @@ export const COMMANDS = {
   INPUT_TAP_VMCORE_VMP_REC: '/input:tap-vmcore-vmp-rec',
   INPUT_TAP_VMCORE_VMP_IMAGE: '/input:tap-vmcore-vmp-image',
   INPUT_TAP_VMCORE_VMP_RESTART: '/input:tap-vmcore-vmp-restart',
+  INPUT_TAP_PDW_LINK: '/input:tap-pdwmw-link',
+  INPUT_TAP_PDWMV_BUTTONS_SGH: '/input:tap-pdwmv-buttons-sgh',
 };

@@ -98,6 +98,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-bottom-center', delay: 35000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  //Chrome address bar must to be visible:
+  pdwmv_tc01_sgh: [
+    { command: 'input:tap-pdwmv-buttons-sgh', delay: 25000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-pdwmv-buttons-sgh', delay: 35000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   pdwmv_tc01_end: [
     { command: 'input:tap-bottom-center', delay: 25000 },
     { command: 'input:tap-bottom-center', delay: 20000 },
@@ -107,6 +114,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
   pdwmv_tc02: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-bottom-center', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  //Chrome address bar must to be visible:
+  pdwmv_tc02_sgh: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-pdwmv-buttons-sgh', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   pdwmv_tc04: [
@@ -119,9 +132,21 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-bottom-center', delay: 25000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  //Chrome address bar must to be visible:
+  pdwmv_tc05_sgh: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-pdwmv-buttons-sgh', delay: 25000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   pdwmv_tc05_end: [
     { command: 'input:tap-bottom-center', delay: 15000 },
     { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  //MEASURE YOUR PD must to be visible:
+  pdwmv_tc06: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-pdwmw-link', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
 };
