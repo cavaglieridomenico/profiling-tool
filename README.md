@@ -74,11 +74,11 @@ You can start the script in either **mobile** or **desktop** mode. The command s
 
 The script will keep the connection alive. To stop it, press `Ctrl+C`.
 
-### 2. Control Navigation - Tracing - Input - Device clean - Overrides (from a **second terminal**)
+### 2. Device connection - Control Navigation - Tracing - Input - Device clean - Overrides (from a **second terminal**)
 
 While the main script (`npm start`, `npm run start:mobile`, or `npm run start:desktop`) is running in your first terminal, you can use a second terminal to send commands to navigate to a specific URL, start and stop performance tracing, and to send input events.
 
-> **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run input:tap-vmmv-video`, `npm run device:clean -- <url>`).
+> **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run device:connect` `npm run input:tap-vmmv-video`, `npm run device:clean -- <url>`).
 
 #### Override
 
@@ -272,17 +272,17 @@ Click on Configure... button to add 127.0.0.1:9222 and disabled "Enable port for
     - Close **all** Chrome tabs.
     - **Clean RAM:** Use OS functionality (e.g., _Device Care > Memory > Clean now_).
     - Close **all** settings pages
-6.  **Connection:** Connect the device to the desktop via USB.
-7.  **Check device connection:** Run `adb devices`
-8.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
-9.  **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
-10. **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
-11. **Device Performance Baseline:**
+6.  **Connection:** Connect the device to the desktop via USB and run `npm run device:connect` or
+    1.  **Check device connection:** Run `adb devices`
+    2.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
+    3.  **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
+7.  **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
+8.  **Device Performance Baseline:**
     - Go to `browserbench.org/Speedometer3.0/` and run the test.
     - **Verify Score:** Must be near the average defined in the Test Book.
     - _Note:_ If the score is low, use the **"Optimize now"** feature (in _Settings > Device Care_) and re-run the test.
-12. **Navigation:** Navigate to the target page to be analyzed.
-13. **Desktop Health Check:** On the recording machine, check Task Manager:
+9.  **Navigation:** Navigate to the target page to be analyzed.
+10. **Desktop Health Check:** On the recording machine, check Task Manager:
     - **CPU:** < 15%
     - **Memory:** < 70%
     - **Network:** < 5%
