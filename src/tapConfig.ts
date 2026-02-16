@@ -97,4 +97,14 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 1430,
     msg: 'Tapped on vmcore-vmp-restart.',
   },
+  [COMMANDS.INPUT_TAP_PDW_LINK]: {
+    x: 380,
+    y: 1900,
+    msg: 'Tapped on pdwmw-link.',
+  },
+  [COMMANDS.INPUT_TAP_PDWMV_BUTTONS_SGH]: {
+    x: 550,
+    y: 1820,
+    msg: 'Tapped on pdw-buttons-sgh.',
+  },
 };

@@ -74,11 +74,11 @@ You can start the script in either **mobile** or **desktop** mode. The command s
 
 The script will keep the connection alive. To stop it, press `Ctrl+C`.
 
-### 2. Control Navigation - Tracing - Input - Device clean - Overrides (from a **second terminal**)
+### 2. Device connection - Control Navigation - Tracing - Input - Device clean - Overrides (from a **second terminal**)
 
 While the main script (`npm start`, `npm run start:mobile`, or `npm run start:desktop`) is running in your first terminal, you can use a second terminal to send commands to navigate to a specific URL, start and stop performance tracing, and to send input events.
 
-> **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run input:tap-vmmv-video`, `npm run device:clean -- <url>`).
+> **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available manual and semi-automated commands (e.g., `npm run device:connect` `npm run input:tap-vmmv-video`, `npm run device:clean -- <url>`).
 
 #### Override
 
@@ -188,26 +188,76 @@ For mobile devices, you need to manually enable memory profiling in Chrome befor
 
 Now you can start and stop tracing, and the trace files will include memory profiling data.
 
+## Manual Inspection (Coexistence with Puppeteer)
+
+To inspect the DOM or monitor the Network waterfall while Puppeteer is connected to the Android device, follow this procedure to avoid connection crashes or "Discover USB devices" conflicts.
+
+### 1. Configure Chrome DevTools Discovery
+
+1.  Open **chrome://inspect/#devices** in your desktop Chrome.
+2.  **Uncheck** "Discover USB devices" (this prevents the internal Chrome ADB from fighting with the project's ADB tunnel).
+3.  **Check** "Discover network targets".
+4.  Click **Configure...** and add `127.0.0.1:9222`.
+
+### 2. Open the Inspector
+
+Identify the **Remote Target #127.0.0.1** (or `#LOCALHOST`) section. This represents the tunnel established by the project. Click **inspect** on the target tab.
+
+<p>
+  <img src="assets/chrome-inspect-demo.png" alt="Chrome Inspect Demo" width="800">
+</p>
+Click on Configure... button to add 127.0.0.1:9222 and disabled "Enable port forwarding":
+<p>
+  <img src="assets/chrome-inspect-demo-2.png" alt="Chrome Inspect Demo" width="200">
+</p>
+
+### 3. Guidelines for Stable Coexistence
+
+- **Read-Only Mode:** Use the inspector primarily for viewing state. **Do not** manually refresh or navigate the page while a Puppeteer script is running, as this will destroy the execution context Puppeteer is tracking.
+- **Profiling Overhead:** The DevTools UI consumes device resources. For high-precision performance traces (Perfetto or DevTools Traces), close the manual inspector window before starting the recording.
+- **No Breakpoints:** Setting breakpoints will pause the entire page and cause Puppeteer commands to time out.
+
 ## Troubleshooting
 
-- **"Cannot connect to the device" error (Mobile Mode):**
-  - Ensure your Android device is connected and USB debugging is enabled.
-  - Verify `adb devices` lists your device.
-  - Confirm that `adb forward tcp:9222 localabstract:chrome_devtools_remote` was executed successfully and Chrome is running on your device.
 - **"Cannot connect to the device" error (Desktop Mode):**
   - Ensure Puppeteer can launch Chrome on your desktop.
 - **`curl` command not found:** If you are on Windows, you might need to use `Invoke-WebRequest` in PowerShell or install `curl` for Windows.
 - **Port 9222 Already in Use:** If you get an error that port 9222 is already in use, you can find the process that is using the port and kill it.
+- **"Cannot connect to the device" error (Mobile Mode):**
+  - Ensure your Android device is connected and USB debugging is enabled.
+  - Verify `adb devices` lists your device.
+  - Confirm that `adb forward tcp:9222 localabstract:chrome_devtools_remote` was executed successfully and Chrome is running on your device.
   - **Find the process ID (PID):**
     ```bash
     netstat -ano | findstr "9222"
     ```
     This will show you the PID of the process using port 9222.
   - **Kill the process:**
+
     ```bash
     taskkill /PID 3596 /F
     ```
+
     Replace `3596` with the actual PID you found in the previous step.
+
+  - Further possible operations:
+
+    ```bash
+    # 1. Kill the Desktop Bridge (The most common culprit)
+    adb disconnect
+    adb kill-server
+
+    # 2. Kill the Phone's Daemon (If ADB is stuck)
+    # (You might need to unplug/replug USB after this step)
+    adb start-server
+
+    # 3. Clear the Port Forwarding (Remove zombie sockets)
+    adb forward --remove-all
+
+    # 4. Re-establish the Link
+    adb devices
+    adb forward tcp:9222 localabstract:chrome_devtools_remote
+    ```
 
 ### DevTools Profiling Procedure: Android
 
@@ -222,17 +272,17 @@ Now you can start and stop tracing, and the trace files will include memory prof
     - Close **all** Chrome tabs.
     - **Clean RAM:** Use OS functionality (e.g., _Device Care > Memory > Clean now_).
     - Close **all** settings pages
-6.  **Connection:** Connect the device to the desktop via USB.
-7.  **Check device connection:** Run `adb devices`
-8.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
-9.  **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
-10. **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
-11. **Device Performance Baseline:**
+6.  **Connection:** Connect the device to the desktop via USB and run `npm run device:connect` or
+    1.  **Check device connection:** Run `adb devices`
+    2.  **Forward Port**: Run `adb forward tcp:9222 localabstract:chrome_devtools_remote`
+    3.  **Verify Socket**: Run `netstat -ano | findstr "9222"` (Windows) or `lsof -i :9222` (Mac/Linux)
+7.  **Network Validation:** Run a **Google Speed Test**. Verify latency/bandwidth match Test Book ranges.
+8.  **Device Performance Baseline:**
     - Go to `browserbench.org/Speedometer3.0/` and run the test.
     - **Verify Score:** Must be near the average defined in the Test Book.
     - _Note:_ If the score is low, use the **"Optimize now"** feature (in _Settings > Device Care_) and re-run the test.
-12. **Navigation:** Navigate to the target page to be analyzed.
-13. **Desktop Health Check:** On the recording machine, check Task Manager:
+9.  **Navigation:** Navigate to the target page to be analyzed.
+10. **Desktop Health Check:** On the recording machine, check Task Manager:
     - **CPU:** < 15%
     - **Memory:** < 70%
     - **Network:** < 5%
