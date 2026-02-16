@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.9.0
+
+### Added
+
+- Device connect script
+- Device restore script
+- New test case profiles
+
 # 1.8.0
 
 ### Added

@@ -1,7 +1,7 @@
 
 {
   "name": "profiling-tool",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Chrome Profiling Tool for Desktop and Anroid Devices",
   "main": "index.js",
   "scripts": {
