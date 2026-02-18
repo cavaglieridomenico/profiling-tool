@@ -28,6 +28,10 @@ export const urls: Record<string, string> = {
   PDWMV_TV19: 'https://pdweb-uat.luxottica.com/p/master/1.2.2/index.html',
   PDWMV_TV21: 'https://www.sunglasshut.com/us/ray-ban/rb3565-8056597586030',
   PDWMV_TV22: 'https://pdweb-uat.luxottica.com/p/master/1.2.3/index.html',
+  RTRMV_BYPASS: 'https://rtrmv.essilorluxottica.com/luxotticabypass',
+  RTRMV_TV02_01: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.3/index.html',
+  RTRMV_TV03: 'https://www.sunglasshut.com/us/ray-ban/rb2132-8056262320594',
+  RTRCORE_TV03_01: 'https://www.sunglasshut.com/us',
   SPEEDOMETER: 'https://browserbench.org/Speedometer3.1/',
   SPEED_TEST:
     'https://www.google.com/search?q=speed+test&oq=speed+&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg80gEINDI1MGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8',

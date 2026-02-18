@@ -37,4 +37,9 @@ export const COMMANDS = {
   INPUT_TAP_VMCORE_VMP_RESTART: '/input:tap-vmcore-vmp-restart',
   INPUT_TAP_PDW_LINK: '/input:tap-pdwmw-link',
   INPUT_TAP_PDWMV_BUTTONS_SGH: '/input:tap-pdwmv-buttons-sgh',
+
+  // Swipe Action
+  INPUT_SWIPE_RTRMV_CX_RX: '/input:swipe-rtrmv-cx-rx',
+  INPUT_SWIPE_RTRMV_RX_LX: '/input:swipe-rtrmv-rx-lx',
+  INPUT_SWIPE_RTRMV_LX_RX: '/input:swipe-rtrmv-lx-rx',
 };

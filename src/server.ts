@@ -3,10 +3,11 @@ import dotenv from 'dotenv';
 import http, { IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
 import { Page, Browser } from 'puppeteer';
-import { handleTap, sendResponse } from './utils';
+import { handleSwipe, handleTap, sendResponse } from './utils';
 import { TAP_CONFIG } from './tapConfig';
 import { routeHandlers } from './routes';
 import { getTargetPage } from './page';
+import { SWIPE_CONFIG } from './swipeConfig';
 
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
@@ -47,11 +48,15 @@ export function startCommandServer(
       } else if (TAP_CONFIG[pathname]) {
         const { x, y, msg } = TAP_CONFIG[pathname];
         handleTap(res, x, y, msg);
+      } else if (SWIPE_CONFIG[pathname]) {
+        const { startX, startY, endX, endY, durationMs, msg } =
+          SWIPE_CONFIG[pathname];
+        handleSwipe(res, startX, startY, endX, endY, durationMs, msg);
       } else {
         sendResponse(
           res,
           404,
-          'Not Found. See README.md for a full list of available commands.'
+          'Not Found. See server initial logs for a full list of available commands.'
         );
       }
     }
@@ -65,6 +70,9 @@ export function startCommandServer(
       console.log(`  - Send GET to ${cmd}`)
     );
     Object.keys(TAP_CONFIG).forEach((cmd) =>
+      console.log(`  - Send GET to ${cmd}`)
+    );
+    Object.keys(SWIPE_CONFIG).forEach((cmd) =>
       console.log(`  - Send GET to ${cmd}`)
     );
   });

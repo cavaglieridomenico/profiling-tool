@@ -107,6 +107,32 @@ export function handleTap(
   });
 }
 
+export function handleSwipe(
+  res: ServerResponse,
+  startX: number,
+  startY: number,
+  endX: number,
+  endY: number,
+  durationMs: number,
+  message: string
+): void {
+  const adbPath = getAdbPath();
+  exec(
+    `${adbPath} shell input swipe ${startX} ${startY} ${endX} ${endY} ${durationMs}`,
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end(`Failed to execute swipe command: ${error.message}\n`);
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end(`${message}\n`);
+      console.log(message);
+    }
+  );
+}
+
 export async function handleNavigation(
   page: Page,
   url: string,
