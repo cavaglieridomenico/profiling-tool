@@ -154,7 +154,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:start', delay: 10000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  //MEASURE YOUR PD must to be visible:
+  //pdwmv_tc06: MEASURE YOUR PD must to be visible:
   pdwmv_tc06: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-pdwmw-link', delay: 15000 },
@@ -171,11 +171,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-rtrmv-zoom', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  //rtrmv_tc02: RTR must to be in fullscreen:
   rtrmv_tc02: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  //rtrmv_tc03: RTR must to be in fullscreen:
   rtrmv_tc03: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
@@ -183,6 +185,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  //rtrmv_tc03_perfetto: RTR must to be in fullscreen:
   rtrmv_tc03_perfetto: [
     { command: 'perfetto:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
