@@ -9,7 +9,7 @@ interface SwipeConfigItem {
   msg: string;
 }
 
-const limitLxPoint = 140;
+const limitLxPoint = 300;
 const limitRxPoint = 950;
 const startPoint = 420;
 const centerVerticalPoint = 1000;

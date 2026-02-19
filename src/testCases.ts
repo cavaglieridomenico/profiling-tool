@@ -165,6 +165,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'navigate:refresh', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  rtrmv_tc01_01: [
+    { command: 'devtools:start', delay: 2000 },
+    { command: 'navigate:refresh', delay: 10000 },
+    { command: 'input:tap-rtrmv-zoom', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   rtrmv_tc02: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 5000 },
@@ -172,9 +178,16 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   rtrmv_tc03: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:swipe-rtrmv-cx-rx', delay: 1000 },
-    { command: 'input:swipe-rtrmv-rx-lx', delay: 1000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'devtools:stop', delay: 0 },
+  ],
+  rtrmv_tc03_perfetto: [
+    { command: 'perfetto:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'perfetto:stop', delay: 0 },
   ],
 };
