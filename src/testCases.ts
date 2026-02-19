@@ -193,4 +193,9 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'perfetto:stop', delay: 0 },
   ],
+  rtrmv_tc04: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-rtrmv-start-sgh', delay: 15000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
 };

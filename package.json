@@ -79,6 +79,7 @@
     "profile:rtrmv_tc02": "ts-node bin/profile.ts rtrmv_tc02",
     "profile:rtrmv_tc03": "ts-node bin/profile.ts rtrmv_tc03",
     "profile:rtrmv_tc03_perfetto": "ts-node bin/profile.ts rtrmv_tc03_perfetto",
+    "profile:rtrmv_tc04": "ts-node bin/profile.ts rtrmv_tc04",
     "build": "tsc",
     "format": "prettier --write ."
   },
