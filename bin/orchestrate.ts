@@ -4,12 +4,31 @@ import { parseJsonc, OrchestratorConfig } from '../src/orchestrator/config';
 import { Orchestrator } from '../src/orchestrator/index';
 import { getErrorMessage } from '../src/utils';
 
-const configPath = process.argv[2] || 'orchestrator.jsonc';
-const absPath = path.resolve(process.cwd(), configPath);
+const INPUTS_DIR = path.resolve(process.cwd(), 'orchestrator-inputs');
+const configName = process.argv[2];
+
+if (!configName) {
+  console.error('❌ Please provide the name of the config file.');
+  console.log('Usage: npm run orchestrate <config_filename>');
+  
+  // Show available configs
+  if (fs.existsSync(INPUTS_DIR)) {
+    const files = fs.readdirSync(INPUTS_DIR).filter(f => f.endsWith('.jsonc'));
+    console.log('Available configs in orchestrator-inputs/:', files.join(', '));
+  }
+  process.exit(1);
+}
+
+// Resolve the path: if it's already an absolute or relative path that exists, use it.
+// Otherwise, look in the orchestrator-inputs folder.
+let absPath = path.isAbsolute(configName) ? configName : path.resolve(process.cwd(), configName);
 
 if (!fs.existsSync(absPath)) {
-  console.error(`❌ Config file not found: ${absPath}`);
-  console.log('Usage: npx ts-node bin/orchestrate.ts [config_path]');
+    absPath = path.join(INPUTS_DIR, configName);
+}
+
+if (!fs.existsSync(absPath)) {
+  console.error(`❌ Config file not found: ${configName} (checked both local path and orchestrator-inputs/)`);
   process.exit(1);
 }
 
