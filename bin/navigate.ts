@@ -1,4 +1,4 @@
-import { resolveUrl, sendCommand } from '../src/utils';
+import { resolveUrl, sendCommand, getErrorMessage } from '../src/utils';
 
 const urlArg = process.argv[2];
 
@@ -14,6 +14,6 @@ sendCommand(command)
   .then((data) => {
     console.log(`Response: ${data}`);
   })
-  .catch((err) => {
-    console.error(`Error sending navigation command:`, err.message);
+  .catch((err: unknown) => {
+    console.error(`Error sending navigation command:`, getErrorMessage(err));
   });

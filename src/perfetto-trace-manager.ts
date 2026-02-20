@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { getAdbPath } from './browser';
-import { getNextTraceNumber } from './utils';
+import { getNextTraceNumber, getErrorMessage } from './utils';
 import { TRACES_OUTPUT_DIR } from './config/constants';
 
 const DEVICE_CONFIG_PATH = '/data/local/tmp/trace_config.pbtxt';
@@ -59,8 +59,9 @@ class PerfettoTraceManager {
         `${adbPath} shell "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
       );
       console.log('✅ Perfetto started (Background).');
-    } catch (e: any) {
-      console.error(`[Perfetto] Start failed: ${e.message}`);
+    } catch (e: unknown) {
+      const message = getErrorMessage(e);
+      console.error(`[Perfetto] Start failed: ${message}`);
       throw e;
     }
   }
@@ -83,8 +84,9 @@ class PerfettoTraceManager {
       execSync(`${adbPath} pull "${DEVICE_TRACE_PATH}" "${localPath}"`);
 
       return localPath;
-    } catch (e: any) {
-      console.error(`[Perfetto] Stop failed: ${e.message}`);
+    } catch (e: unknown) {
+      const message = getErrorMessage(e);
+      console.error(`[Perfetto] Stop failed: ${message}`);
       throw e;
     }
   }

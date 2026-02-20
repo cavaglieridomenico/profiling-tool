@@ -1,10 +1,5 @@
 import { COMMANDS } from './commands';
-
-interface TapConfigItem {
-  x: number;
-  y: number;
-  msg: string;
-}
+import { TapConfigItem } from './types';
 
 export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_TOP_LX]: {

@@ -1,7 +1,4 @@
-export interface TestCaseStep {
-  command: string;
-  delay: number;
-}
+import { TestCaseStep } from './types';
 
 export const testCases: Record<string, TestCaseStep[]> = {
   perfetto_tc04: [

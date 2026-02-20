@@ -20,6 +20,24 @@ let activeOverrides: Record<string, string> = {};
 let isInterceptionEnabled = false;
 
 /**
+ * Safely extracts an error message from any error type.
+ */
+export function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+/**
+ * Validates required environment variables.
+ */
+export function validateEnv(requiredKeys: string[]): void {
+  const missing = requiredKeys.filter((key) => !process.env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+}
+
+/**
  * Sends a command to the local HTTP server.
  * @param command The command path (e.g., 'navigate:url?url=...')
  * @returns A promise that resolves when the command is complete.
@@ -156,10 +174,11 @@ export async function handleNavigation(
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Navigated to ${resolvedUrl}.\n`);
     console.log(`Navigated to ${resolvedUrl}.`);
-  } catch (err: any) {
-    console.error(`Navigation Error: ${err.message}`);
+  } catch (err: unknown) {
+    const message = getErrorMessage(err);
+    console.error(`Navigation Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end(`Navigation failed: ${err.message}\n`);
+    res.end(`Navigation failed: ${message}\n`);
   }
 }
 
@@ -269,10 +288,11 @@ export async function handleCleanState(
       `Mobile Clean State complete for ${origin}: Storage wiped, Tab recreated, Cache disabled, bg tabs closed, GC executed.\n`
     );
     console.log('Mobile Clean State complete.');
-  } catch (err: any) {
-    console.error(`Clean State Error: ${err.message}`);
+  } catch (err: unknown) {
+    const message = getErrorMessage(err);
+    console.error(`Clean State Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end(`Clean State failed: ${err.message}\n`);
+    res.end(`Clean State failed: ${message}\n`);
   }
 }
 
@@ -349,10 +369,11 @@ export async function handleConfigOverrides(
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Override active for ${targetUrl}\n`);
-  } catch (err: any) {
-    console.error(`Config Overrides Error: ${err.message}`);
+  } catch (err: unknown) {
+    const message = getErrorMessage(err);
+    console.error(`Config Overrides Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end(`Config Overrides failed: ${err.message}\n`);
+    res.end(`Config Overrides failed: ${message}\n`);
   }
 }
 

@@ -3,11 +3,12 @@ import dotenv from 'dotenv';
 import http, { IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
 import { Page, Browser } from 'puppeteer';
-import { handleSwipe, handleTap, sendResponse } from './utils';
+import { handleSwipe, handleTap, sendResponse, getErrorMessage } from './utils';
 import { TAP_CONFIG } from './tapConfig';
 import { routeHandlers } from './routes';
 import { getTargetPage } from './page';
 import { SWIPE_CONFIG } from './swipeConfig';
+import { CommandValue } from './commands';
 
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
@@ -34,14 +35,14 @@ export function startCommandServer(
         try {
           activePage = await getTargetPage(browser, '');
           console.log('Recovered with new active page.');
-        } catch (error: any) {
-          console.error(`Failed to recover page: ${error.message}`);
+        } catch (error: unknown) {
+          console.error(`Failed to recover page: ${getErrorMessage(error)}`);
           sendResponse(res, 500, 'Browser page is closed and recovery failed.');
           return;
         }
       }
 
-      const handler = routeHandlers[pathname];
+      const handler = routeHandlers[pathname as CommandValue];
 
       if (handler) {
         await handler(req, res, activePage, requestUrl, mode);

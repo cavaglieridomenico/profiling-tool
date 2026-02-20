@@ -1,13 +1,5 @@
 import { COMMANDS } from './commands';
-
-interface SwipeConfigItem {
-  startX: number;
-  startY: number;
-  endX: number;
-  endY: number;
-  durationMs: number;
-  msg: string;
-}
+import { SwipeConfigItem } from './types';
 
 const limitLxPoint = 300;
 const limitRxPoint = 950;

@@ -1,6 +1,7 @@
 import puppeteer, { Browser } from 'puppeteer';
 import http from 'http';
 import path from 'path';
+import { getErrorMessage } from './utils';
 
 // Function to determine the path to the adb executable
 export const getAdbPath = (): string => {
@@ -34,19 +35,20 @@ function getMobileWebSocketEndpoint(): Promise<string> {
         res.on('data', (chunk) => {
           data += chunk;
         });
-        res.on('end', () => {
-          try {
-            const version = JSON.parse(data);
-            resolve(version.webSocketDebuggerUrl);
-          } catch (e) {
-            reject(e);
-          }
-        });
+                  res.on('end', () => {
+                  try {
+                    const version = JSON.parse(data);
+                    resolve(version.webSocketDebuggerUrl);
+                  } catch (e: unknown) {
+                    reject(new Error(`Failed to parse WebSocket info: ${getErrorMessage(e)}`));
+                  }
+                });
+        
       })
-      .on('error', (err) => {
+      .on('error', (err: unknown) => {
         reject(
           new Error(
-            `Cannot connect to the device. Please check if the device is connected and the port forwarding is configured correctly. Details: ${err.message}`
+            `Cannot connect to the device. Please check if the device is connected and the port forwarding is configured correctly. Details: ${getErrorMessage(err)}`
           )
         );
       });

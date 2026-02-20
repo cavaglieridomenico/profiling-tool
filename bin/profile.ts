@@ -1,6 +1,6 @@
 import { testCases } from '../src/testCases';
 import { ensureDeviceIsCool } from '../src/thermal';
-import { sendCommand } from '../src/utils';
+import { sendCommand, getErrorMessage } from '../src/utils';
 
 function sleep(ms: number): Promise<void> {
   if (ms === 0) return Promise.resolve();
@@ -35,8 +35,11 @@ async function runTestCase(name: string, traceName?: string) {
       }
     }
     console.log(`Test case "${name}" completed successfully.`);
-  } catch (error: any) {
-    console.error(`An error occurred during test case "${name}":`, error.message || error);
+  } catch (error: unknown) {
+    console.error(
+      `An error occurred during test case "${name}":`,
+      getErrorMessage(error)
+    );
     process.exit(1);
   }
 }
