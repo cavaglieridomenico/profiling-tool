@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.10.0
+
+### Added
+
+- Input swipe logic
+- New test case profiles
+- New Puppeteer version
+
 # 1.9.0
 
 ### Added
