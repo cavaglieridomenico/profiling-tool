@@ -1,10 +1,11 @@
 import { execSync } from 'child_process';
+import { getErrorMessage } from '../src/utils';
 
 // Configuration
 const ADB_PORT = 9222;
 const DEVTOOLS_SOCKET = 'localabstract:chrome_devtools_remote';
 
-function standardConnection() {
+export function standardConnection() {
   console.log('🔌 STARTING STANDARD ADB CONNECTION...');
 
   try {
@@ -68,18 +69,25 @@ function standardConnection() {
         '❌ Verification Failed: The port forwarding rule does not appear in the active list.'
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('\n💥 CONNECTION FAILED 💥');
-    console.error(`Reason: ${error.message}`);
+    const msg = getErrorMessage(error);
+    console.error(`Reason: ${msg}`);
 
     // If it's a specific ADB execution error, show stderr if available
-    if (error.stderr) {
-      console.error(`ADB Output: ${error.stderr.toString()}`);
+    if ((error as any).stderr) {
+      console.error(`ADB Output: ${(error as any).stderr.toString()}`);
     }
 
-    process.exit(1);
+    throw error;
   }
 }
 
 // Execute
-standardConnection();
+if (require.main === module) {
+  try {
+    standardConnection();
+  } catch {
+    process.exit(1);
+  }
+}

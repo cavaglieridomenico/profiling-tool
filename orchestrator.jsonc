@@ -1,0 +1,23 @@
+{
+  "runs": 3,
+  "setup": {
+    "connect": true,
+    "checkThermal": true
+  },
+  "timeline": [
+    {
+      "targetUrl": "https://www.google.com",
+      "setupCommands": [
+        "/input:tap-top-center"
+      ],
+      "caseName": "perfetto_tc04"
+    },
+    {
+      "targetUrl": "https://www.bing.com",
+      "setupCommands": [
+        "/input:tap-bottom-rx"
+      ],
+      "caseName": "vmmv_tc01__tc04"
+    }
+  ]
+}

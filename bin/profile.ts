@@ -7,16 +7,15 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function runTestCase(name: string, traceName?: string) {
+export async function runTestCase(name: string, traceName?: string) {
   const steps = testCases[name];
   if (!steps) {
-    console.error(`Test case "${name}" not found.`);
-    console.log('Available test cases:', Object.keys(testCases).join(', '));
-    process.exit(1);
+    throw new Error(`Test case "${name}" not found. Available: ${Object.keys(testCases).join(', ')}`);
   }
 
   console.log(`Running test case: ${name}`);
   try {
+    // Note: Orchestrator might handle cooling separately, but this is safe to keep as redundant check
     await ensureDeviceIsCool();
 
     for (const step of steps) {
@@ -36,22 +35,22 @@ async function runTestCase(name: string, traceName?: string) {
     }
     console.log(`Test case "${name}" completed successfully.`);
   } catch (error: unknown) {
-    console.error(
-      `An error occurred during test case "${name}":`,
-      getErrorMessage(error)
-    );
-    process.exit(1);
+    const msg = getErrorMessage(error);
+    console.error(`An error occurred during test case "${name}":`, msg);
+    throw new Error(msg); // Rethrow for orchestrator handling
   }
 }
 
-const testCaseName = process.argv[2];
-const traceName = process.argv[3];
+if (require.main === module) {
+  const testCaseName = process.argv[2];
+  const traceName = process.argv[3];
 
-if (!testCaseName) {
-  console.error('Please provide a test case name to run.');
-  console.log('Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name]');
-  console.log('Available test cases:', Object.keys(testCases).join(', '));
-  process.exit(1);
+  if (!testCaseName) {
+    console.error('Please provide a test case name to run.');
+    console.log('Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name]');
+    console.log('Available test cases:', Object.keys(testCases).join(', '));
+    process.exit(1);
+  }
+
+  runTestCase(testCaseName, traceName).catch(() => process.exit(1));
 }
-
-runTestCase(testCaseName, traceName);
