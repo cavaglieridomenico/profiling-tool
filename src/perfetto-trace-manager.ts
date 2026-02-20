@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { getAdbPath } from './browser';
 import { getNextTraceNumber } from './utils';
+import { TRACES_OUTPUT_DIR } from './config/constants';
 
 const DEVICE_CONFIG_PATH = '/data/local/tmp/trace_config.pbtxt';
 const DEVICE_TRACE_PATH = '/data/misc/perfetto-traces/trace.pftrace';
@@ -12,7 +13,6 @@ const LOCAL_CONFIG = path.resolve(
   process.cwd(),
   'src/perfetto-configs/trace_config.pbtxt'
 );
-const PERFETTO_OUTPUT_DIR = path.resolve(process.cwd(), 'perfetto-output');
 
 class PerfettoTraceManager {
   private traceCounter: number;
@@ -34,15 +34,15 @@ class PerfettoTraceManager {
     this.traceName = name || 'trace';
 
     // Ensure output directory exists before we start
-    if (!fs.existsSync(PERFETTO_OUTPUT_DIR)) {
-      fs.mkdirSync(PERFETTO_OUTPUT_DIR, { recursive: true });
+    if (!fs.existsSync(TRACES_OUTPUT_DIR)) {
+      fs.mkdirSync(TRACES_OUTPUT_DIR, { recursive: true });
     }
 
     // 2. Calculate the counter immediately
     // Note: The file won't exist on disk until stop() is called, but that's fine for sequential tests.
     this.traceCounter = getNextTraceNumber(
       this.traceName,
-      PERFETTO_OUTPUT_DIR,
+      TRACES_OUTPUT_DIR,
       'pftrace'
     );
 
@@ -77,7 +77,7 @@ class PerfettoTraceManager {
 
       // 3. Use the State defined at start to name the file
       const filename = `${this.traceName}-${this.traceCounter}.pftrace`;
-      const localPath = path.join(PERFETTO_OUTPUT_DIR, filename);
+      const localPath = path.join(TRACES_OUTPUT_DIR, filename);
 
       console.log(`[Perfetto] Pulling trace to ${localPath}...`);
       execSync(`${adbPath} pull "${DEVICE_TRACE_PATH}" "${localPath}"`);

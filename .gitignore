@@ -8,4 +8,4 @@ node_modules/
 .env.rtrmv
 /overrides
 dist/
-perfetto-output/
+traces-output/
