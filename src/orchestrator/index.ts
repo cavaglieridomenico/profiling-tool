@@ -105,16 +105,23 @@ export class Orchestrator {
   }
 
   private async startServer(): Promise<void> {
-    console.log('🖥️  Starting Server (npm start)...');
+    const puppeteerEnv = this.config.setup.puppeteerEnv;
+    console.log(`🖥️  Starting Server (npm start) with PUPPETEER_ENV=${puppeteerEnv || 'default'}...`);
     
     // We use 'npm start' which runs 'ts-node index.ts'
     // This allows us to rely on the project's standard start script.
     const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
     
+    const env: NodeJS.ProcessEnv = { 
+        ...process.env,
+        // If provided in config, override PUPPETEER_ENV
+        ...(puppeteerEnv ? { PUPPETEER_ENV: puppeteerEnv } : {})
+    };
+
     this.serverProcess = spawn(npmCmd, ['start', 'mobile'], {
       cwd: process.cwd(),
       stdio: 'pipe', // We want to capture output to detect readiness
-      env: { ...process.env }, // Inherit env
+      env,
       detached: false
     });
 

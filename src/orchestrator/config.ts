@@ -10,6 +10,11 @@ export interface OrchestratorConfig {
   setup: {
     connect?: boolean;
     checkThermal?: boolean;
+    /**
+     * Optional environment name (e.g. 'vmcore', 'pdwuat').
+     * Corresponds to PUPPETEER_ENV variable.
+     */
+    puppeteerEnv?: string;
   };
 }
 
