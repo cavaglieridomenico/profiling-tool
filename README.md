@@ -145,6 +145,54 @@ npx ts-node bin/profile.ts vmmv_tc01__tc04 my-custom-trace
 
 > **Tip:** Refer to the `scripts` section in `package.json` for a complete list of all available test case commands (e.g., `npm run profile:vmmv-tc01__tc04 my-custom-trace`).
 
+## Orchestrate (Automated Multi-Run Profiling)
+
+The Orchestrator allows you to automate a series of profiling runs across different URLs and test cases. It manages the entire lifecycle, including starting the command server, device cleaning, thermal checks, and executing predefined test cases.
+
+### Running the Orchestrator
+
+To run an orchestration sequence, use:
+
+```bash
+npm run orchestrate <config_filename>
+```
+
+Replace `<config_filename>` with the name of a `.jsonc` file located in the `orchestrator-inputs/` directory (e.g., `npm run orchestrate orchestrator.jsonc`).
+
+### Configuration (`.jsonc`)
+
+Orchestration is configured using JSON files with comments. Key properties include:
+
+- **`runs`**: Number of times to repeat the entire timeline.
+- **`setup`**: Global settings:
+  - `connect`: (boolean) Whether to automatically establish the ADB connection.
+  - `checkThermal`: (boolean) Whether to wait for the device to cool down between runs.
+  - `puppeteerEnv`: (string) Environment to use (corresponds to `PUPPETEER_ENV` and `.env.<env>` files).
+- **`timeline`**: A list of cases to execute:
+  - `targetUrl`: The URL to profile (supports URL aliases defined in `src/urls.ts`).
+  - `setupCommands`: (optional) A list of command endpoints to call before starting the trace (e.g., `/input:tap-top-center`).
+  - `caseName`: The name of the test case to execute (must exist in `src/testCases.ts`).
+
+Example `orchestrator.jsonc`:
+
+```jsonc
+{
+  "runs": 3,
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "vmcore"
+  },
+  "timeline": [
+    {
+      "targetUrl": "VMMV_TV20",
+      "setupCommands": ["/input:tap-top-center"],
+      "caseName": "perfetto_tc04"
+    }
+  ]
+}
+```
+
 ## Enabling Memory Profiling on Android device
 
 For mobile devices, you need to manually enable memory profiling in Chrome before you can capture a trace with heap data. Here are the steps:
