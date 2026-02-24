@@ -105,7 +105,7 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_RTRMV_ZOOM]: {
     x: 850,
     y: 500,
-    msg: 'Tapped on rtr-zoom-sgh.',
+    msg: 'Tapped on rtr-zoom.',
   },
   [COMMANDS.INPUT_TAP_RTRMV_START_SGH]: {
     x: 620,
