@@ -69,7 +69,7 @@ export class Orchestrator {
         for (const item of this.config.timeline) {
           const rawTargetUrl = item.targetUrl;
           const targetUrl = this.resolveValue(rawTargetUrl);
-          const setupCommands = (item.setupCommands || []).map(cmd => this.resolveValue(cmd));
+          const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
           const caseName = this.resolveValue(item.caseName);
 
           console.log(`\n👉 Case: ${caseName} | URL: ${targetUrl}`);
@@ -116,7 +116,7 @@ export class Orchestrator {
           try {
             await runTestCase(caseName, traceName);
           } catch (e: unknown) {
-             console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
+            console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
           }
 
           await sleep(2000);
@@ -124,16 +124,6 @@ export class Orchestrator {
       }
 
       console.log('\n✅ All runs completed.');
-
-    } catch (e: unknown) {
-      console.error(`\n💥 Orchestration Failed: ${getErrorMessage(e)}`);
-    } finally {
-      this.stopServer();
-    }
-  }
-
-      console.log('\n✅ All runs completed.');
-
     } catch (e: unknown) {
       console.error(`\n💥 Orchestration Failed: ${getErrorMessage(e)}`);
     } finally {
@@ -143,51 +133,53 @@ export class Orchestrator {
 
   private async startServer(): Promise<void> {
     const puppeteerEnv = this.config.setup.puppeteerEnv;
-    console.log(`🖥️  Starting Server (npm start) with PUPPETEER_ENV=${puppeteerEnv || 'default'}...`);
-    
+    console.log(
+      `🖥️  Starting Server (npm start) with PUPPETEER_ENV=${puppeteerEnv || 'default'}...`
+    );
+
     // We use 'npm start' which runs 'ts-node index.ts'
     // This allows us to rely on the project's standard start script.
     const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-    
-    const env: NodeJS.ProcessEnv = { 
-        ...process.env,
-        // If provided in config, override PUPPETEER_ENV
-        ...(puppeteerEnv ? { PUPPETEER_ENV: puppeteerEnv } : {})
+
+    const env: NodeJS.ProcessEnv = {
+      ...process.env,
+      // If provided in config, override PUPPETEER_ENV
+      ...(puppeteerEnv ? { PUPPETEER_ENV: puppeteerEnv } : {}),
     };
 
     this.serverProcess = spawn(npmCmd, ['start', 'mobile'], {
       cwd: process.cwd(),
       stdio: 'pipe', // We want to capture output to detect readiness
       env,
-      detached: false
+      detached: false,
     });
 
     if (this.serverProcess.stdout) {
-        this.serverProcess.stdout.on('data', (data) => {
-            // Uncomment to see server logs
-            // process.stdout.write(`[Server] ${data}`);
-        });
+      this.serverProcess.stdout.on('data', (data) => {
+        // Uncomment to see server logs
+        // process.stdout.write(`[Server] ${data}`);
+      });
     }
-    
+
     if (this.serverProcess.stderr) {
-       this.serverProcess.stderr.on('data', (data) => {
-         process.stderr.write(`[Server Error] ${data}`);
-       });
+      this.serverProcess.stderr.on('data', (data) => {
+        process.stderr.write(`[Server Error] ${data}`);
+      });
     }
 
     // Wait for the server to be responsive
     console.log('⏳ Waiting for server to be ready on port 8080...');
     const maxRetries = 30; // 30 seconds approx
     for (let i = 0; i < maxRetries; i++) {
-       try {
-         await sendCommand('device:get-temperature'); // A simple safe command
-         console.log('✅ Server is ready.');
-         return;
-       } catch (e) {
-         await sleep(1000);
-       }
+      try {
+        await sendCommand('device:get-temperature'); // A simple safe command
+        console.log('✅ Server is ready.');
+        return;
+      } catch (e) {
+        await sleep(1000);
+      }
     }
-    
+
     this.stopServer();
     throw new Error('Server failed to start within timeout.');
   }
@@ -198,9 +190,11 @@ export class Orchestrator {
       // On Windows, tree-kill might be needed for spawned npm processes,
       // but 'taskkill' is a built-in alternative.
       if (process.platform === 'win32' && this.serverProcess.pid) {
-          try {
-             spawn('taskkill', ['/pid', this.serverProcess.pid.toString(), '/f', '/t']);
-          } catch (e) { /* ignore */ }
+        try {
+          spawn('taskkill', ['/pid', this.serverProcess.pid.toString(), '/f', '/t']);
+        } catch (e) {
+          /* ignore */
+        }
       } else {
         this.serverProcess.kill();
       }
