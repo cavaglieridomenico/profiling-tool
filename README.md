@@ -149,6 +149,16 @@ npx ts-node bin/profile.ts vmmv_tc01__tc04 my-custom-trace
 
 The Orchestrator allows you to automate a series of profiling runs across different URLs and test cases. It manages the entire lifecycle, including starting the command server, device cleaning, thermal checks, and executing predefined test cases.
 
+### Prerequisites for Orchestration
+
+To ensure the Orchestrator can interact with the device without interruptions:
+
+1.  **Physical Connection:** The device must be connected via a reliable USB cable.
+2.  **Stay Awake:** Ensure the screen is **unlocked** and set to "Never sleep" while charging (found in Developer Options as "Stay awake").
+3.  **Chrome in Foreground:** Chrome must be the **active application** on the device's screen before starting the script.
+4.  **ADB Authorized:** Ensure the "Always allow from this computer" option was selected when the USB debugging prompt appeared.
+5.  **Thermal State:** While the orchestrator can wait for cooldown, starting with a cool device is recommended for the first run.
+
 ### Running the Orchestrator
 
 To run an orchestration sequence, use:
