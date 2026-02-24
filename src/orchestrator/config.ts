@@ -15,6 +15,10 @@ export interface OrchestratorConfig {
      * Corresponds to PUPPETEER_ENV variable.
      */
     puppeteerEnv?: string;
+    /**
+     * If true, the tool will exit if a newer Puppeteer version is available.
+     */
+    strictVersionCheck?: boolean;
   };
 }
 

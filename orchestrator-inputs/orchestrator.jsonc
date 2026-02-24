@@ -3,7 +3,8 @@
   "setup": {
     "connect": true,
     "checkThermal": true,
-    "puppeteerEnv": "vmcore" // Matches PUPPETEER_ENV for .env.vmcore
+    "puppeteerEnv": "vmcore", // Matches PUPPETEER_ENV for .env.vmcore
+    "strictVersionCheck": true
   },
   "timeline": [
     {

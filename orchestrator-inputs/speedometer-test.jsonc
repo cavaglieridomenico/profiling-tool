@@ -8,14 +8,9 @@
   },
   "timeline": [
     {
+      "targetUrl": "urls.SPEEDOMETER",
       "setupCommands": [
-        "COMMANDS.DEVICE_CLOSE_ALL_TABS"
-      ]
-    },
-    {
-      "targetUrl": "urls.SPEED_TEST",
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_BOTTOM_RX"
+        "COMMANDS.INPUT_TAP_CENTER_CENTER"
       ]
       //"caseName": "testCases.perfetto_tc04"
     }

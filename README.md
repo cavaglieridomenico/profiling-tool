@@ -188,6 +188,34 @@ Orchestration is configured using JSON files with comments. Key properties inclu
   - `connect`: (boolean) Whether to automatically establish the ADB connection.
   - `checkThermal`: (boolean) Whether to wait for the device to cool down between runs.
   - `puppeteerEnv`: (string) Environment to use (corresponds to `PUPPETEER_ENV` and `.env.<env>` files).
+  - `strictVersionCheck`: (boolean) If set to `true`, the tool will exit if a newer version of Puppeteer is available. This ensures protocol stability.
+
+### Setting Strict Mode Globally
+
+You can also enforce `strictVersionCheck` for **all commands** (including `npm start`) by setting a global environment variable.
+
+#### Windows (PowerShell)
+```powershell
+$env:STRICT_VERSION_CHECK="true"
+# To make it persistent for the session
+```
+
+#### Windows (Command Prompt)
+```cmd
+set STRICT_VERSION_CHECK=true
+```
+
+#### macOS / Linux (Bash/Zsh)
+```bash
+export STRICT_VERSION_CHECK=true
+```
+
+#### Using a `.env` file
+Alternatively, add this line to your `.env` or `.env.<environment>` file:
+```env
+STRICT_VERSION_CHECK=true
+```
+
 - **`timeline`**: A list of cases to execute. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
   - `targetUrl`: The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`).
   - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.

@@ -9,14 +9,12 @@ import { getErrorMessage } from './src/utils';
 
   try {
     // 1. Unified Setup Flow
-    // We check updates here (non-blocking) and do NOT do the ADB connection here 
-    // because Orchestrator might have done it already OR it's done within initialization.
-    // However, if we run it directly (npm start), we MUST do the ADB connection.
     const browserInstance = await performApplicationSetup({
       mode,
       checkUpdates: true,
       checkThermal: true, // Let's enforce thermal check at startup
       skipAdb: false,     // Perform ADB forwarding in index.ts for direct runs
+      strictVersionCheck: process.env.STRICT_VERSION_CHECK === 'true',
     });
 
     // 2. Target Identification

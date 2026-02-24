@@ -10,6 +10,7 @@ export interface SetupOptions {
   checkUpdates?: boolean;
   checkThermal?: boolean;
   skipAdb?: boolean;
+  strictVersionCheck?: boolean;
 }
 
 /**
@@ -17,13 +18,16 @@ export interface SetupOptions {
  * Handles env validation, version checks, ADB connection, and thermal baseline.
  */
 export async function performApplicationSetup(options: SetupOptions): Promise<Browser> {
-  const { mode, checkUpdates = true, checkThermal = false, skipAdb = false } = options;
+  const { mode, checkUpdates = true, checkThermal = false, skipAdb = false, strictVersionCheck = false } = options;
 
   console.log(`🚀 Initializing Profiling Tool in ${mode} mode...`);
 
-  // 1. Check for Puppeteer updates (non-blocking)
+  // 1. Check for Puppeteer updates
   if (checkUpdates) {
-    checkForPuppeteerUpdates();
+    const updateAvailable = await checkForPuppeteerUpdates();
+    if (updateAvailable && strictVersionCheck) {
+      throw new Error('A mandatory Puppeteer update is available. Please update your dependencies to continue (Strict Mode enabled).');
+    }
   }
 
   // 2. Validate Environment Variables

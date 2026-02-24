@@ -2,7 +2,7 @@ import https from 'https';
 import fs from 'fs';
 import path from 'path';
 
-export async function checkForPuppeteerUpdates(): Promise<void> {
+export async function checkForPuppeteerUpdates(): Promise<boolean> {
   try {
     const packageJsonPath = path.resolve(process.cwd(), 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
@@ -12,7 +12,7 @@ export async function checkForPuppeteerUpdates(): Promise<void> {
         ? 'puppeteer-core'
         : null;
 
-    if (!packageName) return;
+    if (!packageName) return false;
 
     const currentVersion = packageJson.dependencies[packageName].replace(
       /[\^~]/g,
@@ -49,17 +49,21 @@ export async function checkForPuppeteerUpdates(): Promise<void> {
           '\x1b[33m%s\x1b[0m',
           '------------------------------------------------------------'
         );
+        return true;
       } else {
         console.log(
           '\x1b[32m%s\x1b[0m',
           `✅ You are using the latest version of ${packageName} (${currentVersion}).`
         );
+        return false;
       }
     } else {
       console.log(`Could not retrieve the latest ${packageName} version.`);
+      return false;
     }
   } catch (error) {
     // Silently fail to not interrupt the main process
+    return false;
   }
 }
 

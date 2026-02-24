@@ -56,6 +56,7 @@ export class Orchestrator {
             checkUpdates: true,
             checkThermal: this.config.setup.checkThermal !== false,
             skipAdb: false, // Ensure ADB forwarding is ready
+            strictVersionCheck: this.config.setup.strictVersionCheck === true,
           });
           // Close the pre-check browser connection as we'll spawn the server process next
           await browserPreCheck.disconnect();
