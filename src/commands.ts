@@ -10,6 +10,7 @@ export const COMMANDS = {
   // Maintenance
   DEVICE_GET_TEMPERATURE: '/device:get-temperature',
   DEVICE_CLEAN_STATE: '/device:clean-state',
+  DEVICE_CLOSE_ALL_TABS: '/device:close-all-tabs',
   CONFIG_OVERRIDES: '/config:overrides',
 
   // Navigation

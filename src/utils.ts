@@ -296,6 +296,47 @@ export async function handleCleanState(
   }
 }
 
+export async function handleCloseAllTabs(
+  page: Page,
+  res: ServerResponse
+): Promise<void> {
+  if (!page) {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('No page available to close.\n');
+    return;
+  }
+
+  try {
+    const browser = page.browser();
+    const pages = await browser.pages();
+    const closedCount = pages.length;
+
+    console.log(`Closing ${closedCount} open tabs...`);
+
+    // Create a new fresh page first so the browser doesn't close
+    const pristinePage = await browser.newPage();
+    await pristinePage.goto('about:blank');
+
+    // Close all old pages
+    for (const p of pages) {
+      try {
+        await p.close();
+      } catch (e) {
+        console.warn('Failed to close a tab during bulk close:', e);
+      }
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(`Closed all ${closedCount} tabs. Fresh tab opened.\n`);
+    console.log(`Successfully closed all ${closedCount} tabs.`);
+  } catch (err: unknown) {
+    const message = getErrorMessage(err);
+    console.error(`Close All Tabs Error: ${message}`);
+    res.writeHead(500, { 'Content-Type': 'text/plain' });
+    res.end(`Close all tabs failed: ${message}\n`);
+  }
+}
+
 export async function handleConfigOverrides(
   page: Page,
   targetUrl: string | null,

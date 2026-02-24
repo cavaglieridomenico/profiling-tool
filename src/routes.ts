@@ -7,6 +7,7 @@ import perfettoTraceManager from './perfetto-trace-manager';
 import {
   handleNavigation,
   handleCleanState,
+  handleCloseAllTabs,
   handleConfigOverrides,
   sendResponse,
   getErrorMessage,
@@ -66,6 +67,9 @@ export const routeHandlers: RouteHandlers = {
     } else {
       sendResponse(res, 400, 'Mode is required for clean state.');
     }
+  },
+  [COMMANDS.DEVICE_CLOSE_ALL_TABS]: async (req, res, page) => {
+    await handleCloseAllTabs(page, res);
   },
   [COMMANDS.CONFIG_OVERRIDES]: async (req, res, page, url) => {
     const target = url.searchParams.get('target');

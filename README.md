@@ -86,6 +86,16 @@ command example: `config:overrides?target=vmp-ui-496.js&replacement=./overrides/
 
 <br/>
 
+#### Device Close All Tabs
+
+To close all open tabs on the Android device and open a single fresh `about:blank` page:
+
+```bash
+npm run device:close-all-tabs
+```
+
+<br/>
+
 #### Device Clean Process
 
 Performing this operation before each profiling iteration guarantees an accurate, non-inflated memory baseline by neutralizing the application environment without destroying the tester's personal Chrome data on the physical device.
