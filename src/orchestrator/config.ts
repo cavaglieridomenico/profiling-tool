@@ -15,7 +15,6 @@ export interface TimelineItem {
 }
 
 export interface OrchestratorConfig {
-  runs: number;
   timeline: TimelineItem[];
   setup: {
     connect?: boolean;

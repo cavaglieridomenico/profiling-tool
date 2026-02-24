@@ -184,7 +184,6 @@ Replace `<config_filename>` with the name of a `.jsonc` file located in the `orc
 
 Orchestration is configured using JSON files with comments. Key properties include:
 
-- **`runs`**: Number of times to repeat the entire timeline.
 - **`setup`**: Global settings:
   - `connect`: (boolean) Whether to automatically establish the ADB connection.
   - `checkThermal`: (boolean) Whether to wait for the device to cool down between runs.
@@ -217,7 +216,7 @@ Alternatively, add this line to your `.env` or `.env.<environment>` file:
 STRICT_VERSION_CHECK=true
 ```
 
-- **`timeline`**: A list of cases to execute. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
+- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
   - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page** without cleaning state or navigating.
   - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0` (no more than 0 network connections for 500ms), or `networkidle2` (no more than 2 network connections for 500ms). Only applicable if `targetUrl` is provided.
   - `postNavigationDelay`: (optional) Number of milliseconds to wait after the navigation event (if any) or as a general stabilization pause before proceeding to setup commands.
@@ -228,11 +227,11 @@ Example `orchestrator.jsonc`:
 
 ```jsonc
 {
-  "runs": 3,
   "setup": {
     "connect": true,
     "checkThermal": true,
-    "puppeteerEnv": "vmcore"
+    "puppeteerEnv": "vmcore",
+    "strictVersionCheck": true
   },
   "timeline": [
     {
