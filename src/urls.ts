@@ -31,6 +31,7 @@ export const urls: Record<string, string> = {
   RTRMV_BYPASS: 'https://rtrmv.essilorluxottica.com/luxotticabypass',
   RTRMV_TV02_01: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.3/index.html',
   RTRMV_TV03: 'https://www.sunglasshut.com/us/ray-ban/rb2132-8056262320594',
+  RTRMV_TV04: 'https://rtrmv.essilorluxottica.com/ui/v/4.1.1/index.html',
   RTRCORE_TV03_01: 'https://www.sunglasshut.com/us',
   SPEEDOMETER: 'https://browserbench.org/Speedometer3.1/',
   SPEED_TEST:
