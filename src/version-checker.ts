@@ -23,10 +23,10 @@ export async function checkForPuppeteerUpdates(): Promise<void> {
     const latestVersion = await getLatestPuppeteerVersion(packageName);
 
     if (latestVersion) {
-      console.log(
-        `The latest ${packageName} version available is ${latestVersion}.`
-      );
       if (isNewer(latestVersion, currentVersion)) {
+        console.log(
+          `The latest ${packageName} version available is ${latestVersion}.`
+        );
         console.log(
           '\x1b[33m%s\x1b[0m',
           '------------------------------------------------------------'
@@ -48,6 +48,11 @@ export async function checkForPuppeteerUpdates(): Promise<void> {
         console.log(
           '\x1b[33m%s\x1b[0m',
           '------------------------------------------------------------'
+        );
+      } else {
+        console.log(
+          '\x1b[32m%s\x1b[0m',
+          `✅ You are using the latest version of ${packageName} (${currentVersion}).`
         );
       }
     } else {
