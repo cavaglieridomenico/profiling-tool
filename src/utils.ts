@@ -60,6 +60,20 @@ export function sendCommand(command: string): Promise<string> {
   });
 }
 
+/**
+ * Triggers a device clean state for a specific URL.
+ * Centralized helper for both CLI and Orchestrator.
+ */
+export async function runCleanDevice(
+  targetUrl: string,
+  mode: string = 'mobile'
+): Promise<string> {
+  const cleanCmd = `device:clean-state?url=${encodeURIComponent(
+    targetUrl
+  )}&mode=${mode}`;
+  return await sendCommand(cleanCmd);
+}
+
 export function getNextTraceNumber(
   name: string,
   dir: string,

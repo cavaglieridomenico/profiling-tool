@@ -1,4 +1,4 @@
-import { resolveUrl, sendCommand, getErrorMessage } from '../src/utils';
+import { runCleanDevice, getErrorMessage } from '../src/utils';
 
 const urlArg = process.argv[2];
 
@@ -7,13 +7,13 @@ if (!urlArg) {
   process.exit(1);
 }
 
-const url = resolveUrl(urlArg);
-const command = `device:clean-state?url=${encodeURIComponent(url)}`;
+console.log(`🧹 Cleaning device state for ${urlArg}...`);
 
-sendCommand(command)
+runCleanDevice(urlArg)
   .then((data) => {
-    console.log(`Response: ${data}`);
+    console.log(`✅ ${data}`);
   })
   .catch((err: unknown) => {
-    console.error(`Error sending clean state command:`, getErrorMessage(err));
+    console.error(`❌ Error cleaning state:`, getErrorMessage(err));
+    process.exit(1);
   });

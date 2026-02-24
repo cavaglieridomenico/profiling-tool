@@ -2,7 +2,7 @@ import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { ensureDeviceIsCool } from '../thermal';
-import { sendCommand, getErrorMessage } from '../utils';
+import { sendCommand, getErrorMessage, runCleanDevice } from '../utils';
 import { OrchestratorConfig } from './config';
 import { runTestCase } from '../../bin/profile';
 import { urls } from '../urls';
@@ -99,9 +99,9 @@ export class Orchestrator {
           // B. Clean State (Only if targetUrl is provided)
           if (targetUrl) {
             console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
-            const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
             try {
-              await sendCommand(cleanCmd);
+              const cleanData = await runCleanDevice(targetUrl, 'mobile');
+              console.log(`   ${cleanData}`);
             } catch (e: unknown) {
               console.error(`   Clean failed: ${getErrorMessage(e)}`);
             }
