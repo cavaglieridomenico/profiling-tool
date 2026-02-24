@@ -6,6 +6,9 @@ import { sendCommand, getErrorMessage } from '../utils';
 import { OrchestratorConfig } from './config';
 import { standardConnection } from '../../bin/connect';
 import { runTestCase } from '../../bin/profile';
+import { urls } from '../urls';
+import { COMMANDS } from '../commands';
+import { testCases } from '../testCases';
 
 // Helper to wait
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -16,6 +19,27 @@ export class Orchestrator {
 
   constructor(config: OrchestratorConfig) {
     this.config = config;
+  }
+
+  private resolveValue(value: string): string {
+    if (!value) return value;
+
+    if (value.startsWith('urls.')) {
+      const key = value.substring(5);
+      return urls[key] || value;
+    }
+
+    if (value.startsWith('COMMANDS.')) {
+      const key = value.substring(9);
+      return (COMMANDS as any)[key] || value;
+    }
+
+    if (value.startsWith('testCases.')) {
+      const key = value.substring(10);
+      return testCases[key] ? key : value;
+    }
+
+    return value;
   }
 
   public async start(): Promise<void> {
@@ -43,7 +67,11 @@ export class Orchestrator {
         console.log(`\n--- 🏃 Run ${run}/${totalRuns} ---`);
 
         for (const item of this.config.timeline) {
-          const { targetUrl, setupCommands, caseName } = item;
+          const rawTargetUrl = item.targetUrl;
+          const targetUrl = this.resolveValue(rawTargetUrl);
+          const setupCommands = (item.setupCommands || []).map(cmd => this.resolveValue(cmd));
+          const caseName = this.resolveValue(item.caseName);
+
           console.log(`\n👉 Case: ${caseName} | URL: ${targetUrl}`);
 
           // A. Thermal Check
@@ -94,6 +122,15 @@ export class Orchestrator {
           await sleep(2000);
         }
       }
+
+      console.log('\n✅ All runs completed.');
+
+    } catch (e: unknown) {
+      console.error(`\n💥 Orchestration Failed: ${getErrorMessage(e)}`);
+    } finally {
+      this.stopServer();
+    }
+  }
 
       console.log('\n✅ All runs completed.');
 

@@ -168,10 +168,10 @@ Orchestration is configured using JSON files with comments. Key properties inclu
   - `connect`: (boolean) Whether to automatically establish the ADB connection.
   - `checkThermal`: (boolean) Whether to wait for the device to cool down between runs.
   - `puppeteerEnv`: (string) Environment to use (corresponds to `PUPPETEER_ENV` and `.env.<env>` files).
-- **`timeline`**: A list of cases to execute:
-  - `targetUrl`: The URL to profile (supports URL aliases defined in `src/urls.ts`).
-  - `setupCommands`: (optional) A list of command endpoints to call before starting the trace (e.g., `/input:tap-top-center`).
-  - `caseName`: The name of the test case to execute (must exist in `src/testCases.ts`).
+- **`timeline`**: A list of cases to execute. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
+  - `targetUrl`: The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`).
+  - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.
+  - `caseName`: The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`).
 
 Example `orchestrator.jsonc`:
 
@@ -185,9 +185,9 @@ Example `orchestrator.jsonc`:
   },
   "timeline": [
     {
-      "targetUrl": "VMMV_TV20",
-      "setupCommands": ["/input:tap-top-center"],
-      "caseName": "perfetto_tc04"
+      "targetUrl": "urls.VMMV_TV20",
+      "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
+      "caseName": "testCases.perfetto_tc04"
     }
   ]
 }

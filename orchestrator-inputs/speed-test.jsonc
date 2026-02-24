@@ -9,16 +9,16 @@
     {
       "targetUrl": "urls.SPEED_TEST",
       "setupCommands": [
-        "COMMANDS.INPUT_TAP_TOP_CENTER"
-      ],
-      "caseName": "testCases.perfetto_tc04"
-    },
-    {
-      "targetUrl": "urls.VMMV_TV20",
-      "setupCommands": [
         "COMMANDS.INPUT_TAP_BOTTOM_RX"
-      ],
-      "caseName": "testCases.vmmv_tc01__tc04"
+      ]
+      //"caseName": "testCases.perfetto_tc04"
     }
+    // {
+    //   "targetUrl": "urls.VMMV_TV20",
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_BOTTOM_RX"
+    //   ],
+    //   "caseName": "testCases.vmmv_tc01__tc04"
+    // }
   ]
 }
