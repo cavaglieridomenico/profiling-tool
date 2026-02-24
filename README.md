@@ -171,7 +171,7 @@ Orchestration is configured using JSON files with comments. Key properties inclu
 - **`timeline`**: A list of cases to execute. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
   - `targetUrl`: The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`).
   - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.
-  - `caseName`: The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`).
+  - `caseName`: (optional) The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`). If omitted, the orchestrator will complete the cleanup, navigation, and setup commands without recording a trace.
 
 Example `orchestrator.jsonc`:
 

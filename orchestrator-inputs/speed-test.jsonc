@@ -1,9 +1,9 @@
 {
-  "runs": 3,
+  "runs": 1,
   "setup": {
     "connect": true,
-    "checkThermal": true,
-    "puppeteerEnv": "vmcore" // Matches PUPPETEER_ENV for .env.vmcore
+    "checkThermal": false,
+    "puppeteerEnv": ""
   },
   "timeline": [
     {
@@ -13,12 +13,5 @@
       ]
       //"caseName": "testCases.perfetto_tc04"
     }
-    // {
-    //   "targetUrl": "urls.VMMV_TV20",
-    //   "setupCommands": [
-    //     "COMMANDS.INPUT_TAP_BOTTOM_RX"
-    //   ],
-    //   "caseName": "testCases.vmmv_tc01__tc04"
-    // }
   ]
 }

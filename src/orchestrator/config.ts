@@ -1,7 +1,7 @@
 export interface TimelineItem {
   targetUrl: string;
   setupCommands?: string[];
-  caseName: string;
+  caseName?: string;
 }
 
 export interface OrchestratorConfig {

@@ -66,62 +66,65 @@ export class Orchestrator {
       for (let run = 1; run <= totalRuns; run++) {
         console.log(`\n--- 🏃 Run ${run}/${totalRuns} ---`);
 
-        for (const item of this.config.timeline) {
-          const rawTargetUrl = item.targetUrl;
-          const targetUrl = this.resolveValue(rawTargetUrl);
-          const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
-          const caseName = this.resolveValue(item.caseName);
-
-          console.log(`\n👉 Case: ${caseName} | URL: ${targetUrl}`);
-
-          // A. Thermal Check
-          if (this.config.setup.checkThermal !== false) {
-            await ensureDeviceIsCool();
-          }
-
-          // B. Clean State
-          console.log(`🧹 [1/4] Cleaning device state for ${targetUrl}...`);
-          const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
-          try {
-            await sendCommand(cleanCmd);
-          } catch (e: unknown) {
-            console.error(`   Clean failed: ${getErrorMessage(e)}`);
-          }
-
-          // C. Navigate to target URL
-          console.log(`🌐 [2/4] Navigating to ${targetUrl}...`);
-          const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}`;
-          try {
-            await sendCommand(navCmd);
-          } catch (e: unknown) {
-            console.error(`   Navigation failed: ${getErrorMessage(e)}`);
-          }
-
-          // D. Execute Setup Commands
-          if (setupCommands && setupCommands.length > 0) {
-            console.log(`⚙️  [3/4] Executing ${setupCommands.length} setup commands...`);
-            for (let setupCmd of setupCommands) {
-              const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
-              try {
-                await sendCommand(sanitizedCmd);
-              } catch (e: unknown) {
-                console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
-              }
-            }
-          }
-
-          // E. Execute actual Profile Test Case
-          console.log(`🧪 [4/4] Executing test case: ${caseName}...`);
-          const traceName = `run${run}_${caseName}`;
-          try {
-            await runTestCase(caseName, traceName);
-          } catch (e: unknown) {
-            console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
-          }
-
-          await sleep(2000);
-        }
-      }
+                for (const item of this.config.timeline) {
+                  const rawTargetUrl = item.targetUrl;
+                  const targetUrl = this.resolveValue(rawTargetUrl);
+                  const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
+                  const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
+        
+                  console.log(`\n👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
+        
+                  // A. Thermal Check
+                  if (this.config.setup.checkThermal !== false) {
+                    await ensureDeviceIsCool();
+                  }
+        
+                  // B. Clean State
+                  console.log(`🧹 [1/4] Cleaning device state for ${targetUrl}...`);
+                  const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
+                  try {
+                    await sendCommand(cleanCmd);
+                  } catch (e: unknown) {
+                    console.error(`   Clean failed: ${getErrorMessage(e)}`);
+                  }
+        
+                  // C. Navigate to target URL
+                  console.log(`🌐 [2/4] Navigating to ${targetUrl}...`);
+                  const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}`;
+                  try {
+                    await sendCommand(navCmd);
+                  } catch (e: unknown) {
+                    console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+                  }
+        
+                  // D. Execute Setup Commands
+                  if (setupCommands && setupCommands.length > 0) {
+                    console.log(`⚙️  [3/4] Executing ${setupCommands.length} setup commands...`);
+                    for (let setupCmd of setupCommands) {
+                      const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
+                      try {
+                        await sendCommand(sanitizedCmd);
+                      } catch (e: unknown) {
+                        console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
+                      }
+                    }
+                  }
+        
+                  // E. Execute actual Profile Test Case
+                  if (caseName) {
+                    console.log(`🧪 [4/4] Executing test case: ${caseName}...`);
+                    const traceName = `run${run}_${caseName}`;
+                    try {
+                      await runTestCase(caseName, traceName);
+                    } catch (e: unknown) {
+                      console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
+                    }
+                  } else {
+                    console.log(`⏩ [4/4] No test case provided. Skipping profiling step.`);
+                  }
+        
+                  await sleep(2000);
+                }      }
 
       console.log('\n✅ All runs completed.');
     } catch (e: unknown) {
