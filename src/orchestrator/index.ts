@@ -152,6 +152,7 @@ export class Orchestrator {
       stdio: 'pipe', // We want to capture output to detect readiness
       env,
       detached: false,
+      shell: true,
     });
 
     if (this.serverProcess.stdout) {
