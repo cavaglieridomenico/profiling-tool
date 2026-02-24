@@ -82,6 +82,8 @@ export class Orchestrator {
           const targetUrl = this.resolveValue(rawTargetUrl);
           const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
           const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
+          const waitUntil = item.waitUntil || 'load';
+          const postNavigationDelay = item.postNavigationDelay || 0;
 
           console.log(`\n👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
 
@@ -91,7 +93,7 @@ export class Orchestrator {
           }
 
           // B. Clean State
-          console.log(`🧹 [1/4] Cleaning device state for ${targetUrl}...`);
+          console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
           const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
           try {
             await sendCommand(cleanCmd);
@@ -100,17 +102,25 @@ export class Orchestrator {
           }
 
           // C. Navigate to target URL
-          console.log(`🌐 [2/4] Navigating to ${targetUrl}...`);
-          const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}`;
+          console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
+          const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
           try {
             await sendCommand(navCmd);
           } catch (e: unknown) {
             console.error(`   Navigation failed: ${getErrorMessage(e)}`);
           }
 
-          // D. Execute Setup Commands
+          // D. Post-Navigation Delay
+          if (postNavigationDelay > 0) {
+            console.log(`⏳ [3/5] Waiting ${postNavigationDelay}ms for page stabilization...`);
+            await sleep(postNavigationDelay);
+          } else {
+            console.log(`⏩ [3/5] No post-navigation delay.`);
+          }
+
+          // E. Execute Setup Commands
           if (setupCommands && setupCommands.length > 0) {
-            console.log(`⚙️  [3/4] Executing ${setupCommands.length} setup commands...`);
+            console.log(`⚙️  [4/5] Executing ${setupCommands.length} setup commands...`);
             for (let setupCmd of setupCommands) {
               const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
               try {
@@ -121,9 +131,9 @@ export class Orchestrator {
             }
           }
 
-          // E. Execute actual Profile Test Case
+          // F. Execute actual Profile Test Case
           if (caseName) {
-            console.log(`🧪 [4/4] Executing test case: ${caseName}...`);
+            console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
             const traceName = `run${run}_${caseName}`;
             try {
               await runTestCase(caseName, traceName);
@@ -131,7 +141,7 @@ export class Orchestrator {
               console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
             }
           } else {
-            console.log(`⏩ [4/4] No test case provided. Skipping profiling step.`);
+            console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
           }
 
           await sleep(2000);

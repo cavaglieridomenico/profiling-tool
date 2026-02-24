@@ -154,7 +154,8 @@ export function handleSwipe(
 export async function handleNavigation(
   page: Page,
   url: string,
-  res: ServerResponse
+  res: ServerResponse,
+  waitUntil: 'load' | 'domcontentloaded' | 'networkidle0' | 'networkidle2' = 'load'
 ): Promise<void> {
   try {
     const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
@@ -170,10 +171,10 @@ export async function handleNavigation(
       );
     }
 
-    await page.goto(resolvedUrl);
+    await page.goto(resolvedUrl, { waitUntil });
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`Navigated to ${resolvedUrl}.\n`);
-    console.log(`Navigated to ${resolvedUrl}.`);
+    res.end(`Navigated to ${resolvedUrl} (waitUntil: ${waitUntil}).\n`);
+    console.log(`Navigated to ${resolvedUrl} (waitUntil: ${waitUntil}).`);
   } catch (err: unknown) {
     const message = getErrorMessage(err);
     console.error(`Navigation Error: ${message}`);

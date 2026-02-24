@@ -2,6 +2,16 @@ export interface TimelineItem {
   targetUrl: string;
   setupCommands?: string[];
   caseName?: string;
+  /**
+   * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
+   * Defaults to 'load'.
+   */
+  waitUntil?: 'load' | 'domcontentloaded' | 'networkidle0' | 'networkidle2';
+  /**
+   * Optional: Delay in milliseconds to wait AFTER the navigation event completes 
+   * but BEFORE setup commands or the test case starts.
+   */
+  postNavigationDelay?: number;
 }
 
 export interface OrchestratorConfig {

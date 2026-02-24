@@ -91,8 +91,9 @@ export const routeHandlers: RouteHandlers = {
   [COMMANDS.NAVIGATE_URL]: async (req, res, page, url) => {
     if (page) {
       const urlToNavigate = url.searchParams.get('url');
+      const waitUntil = (url.searchParams.get('waitUntil') as any) || 'load';
       if (urlToNavigate) {
-        await handleNavigation(page, urlToNavigate, res);
+        await handleNavigation(page, urlToNavigate, res, waitUntil);
       } else {
         sendResponse(res, 400, 'No URL provided for navigation.');
       }
