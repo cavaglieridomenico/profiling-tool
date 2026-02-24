@@ -107,6 +107,7 @@ Execution Sequence:
 4. Polluted execution tab destroyed: Physically closes the active tab to force the Android OS to release the associated V8 Isolate and orphaned WebAssembly memory boundaries.
 5. Spawned fresh tab and navigated to about:blank: Establishes a neutral, pristine rendering frame.
 6. Garbage Collection forced on fresh tab: Executes a low-level V8 memory sweep to ensure a perfect zero-state baseline before the next profiling run begins.
+7. **Stabilization Pause (Orchestrator only):** A 5-second wait is enforced to allow the device's OS and browser isolate to settle after the intensive cleanup operation.
 
 <br/>
 

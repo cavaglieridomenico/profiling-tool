@@ -102,6 +102,8 @@ export class Orchestrator {
             try {
               const cleanData = await runCleanDevice(targetUrl, 'mobile');
               console.log(`   ${cleanData}`);
+              console.log('⏳ Waiting 5s for device to stabilize after clean...');
+              await sleep(5000);
             } catch (e: unknown) {
               console.error(`   Clean failed: ${getErrorMessage(e)}`);
             }
