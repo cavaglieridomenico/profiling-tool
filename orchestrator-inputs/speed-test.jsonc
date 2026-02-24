@@ -1,5 +1,4 @@
 {
-  "runs": 1,
   "setup": {
     "connect": true,
     "checkThermal": false,
@@ -8,12 +7,8 @@
   },
   "timeline": [
     {
-      "setupCommands": [
-        "COMMANDS.DEVICE_CLOSE_ALL_TABS"
-      ]
-    },
-    {
       "targetUrl": "urls.SPEED_TEST",
+      "postNavigationDelay": 10000,
       "setupCommands": [
         "COMMANDS.INPUT_TAP_BOTTOM_RX"
       ]

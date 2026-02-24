@@ -1,5 +1,4 @@
 {
-  "runs": 1,
   "setup": {
     "connect": true,
     "checkThermal": false,
@@ -9,6 +8,7 @@
   "timeline": [
     {
       "targetUrl": "urls.SPEEDOMETER",
+      "postNavigationDelay": 10000,
       "setupCommands": [
         "COMMANDS.INPUT_TAP_CENTER_CENTER"
       ]

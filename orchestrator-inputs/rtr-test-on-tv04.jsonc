@@ -1,0 +1,44 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "rtrmv",// Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "targetUrl": "urls.RTRMV_BYPASS",
+      "postNavigationDelay": 5000
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01"
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01"
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01"
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01_01"
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01_01"
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.rtrmv_tc01_01"
+    }
+  ]
+}

@@ -1,14 +1,14 @@
 {
-  "runs": 3,
   "setup": {
     "connect": true,
     "checkThermal": true,
-    "puppeteerEnv": "vmcore", // Matches PUPPETEER_ENV for .env.vmcore
+    "puppeteerEnv": "vmcore", // Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
     "strictVersionCheck": true
   },
   "timeline": [
     {
       "targetUrl": "urls.SPEED_TEST",
+      "postNavigationDelay": 10000,
       "setupCommands": [
         "COMMANDS.INPUT_TAP_TOP_CENTER"
       ],
