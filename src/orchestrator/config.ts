@@ -1,5 +1,5 @@
 export interface TimelineItem {
-  targetUrl: string;
+  targetUrl?: string;
   setupCommands?: string[];
   caseName?: string;
   /**

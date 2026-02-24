@@ -79,43 +79,59 @@ export class Orchestrator {
 
         for (const item of this.config.timeline) {
           const rawTargetUrl = item.targetUrl;
-          const targetUrl = this.resolveValue(rawTargetUrl);
+          const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
           const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
           const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
           const waitUntil = item.waitUntil || 'load';
           const postNavigationDelay = item.postNavigationDelay || 0;
 
-          console.log(`\n👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
+          if (targetUrl) {
+            console.log(`\n👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
+          } else {
+            console.log(`\n👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`);
+          }
 
           // A. Thermal Check
           if (this.config.setup.checkThermal !== false) {
             await ensureDeviceIsCool();
           }
 
-          // B. Clean State
-          console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
-          const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
-          try {
-            await sendCommand(cleanCmd);
-          } catch (e: unknown) {
-            console.error(`   Clean failed: ${getErrorMessage(e)}`);
+          // B. Clean State (Only if targetUrl is provided)
+          if (targetUrl) {
+            console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
+            const cleanCmd = `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=mobile`;
+            try {
+              await sendCommand(cleanCmd);
+            } catch (e: unknown) {
+              console.error(`   Clean failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [1/5] No target URL. Skipping clean state.`);
           }
 
-          // C. Navigate to target URL
-          console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
-          const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
-          try {
-            await sendCommand(navCmd);
-          } catch (e: unknown) {
-            console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+          // C. Navigate to target URL (Only if targetUrl is provided)
+          if (targetUrl) {
+            console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
+            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
+            try {
+              await sendCommand(navCmd);
+            } catch (e: unknown) {
+              console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [2/5] No target URL. Skipping navigation.`);
           }
 
           // D. Post-Navigation Delay
           if (postNavigationDelay > 0) {
-            console.log(`⏳ [3/5] Waiting ${postNavigationDelay}ms for page stabilization...`);
+            console.log(
+              `⏳ [3/5] Waiting ${postNavigationDelay}ms for ${
+                targetUrl ? 'page stabilization' : 'stabilization'
+              }...`
+            );
             await sleep(postNavigationDelay);
           } else {
-            console.log(`⏩ [3/5] No post-navigation delay.`);
+            console.log(`⏩ [3/5] No stabilization delay.`);
           }
 
           // E. Execute Setup Commands
