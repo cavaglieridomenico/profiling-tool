@@ -25,12 +25,17 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_BOTTOM_CENTER]: {
     x: 550,
     y: 2100,
-    msg: 'Tapped bottom-center.',
+    msg: 'Tapped on bottom-center.',
   },
   [COMMANDS.INPUT_TAP_BOTTOM_RX]: {
     x: 820,
     y: 2020,
-    msg: 'Tapped bottom-rx.',
+    msg: 'Tapped on bottom-rx.',
+  },
+  [COMMANDS.INPUT_TAP_COOKIES_NU]: {
+    x: 500,
+    y: 1700,
+    msg: 'Tapped on cookies-nu.',
   },
   [COMMANDS.INPUT_TAP_VMMV_VIDEO]: {
     x: 760,
@@ -71,6 +76,16 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     x: 490,
     y: 710,
     msg: 'Tapped on vmmv-tryonbutton-rb.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_TRYON_NU]: {
+    x: 550,
+    y: 1600,
+    msg: 'Tapped on vmmv-tryonbutton-nu.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_TRYON_OO]: {
+    x: 490,
+    y: 710,
+    msg: 'Tapped on vmmv-tryonbutton-oo.',
   },
   [COMMANDS.INPUT_TAP_VMMV_USA_SGH]: {
     x: 530,
