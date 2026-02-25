@@ -198,6 +198,11 @@ export class Orchestrator {
             }
           }
 
+          if (postCommandDelay > 0) {
+            console.log(`⏳ Waiting ${postCommandDelay}ms after setup commands...`);
+            await sleep(postCommandDelay);
+          }
+
           // F. Execute actual Profile Test Case
           if (caseName) {
             console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
@@ -210,11 +215,6 @@ export class Orchestrator {
             }
           } else {
             console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
-          }
-
-          if (postCommandDelay > 0) {
-            console.log(`⏳ Waiting ${postCommandDelay}ms after command execution...`);
-            await sleep(postCommandDelay);
           }
 
           await sleep(2000);
