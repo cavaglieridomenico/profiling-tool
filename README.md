@@ -195,38 +195,34 @@ Orchestration is configured using JSON files with comments. Key properties inclu
 You can also enforce `strictVersionCheck` for **all commands** (including `npm start`) by setting a global environment variable.
 
 #### Windows (PowerShell)
+
 ```powershell
 $env:STRICT_VERSION_CHECK="true"
 # To make it persistent for the session
 ```
 
 #### Windows (Command Prompt)
+
 ```cmd
 set STRICT_VERSION_CHECK=true
 ```
 
 #### macOS / Linux (Bash/Zsh)
+
 ```bash
 export STRICT_VERSION_CHECK=true
 ```
 
 #### Using a `.env` file
+
 Alternatively, add this line to your `.env` or `.env.<environment>` file:
+
 ```env
 STRICT_VERSION_CHECK=true
 ```
 
-- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
-  - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page** without cleaning state or navigating.
-  - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0` (no more than 0 network connections for 500ms), or `networkidle2` (no more than 2 network connections for 500ms). Only applicable if `targetUrl` is provided.
-  - `postNavigationDelay`: (optional) Number of milliseconds to wait after the navigation event (if any) or as a general stabilization pause before proceeding to setup commands.
-  - `postCommandDelay`: (optional) Number of milliseconds to wait AFTER the setup commands or the test case completes.
-  - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.
-  - `caseName`: (optional) The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`). If omitted, the orchestrator will complete the cleanup, navigation, and setup commands without recording a trace.
-  - `traceName`: (optional) A custom name for the trace files (e.g., `my_custom_trace`). If provided, traces will be named `my_custom_trace-1.json` (DevTools) or `my_custom_trace-1.pftrace` (Perfetto). If omitted, it defaults to `step<index>_<caseName>`.
-  - `runs`: (optional) Number of times to repeat this specific timeline item (default: 1). Useful for gathering multiple samples of the same scenario.
-
-Example `orchestrator.jsonc`:
+- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`): - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page**. - `preNavigationCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call BEFORE navigating. This is the recommended place for `COMMANDS.DEVICE_CLEAN_STATE`. - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0`, or `networkidle2`. Only applicable if `targetUrl` is provided. - `postNavigationDelay`: (optional) Number of milliseconds to wait after the navigation event (if any) or as a general stabilization pause before proceeding to setup commands. - `postCommandDelay`: (optional) Number of milliseconds to wait AFTER the setup commands or the test case completes. - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call. - `caseName`: (optional) The name of the test case to execute. - `traceName`: (optional) A custom name for the trace files. - `runs`: (optional) Number of times to repeat this specific timeline item (default: 1).
+  Example `orchestrator.jsonc`:
 
 ```jsonc
 {
@@ -234,19 +230,20 @@ Example `orchestrator.jsonc`:
     "connect": true,
     "checkThermal": true,
     "puppeteerEnv": "vmcore",
-    "strictVersionCheck": true
+    "strictVersionCheck": true,
   },
   "timeline": [
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.VMMV_TV20",
       "waitUntil": "networkidle2",
       "postNavigationDelay": 5000,
       "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
       "caseName": "testCases.perfetto_tc04",
       "traceName": "custom_trace_name",
-      "runs": 3
-    }
-  ]
+      "runs": 3,
+    },
+  ],
 }
 ```
 

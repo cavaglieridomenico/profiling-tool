@@ -2,7 +2,7 @@ import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { ensureDeviceIsCool } from '../thermal';
-import { sendCommand, getErrorMessage, runCleanDevice } from '../utils';
+import { sendCommand, getErrorMessage } from '../utils';
 import { OrchestratorConfig } from './config';
 import { runTestCase } from '../../bin/profile';
 import { urls } from '../urls';
@@ -21,7 +21,7 @@ export class Orchestrator {
     this.config = config;
   }
 
-  private resolveValue(value: string): string {
+  private resolveValue(value: string, targetUrl?: string): string {
     if (!value) return value;
 
     if (value.startsWith('urls.')) {
@@ -30,8 +30,36 @@ export class Orchestrator {
     }
 
     if (value.startsWith('COMMANDS.')) {
-      const key = value.substring(9);
-      return (COMMANDS as any)[key] || value;
+      const parts = value.substring(9).split('?');
+      const key = parts[0];
+      const baseCommand = (COMMANDS as any)[key];
+
+      if (!baseCommand) return value;
+
+      let query = parts[1] || '';
+
+      // Auto-populate targetUrl if it's a clean command and no URL is provided
+      if (key === 'DEVICE_CLEAN_STATE' && !query.includes('url=') && targetUrl) {
+        query = `url=${encodeURIComponent(targetUrl)}&mode=mobile`;
+      }
+
+      if (query) {
+        // Resolve nested urls. references in query
+        const resolvedQuery = query
+          .split('&')
+          .map((param) => {
+            const [k, v] = param.split('=');
+            if (v && v.startsWith('urls.')) {
+              const urlKey = v.substring(5);
+              return `${k}=${encodeURIComponent(urls[urlKey] || v)}`;
+            }
+            return param;
+          })
+          .join('&');
+        return `${baseCommand}?${resolvedQuery}`;
+      }
+
+      return baseCommand;
     }
 
     if (value.startsWith('testCases.')) {
@@ -80,9 +108,14 @@ export class Orchestrator {
         for (let run = 1; run <= runs; run++) {
           const rawTargetUrl = item.targetUrl;
           const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
-          const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
+          const preNavigationCommands = (item.preNavigationCommands || []).map((cmd) =>
+            this.resolveValue(cmd, targetUrl)
+          );
+          const setupCommands = (item.setupCommands || []).map((cmd) =>
+            this.resolveValue(cmd, targetUrl)
+          );
           const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
-          const traceName = item.traceName ? this.resolveValue(item.traceName) : undefined;
+          const traceName = item.traceName ? this.resolveValue(item.traceName, targetUrl) : undefined;
           const waitUntil = item.waitUntil || 'load';
           const postNavigationDelay = item.postNavigationDelay || 0;
           const postCommandDelay = item.postCommandDelay || 0;
@@ -104,19 +137,24 @@ export class Orchestrator {
             await ensureDeviceIsCool();
           }
 
-          // B. Clean State (Only if targetUrl is provided)
-          if (targetUrl) {
-            console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
-            try {
-              const cleanData = await runCleanDevice(targetUrl, 'mobile');
-              console.log(`   ${cleanData}`);
-              console.log('⏳ Waiting 5s for device to stabilize after clean...');
-              await sleep(5000);
-            } catch (e: unknown) {
-              console.error(`   Clean failed: ${getErrorMessage(e)}`);
+          // B. Pre-Navigation Commands
+          if (preNavigationCommands && preNavigationCommands.length > 0) {
+            console.log(`⚙️  [1/5] Executing ${preNavigationCommands.length} pre-navigation commands...`);
+            for (let preCmd of preNavigationCommands) {
+              const sanitizedCmd = preCmd.startsWith('/') ? preCmd.substring(1) : preCmd;
+              try {
+                await sendCommand(sanitizedCmd);
+                // If it was a clean command, add a small stabilization pause
+                if (sanitizedCmd.includes('clean-state')) {
+                  console.log('⏳ Waiting 5s for device to stabilize after clean...');
+                  await sleep(5000);
+                }
+              } catch (e: unknown) {
+                console.error(`   Pre-navigation command ${preCmd} failed: ${getErrorMessage(e)}`);
+              }
             }
           } else {
-            console.log(`⏩ [1/5] No target URL. Skipping clean state.`);
+            console.log(`⏩ [1/5] No pre-navigation commands.`);
           }
 
           // C. Navigate to target URL (Only if targetUrl is provided)

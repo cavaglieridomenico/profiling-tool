@@ -1,5 +1,9 @@
 export interface TimelineItem {
   targetUrl?: string;
+  /**
+   * Optional: A list of command endpoints or COMMANDS.<KEY> to call BEFORE navigating.
+   */
+  preNavigationCommands?: string[];
   setupCommands?: string[];
   caseName?: string;
   traceName?: string;
