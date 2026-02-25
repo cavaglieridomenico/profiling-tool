@@ -1,0 +1,47 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "preNavigationCommands": [
+        "COMMANDS.DEVICE_CLEAN_STATE"
+      ],
+      "targetUrl": "urls.VMMV_TV13_01",
+      "postNavigationDelay": 10000,
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_USA_SGH"
+      ],
+      "postCommandDelay": 5000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_SGH"
+      ],
+      "postCommandDelay": 10000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_PRIVACY"
+      ],
+      "postCommandDelay": 10000
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13_01",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.vmmv_tc09",
+      "traceName": "TV13_01-TC09-TD31_03",
+      "runs": 3
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13_01",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.vmmv_tc08__tc04_sgh",
+      "traceName": "TV13_01-TC08__TC04-TD31_03",
+      "runs": 3
+    }
+  ]
+}

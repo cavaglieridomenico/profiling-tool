@@ -1,0 +1,23 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": false,
+    "puppeteerEnv": "",
+    "strictVersionCheck": false
+  },
+  "timeline": [
+    {
+      "targetUrl": "www.google.com",
+      "setupCommands": [
+        "COMMANDS.DEVICE_CLOSE_ALL_TABS"
+      ],
+      "postCommandDelay": 5000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.DEVICE_GET_TEMPERATURE"
+      ],
+      "postCommandDelay": 5000
+    }
+  ]
+}
