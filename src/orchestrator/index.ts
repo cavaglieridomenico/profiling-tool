@@ -143,7 +143,8 @@ export class Orchestrator {
             for (let preCmd of preNavigationCommands) {
               const sanitizedCmd = preCmd.startsWith('/') ? preCmd.substring(1) : preCmd;
               try {
-                await sendCommand(sanitizedCmd);
+                const response = await sendCommand(sanitizedCmd);
+                console.log(`   [Command] ${preCmd}: ${response}`);
                 // If it was a clean command, add a small stabilization pause
                 if (sanitizedCmd.includes('clean-state')) {
                   console.log('⏳ Waiting 5s for device to stabilize after clean...');
@@ -162,7 +163,8 @@ export class Orchestrator {
             console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
             const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
-              await sendCommand(navCmd);
+              const response = await sendCommand(navCmd);
+              console.log(`   [Navigation]: ${response}`);
             } catch (e: unknown) {
               console.error(`   Navigation failed: ${getErrorMessage(e)}`);
             }
@@ -188,7 +190,8 @@ export class Orchestrator {
             for (let setupCmd of setupCommands) {
               const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
               try {
-                await sendCommand(sanitizedCmd);
+                const response = await sendCommand(sanitizedCmd);
+                console.log(`   [Command] ${setupCmd}: ${response}`);
               } catch (e: unknown) {
                 console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
               }
@@ -250,8 +253,8 @@ export class Orchestrator {
 
     if (this.serverProcess.stdout) {
       this.serverProcess.stdout.on('data', (data) => {
-        // Logging for readiness detection
-        // console.log(`[Server Out] ${data}`);
+        // Log server output to orchestrator console
+        process.stdout.write(`[Server] ${data}`);
       });
     }
 

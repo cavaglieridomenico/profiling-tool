@@ -12,7 +12,7 @@ import {
   sendResponse,
   getErrorMessage,
 } from './utils';
-import { getDeviceTemperature } from './thermal';
+import { getDeviceTemperature, ensureDeviceIsCool } from './thermal';
 import { RouteHandlers } from './types';
 
 export const routeHandlers: RouteHandlers = {
@@ -58,6 +58,15 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(res, 200, `Device temperature: ${temp.toFixed(1)}°C`);
     } catch (error: unknown) {
       sendResponse(res, 500, `Failed to get device temperature`);
+    }
+  },
+  [COMMANDS.DEVICE_COOLDOWN]: async (req, res) => {
+    try {
+      await ensureDeviceIsCool();
+      const temp = await getDeviceTemperature();
+      sendResponse(res, 200, `Device is now cool: ${temp.toFixed(1)}°C`);
+    } catch (error: unknown) {
+      sendResponse(res, 500, `Failed to ensure device cooldown`);
     }
   },
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {

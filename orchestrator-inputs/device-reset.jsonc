@@ -7,7 +7,6 @@
   },
   "timeline": [
     {
-      "targetUrl": "www.google.com",
       "setupCommands": [
         "COMMANDS.DEVICE_CLOSE_ALL_TABS"
       ],
@@ -15,7 +14,8 @@
     },
     {
       "setupCommands": [
-        "COMMANDS.DEVICE_GET_TEMPERATURE"
+        "COMMANDS.DEVICE_GET_TEMPERATURE",
+        "COMMANDS.DEVICE_COOLDOWN"
       ],
       "postCommandDelay": 5000
     }

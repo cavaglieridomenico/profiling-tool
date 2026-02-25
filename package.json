@@ -14,6 +14,7 @@
     "device:connect": "ts-node bin/connect.ts",
     "device:restore": "ts-node bin/restore.ts",
     "device:get-temperature": "curl http://localhost:8080/device:get-temperature",
+    "device:cooldown": "curl http://localhost:8080/device:cooldown",
     "device:clean": "ts-node bin/clean.ts",
     "device:close-all-tabs": "curl http://localhost:8080/device:close-all-tabs",
     "perfetto:start": "curl http://localhost:8080/perfetto:start",
