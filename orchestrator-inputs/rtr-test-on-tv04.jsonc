@@ -13,32 +13,14 @@
     {
       "targetUrl": "urls.RTRMV_TV04",
       "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01"
+      "caseName": "testCases.rtrmv_tc01",
+      "traceName": "TV04-TC01-TD31_02"
     },
     {
       "targetUrl": "urls.RTRMV_TV04",
       "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01"
-    },
-    {
-      "targetUrl": "urls.RTRMV_TV04",
-      "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01"
-    },
-    {
-      "targetUrl": "urls.RTRMV_TV04",
-      "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01_01"
-    },
-    {
-      "targetUrl": "urls.RTRMV_TV04",
-      "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01_01"
-    },
-    {
-      "targetUrl": "urls.RTRMV_TV04",
-      "postNavigationDelay": 15000,
-      "caseName": "testCases.rtrmv_tc01_01"
+      "caseName": "testCases.rtrmv_tc01",
+      "traceName": "TV04-TC01-TD31_02"
     }
   ]
 }
