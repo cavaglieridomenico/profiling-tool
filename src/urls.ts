@@ -12,6 +12,8 @@ export const urls: Record<string, string> = {
     'https://vmmv-uat.luxottica.com/v/4.20/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E31',
   VMMV_TV18:
     'https://www.oakley.com/en-us/product/W0OO9406?variant=888392404756',
+  VMMV_TV13_02:
+    'https://www.nuanceaudio.com/en-us/electronics-audio-optical/nuance-audio/aw5001-8056262233184',
   VMMV_TV13_01: 'https://www.sunglasshut.com/us/ray-ban/rb3565-8056597586030',
   VMMV_TV13:
     'https://www.ray-ban.com/usa/electronics/RW4006ray-ban%20%7C%20meta%20wayfarer%20-%20gen%201-black/8056597982788',
