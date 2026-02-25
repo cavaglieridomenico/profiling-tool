@@ -79,6 +79,7 @@ export class Orchestrator {
         const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
         const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
         const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
+        const traceName = item.traceName ? this.resolveValue(item.traceName) : undefined;
         const waitUntil = item.waitUntil || 'load';
         const postNavigationDelay = item.postNavigationDelay || 0;
 
@@ -151,10 +152,10 @@ export class Orchestrator {
         // F. Execute actual Profile Test Case
         if (caseName) {
           console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
-          // Use step index for trace name as runs loop is removed
-          const traceName = `step${itemIndex}_${caseName}`;
+          // Use provided traceName or fallback to step index + case name
+          const finalTraceName = traceName || `step${itemIndex}_${caseName}`;
           try {
-            await runTestCase(caseName, traceName);
+            await runTestCase(caseName, finalTraceName);
           } catch (e: unknown) {
             console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
           }

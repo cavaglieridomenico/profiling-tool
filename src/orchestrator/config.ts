@@ -2,6 +2,7 @@ export interface TimelineItem {
   targetUrl?: string;
   setupCommands?: string[];
   caseName?: string;
+  traceName?: string;
   /**
    * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
    * Defaults to 'load'.

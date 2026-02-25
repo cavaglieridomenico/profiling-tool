@@ -12,7 +12,8 @@
       "setupCommands": [
         "COMMANDS.INPUT_TAP_TOP_CENTER"
       ],
-      "caseName": "testCases.perfetto_tc04"
+      "caseName": "testCases.perfetto_tc04",
+      "traceName": "custom_name_example"
     },
     {
       "targetUrl": "urls.VMMV_TV20",
