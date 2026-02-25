@@ -13,7 +13,8 @@
         "COMMANDS.INPUT_TAP_TOP_CENTER"
       ],
       "caseName": "testCases.perfetto_tc04",
-      "traceName": "custom_name_example"
+      "traceName": "custom_name_example",
+      "runs": 3
     },
     {
       "targetUrl": "urls.VMMV_TV20",

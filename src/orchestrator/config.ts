@@ -4,6 +4,11 @@ export interface TimelineItem {
   caseName?: string;
   traceName?: string;
   /**
+   * Optional: Number of times to repeat this timeline item.
+   * Defaults to 1.
+   */
+  runs?: number;
+  /**
    * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
    * Defaults to 'load'.
    */

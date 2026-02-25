@@ -75,95 +75,103 @@ export class Orchestrator {
 
       let itemIndex = 1;
       for (const item of this.config.timeline) {
-        const rawTargetUrl = item.targetUrl;
-        const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
-        const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
-        const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
-        const traceName = item.traceName ? this.resolveValue(item.traceName) : undefined;
-        const waitUntil = item.waitUntil || 'load';
-        const postNavigationDelay = item.postNavigationDelay || 0;
+        const runs = item.runs || 1;
 
-        console.log(`\n--- 🏃 Step ${itemIndex}/${this.config.timeline.length} ---`);
+        for (let run = 1; run <= runs; run++) {
+          const rawTargetUrl = item.targetUrl;
+          const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
+          const setupCommands = (item.setupCommands || []).map((cmd) => this.resolveValue(cmd));
+          const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
+          const traceName = item.traceName ? this.resolveValue(item.traceName) : undefined;
+          const waitUntil = item.waitUntil || 'load';
+          const postNavigationDelay = item.postNavigationDelay || 0;
 
-        if (targetUrl) {
-          console.log(`👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
-        } else {
-          console.log(`👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`);
-        }
-
-        // A. Thermal Check
-        if (this.config.setup.checkThermal !== false) {
-          await ensureDeviceIsCool();
-        }
-
-        // B. Clean State (Only if targetUrl is provided)
-        if (targetUrl) {
-          console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
-          try {
-            const cleanData = await runCleanDevice(targetUrl, 'mobile');
-            console.log(`   ${cleanData}`);
-            console.log('⏳ Waiting 5s for device to stabilize after clean...');
-            await sleep(5000);
-          } catch (e: unknown) {
-            console.error(`   Clean failed: ${getErrorMessage(e)}`);
-          }
-        } else {
-          console.log(`⏩ [1/5] No target URL. Skipping clean state.`);
-        }
-
-        // C. Navigate to target URL (Only if targetUrl is provided)
-        if (targetUrl) {
-          console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
-          const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
-          try {
-            await sendCommand(navCmd);
-          } catch (e: unknown) {
-            console.error(`   Navigation failed: ${getErrorMessage(e)}`);
-          }
-        } else {
-          console.log(`⏩ [2/5] No target URL. Skipping navigation.`);
-        }
-
-        // D. Post-Navigation Delay
-        if (postNavigationDelay > 0) {
           console.log(
-            `⏳ [3/5] Waiting ${postNavigationDelay}ms for ${
-              targetUrl ? 'page stabilization' : 'stabilization'
-            }...`
+            `\n--- 🏃 Step ${itemIndex}/${this.config.timeline.length}${
+              runs > 1 ? ` (Run ${run}/${runs})` : ''
+            } ---`
           );
-          await sleep(postNavigationDelay);
-        } else {
-          console.log(`⏩ [3/5] No stabilization delay.`);
-        }
 
-        // E. Execute Setup Commands
-        if (setupCommands && setupCommands.length > 0) {
-          console.log(`⚙️  [4/5] Executing ${setupCommands.length} setup commands...`);
-          for (let setupCmd of setupCommands) {
-            const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
+          if (targetUrl) {
+            console.log(`👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
+          } else {
+            console.log(`👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`);
+          }
+
+          // A. Thermal Check
+          if (this.config.setup.checkThermal !== false) {
+            await ensureDeviceIsCool();
+          }
+
+          // B. Clean State (Only if targetUrl is provided)
+          if (targetUrl) {
+            console.log(`🧹 [1/5] Cleaning device state for ${targetUrl}...`);
             try {
-              await sendCommand(sanitizedCmd);
+              const cleanData = await runCleanDevice(targetUrl, 'mobile');
+              console.log(`   ${cleanData}`);
+              console.log('⏳ Waiting 5s for device to stabilize after clean...');
+              await sleep(5000);
             } catch (e: unknown) {
-              console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
+              console.error(`   Clean failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [1/5] No target URL. Skipping clean state.`);
+          }
+
+          // C. Navigate to target URL (Only if targetUrl is provided)
+          if (targetUrl) {
+            console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
+            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
+            try {
+              await sendCommand(navCmd);
+            } catch (e: unknown) {
+              console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [2/5] No target URL. Skipping navigation.`);
+          }
+
+          // D. Post-Navigation Delay
+          if (postNavigationDelay > 0) {
+            console.log(
+              `⏳ [3/5] Waiting ${postNavigationDelay}ms for ${
+                targetUrl ? 'page stabilization' : 'stabilization'
+              }...`
+            );
+            await sleep(postNavigationDelay);
+          } else {
+            console.log(`⏩ [3/5] No stabilization delay.`);
+          }
+
+          // E. Execute Setup Commands
+          if (setupCommands && setupCommands.length > 0) {
+            console.log(`⚙️  [4/5] Executing ${setupCommands.length} setup commands...`);
+            for (let setupCmd of setupCommands) {
+              const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
+              try {
+                await sendCommand(sanitizedCmd);
+              } catch (e: unknown) {
+                console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
+              }
             }
           }
-        }
 
-        // F. Execute actual Profile Test Case
-        if (caseName) {
-          console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
-          // Use provided traceName or fallback to step index + case name
-          const finalTraceName = traceName || `step${itemIndex}_${caseName}`;
-          try {
-            await runTestCase(caseName, finalTraceName);
-          } catch (e: unknown) {
-            console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
+          // F. Execute actual Profile Test Case
+          if (caseName) {
+            console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
+            // Use provided traceName or fallback to step index + case name
+            const finalTraceName = traceName || `step${itemIndex}_${caseName}`;
+            try {
+              await runTestCase(caseName, finalTraceName);
+            } catch (e: unknown) {
+              console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
           }
-        } else {
-          console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
-        }
 
-        await sleep(2000);
+          await sleep(2000);
+        }
         itemIndex++;
       }
 

@@ -223,6 +223,7 @@ STRICT_VERSION_CHECK=true
   - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.
   - `caseName`: (optional) The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`). If omitted, the orchestrator will complete the cleanup, navigation, and setup commands without recording a trace.
   - `traceName`: (optional) A custom name for the trace files (e.g., `my_custom_trace`). If provided, traces will be named `my_custom_trace-1.json` (DevTools) or `my_custom_trace-1.pftrace` (Perfetto). If omitted, it defaults to `step<index>_<caseName>`.
+  - `runs`: (optional) Number of times to repeat this specific timeline item (default: 1). Useful for gathering multiple samples of the same scenario.
 
 Example `orchestrator.jsonc`:
 
@@ -241,7 +242,8 @@ Example `orchestrator.jsonc`:
       "postNavigationDelay": 5000,
       "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
       "caseName": "testCases.perfetto_tc04",
-      "traceName": "custom_trace_name"
+      "traceName": "custom_trace_name",
+      "runs": 3
     }
   ]
 }
