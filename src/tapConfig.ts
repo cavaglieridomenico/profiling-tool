@@ -68,9 +68,19 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     msg: 'Tapped on vmmv-tryonbutton-sgh.',
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON_RB]: {
-    x: 880,
-    y: 690,
+    x: 490,
+    y: 710,
     msg: 'Tapped on vmmv-tryonbutton-rb.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_USA_RB]: {
+    x: 330,
+    y: 1730,
+    msg: 'Tapped on vmmv-usabutton-rb.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_PRIVACY_RB]: {
+    x: 800,
+    y: 2140,
+    msg: 'Tapped on vmmv-privacybutton-rb.',
   },
   [COMMANDS.INPUT_TAP_VMCORE_VMP_PDPLIGHT]: {
     x: 540,

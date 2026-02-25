@@ -37,6 +37,8 @@
     "input:tap-vmmv-tryonbutton": "curl http://localhost:8080/input:tap-vmmv-tryonbutton",
     "input:tap-vmmv-tryonbutton-sgh": "curl http://localhost:8080/input:tap-vmmv-tryonbutton-sgh",
     "input:tap-vmmv-tryonbutton-rb": "curl http://localhost:8080/input:tap-vmmv-tryonbutton-rb",
+    "input:tap-vmmv-usabutton-rb": "curl http://localhost:8080/input:tap-vmmv-usabutton-rb",
+    "input:tap-vmmv-privacybutton-rb": "curl http://localhost:8080/input:tap-vmmv-privacybutton-rb",
     "input:tap-vmcore-vmp-pdplight": "curl http://localhost:8080/input:tap-vmcore-vmp-pdplight",
     "input:tap-vmcore-vmp-rec": "curl http://localhost:8080/input:tap-vmcore-vmp-rec",
     "input:tap-vmcore-vmp-image": "curl http://localhost:8080/input:tap-vmcore-vmp-image",
