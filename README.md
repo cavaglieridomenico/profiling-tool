@@ -220,6 +220,7 @@ STRICT_VERSION_CHECK=true
   - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page** without cleaning state or navigating.
   - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0` (no more than 0 network connections for 500ms), or `networkidle2` (no more than 2 network connections for 500ms). Only applicable if `targetUrl` is provided.
   - `postNavigationDelay`: (optional) Number of milliseconds to wait after the navigation event (if any) or as a general stabilization pause before proceeding to setup commands.
+  - `postCommandDelay`: (optional) Number of milliseconds to wait AFTER the setup commands or the test case completes.
   - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call before starting the trace.
   - `caseName`: (optional) The name of the test case to execute (supports `testCases.<KEY>` or direct names from `src/testCases.ts`). If omitted, the orchestrator will complete the cleanup, navigation, and setup commands without recording a trace.
   - `traceName`: (optional) A custom name for the trace files (e.g., `my_custom_trace`). If provided, traces will be named `my_custom_trace-1.json` (DevTools) or `my_custom_trace-1.pftrace` (Perfetto). If omitted, it defaults to `step<index>_<caseName>`.

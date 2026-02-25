@@ -85,6 +85,7 @@ export class Orchestrator {
           const traceName = item.traceName ? this.resolveValue(item.traceName) : undefined;
           const waitUntil = item.waitUntil || 'load';
           const postNavigationDelay = item.postNavigationDelay || 0;
+          const postCommandDelay = item.postCommandDelay || 0;
 
           console.log(
             `\n--- 🏃 Step ${itemIndex}/${this.config.timeline.length}${
@@ -168,6 +169,11 @@ export class Orchestrator {
             }
           } else {
             console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
+          }
+
+          if (postCommandDelay > 0) {
+            console.log(`⏳ Waiting ${postCommandDelay}ms after command execution...`);
+            await sleep(postCommandDelay);
           }
 
           await sleep(2000);

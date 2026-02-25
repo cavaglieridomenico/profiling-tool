@@ -9,6 +9,7 @@
     {
       "targetUrl": "urls.SPEED_TEST",
       "postNavigationDelay": 10000,
+      "postCommandDelay": 5000,
       "setupCommands": [
         "COMMANDS.INPUT_TAP_TOP_CENTER"
       ],

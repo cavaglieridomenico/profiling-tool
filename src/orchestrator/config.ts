@@ -18,6 +18,10 @@ export interface TimelineItem {
    * but BEFORE setup commands or the test case starts.
    */
   postNavigationDelay?: number;
+  /**
+   * Optional: Delay in milliseconds to wait AFTER the setup commands or the test case completes.
+   */
+  postCommandDelay?: number;
 }
 
 export interface OrchestratorConfig {
