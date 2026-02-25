@@ -35,6 +35,16 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-tryonbutton-rb', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
+  vmmv_tc08__tc04_nu: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-vmmv-tryonbutton-nu', delay: 20000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
+  vmmv_tc08__tc04_oo: [
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-vmmv-tryonbutton-oo', delay: 20000 },
+    { command: 'devtools:stop', delay: 0 },
+  ],
   vmmv_tc09: [
     { command: 'devtools:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 20000 },
