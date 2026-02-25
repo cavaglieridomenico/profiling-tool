@@ -19,16 +19,6 @@
       "caseName": "testCases.vmmv_tc08__tc04_rb",
       "traceName": "TV13-TC08-TD31_03",
       "runs": 3
-    },
-    {
-      "targetUrl": "urls.VMMV_TV13",
-      "postNavigationDelay": 10000,
-      "setupCommands": [
-        "INPUT_TAP_VMMV_WIDGET_RB"
-      ],
-      "caseName": "testCases.vmmv_tc10",
-      "traceName": "TV13-TC10-TD31_03",
-      "runs": 3
     }
   ]
 }
