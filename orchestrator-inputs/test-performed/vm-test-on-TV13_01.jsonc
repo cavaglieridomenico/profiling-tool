@@ -42,6 +42,17 @@
       "caseName": "testCases.vmmv_tc08__tc04_sgh",
       "traceName": "TV13_01-TC08__TC04-TD31_03",
       "runs": 3
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13_01",
+      "postNavigationDelay": 10000,
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_SGH"
+      ],
+      "postCommandDelay": 10000,
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV13_01-TC04-TD31_03",
+      "runs": 1
     }
   ]
 }

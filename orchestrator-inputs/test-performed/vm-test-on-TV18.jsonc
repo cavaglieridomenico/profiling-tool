@@ -10,12 +10,12 @@
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE"
       ],
-      "targetUrl": "urls.VMMV_TV13_02",
-      "postNavigationDelay": 10000
+      "targetUrl": "urls.VMMV_TV18",
+      "postNavigationDelay": 15000
     },
     {
       "setupCommands": [
-        "COMMANDS.INPUT_TAP_VMMV_TRYON_NU"
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_OO"
       ],
       "postCommandDelay": 10000
     },
@@ -26,17 +26,21 @@
       "postCommandDelay": 10000
     },
     {
-      "targetUrl": "urls.VMMV_TV13_02",
+      "targetUrl": "urls.VMMV_TV18",
       "postNavigationDelay": 10000,
       "caseName": "testCases.vmmv_tc09",
-      "traceName": "TV13_02-TC09-TD31_03",
+      "traceName": "TV18-TC09-TD31_03",
       "runs": 3
     },
     {
-      "targetUrl": "urls.VMMV_TV13_02",
+      "targetUrl": "urls.VMMV_TV18",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.vmmv_tc08__tc04_nu",
-      "traceName": "TV13_02-TC08__TC04-TD31_03",
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_OO"
+      ],
+      "postCommandDelay": 10000,
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV18-TC04-TD31_03",
       "runs": 3
     }
   ]

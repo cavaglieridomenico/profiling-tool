@@ -7,6 +7,9 @@
   },
   "timeline": [
     {
+      "preNavigationCommands": [
+        "COMMANDS.DEVICE_CLEAN_STATE"
+      ],
       "targetUrl": "urls.SPEEDOMETER",
       "postNavigationDelay": 10000,
       "setupCommands": [

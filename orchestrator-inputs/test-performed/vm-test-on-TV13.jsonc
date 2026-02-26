@@ -1,0 +1,58 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "preNavigationCommands": [
+        "COMMANDS.DEVICE_CLEAN_STATE"
+      ],
+      "targetUrl": "urls.VMMV_TV13",
+      "postNavigationDelay": 10000,
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_USA_RB"
+      ],
+      "postCommandDelay": 5000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_RB"
+      ],
+      "postCommandDelay": 10000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_PRIVACY"
+      ],
+      "postCommandDelay": 10000
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.vmmv_tc09",
+      "traceName": "TV13-TC09-TD31_03",
+      "runs": 3
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.vmmv_tc08__tc04_rb",
+      "traceName": "TV13-TC08__TC04-TD31_03",
+      "runs": 3
+    },
+    {
+      "targetUrl": "urls.VMMV_TV13",
+      "postNavigationDelay": 10000,
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_TRYON_RB"
+      ],
+      "postCommandDelay": 10000,
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV13-TC04-TD31_03",
+      "runs": 1
+    }
+  ]
+}
