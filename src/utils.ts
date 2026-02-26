@@ -33,7 +33,9 @@ export function getErrorMessage(error: unknown): string {
 export function validateEnv(requiredKeys: string[]): void {
   const missing = requiredKeys.filter((key) => !process.env[key]);
   if (missing.length > 0) {
-    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    throw new Error(
+      `Missing required environment variables: ${missing.join(', ')}`
+    );
   }
 }
 
@@ -72,18 +74,6 @@ export async function runCleanDevice(
     targetUrl
   )}&mode=${mode}`;
   return await sendCommand(cleanCmd);
-}
-
-export function getNextTraceNumber(
-  name: string,
-  dir: string,
-  ext: string
-): number {
-  let i = 1;
-  while (fs.existsSync(path.join(dir, `${name}-${i}.${ext}`))) {
-    i++;
-  }
-  return i;
 }
 
 /**
@@ -169,7 +159,11 @@ export async function handleNavigation(
   page: Page,
   url: string,
   res: ServerResponse,
-  waitUntil: 'load' | 'domcontentloaded' | 'networkidle0' | 'networkidle2' = 'load'
+  waitUntil:
+    | 'load'
+    | 'domcontentloaded'
+    | 'networkidle0'
+    | 'networkidle2' = 'load'
 ): Promise<void> {
   try {
     const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
