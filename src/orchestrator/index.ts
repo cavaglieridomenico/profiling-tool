@@ -38,7 +38,11 @@ export class Orchestrator {
       let query = parts[1] || '';
 
       // Auto-populate targetUrl if it's a clean command and no URL is provided
-      if (key === 'DEVICE_CLEAN_STATE' && !query.includes('url=') && targetUrl) {
+      if (
+        key === 'DEVICE_CLEAN_STATE' &&
+        !query.includes('url=') &&
+        targetUrl
+      ) {
         query = `url=${encodeURIComponent(targetUrl)}&mode=mobile`;
       }
 
@@ -72,7 +76,10 @@ export class Orchestrator {
   /**
    * Runs a test case by spawning bin/profile.ts as an isolated child process.
    */
-  private runProfileProcess(caseName: string, traceName: string): Promise<void> {
+  private runProfileProcess(
+    caseName: string,
+    traceName: string
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
@@ -141,7 +148,9 @@ export class Orchestrator {
       await this.startServer();
 
       // 3. Execution Plan
-      console.log(`\n📋 Plan: ${this.config.timeline.length} timeline item(s) to execute.`);
+      console.log(
+        `\n📋 Plan: ${this.config.timeline.length} timeline item(s) to execute.`
+      );
 
       let itemIndex = 1;
       for (const item of this.config.timeline) {
@@ -149,15 +158,21 @@ export class Orchestrator {
 
         for (let run = 1; run <= runs; run++) {
           const rawTargetUrl = item.targetUrl;
-          const targetUrl = rawTargetUrl ? this.resolveValue(rawTargetUrl) : undefined;
-          const preNavigationCommands = (item.preNavigationCommands || []).map((cmd) =>
-            this.resolveValue(cmd, targetUrl)
+          const targetUrl = rawTargetUrl
+            ? this.resolveValue(rawTargetUrl)
+            : undefined;
+          const preNavigationCommands = (item.preNavigationCommands || []).map(
+            (cmd) => this.resolveValue(cmd, targetUrl)
           );
           const setupCommands = (item.setupCommands || []).map((cmd) =>
             this.resolveValue(cmd, targetUrl)
           );
-          const caseName = item.caseName ? this.resolveValue(item.caseName) : undefined;
-          const traceName = item.traceName ? this.resolveValue(item.traceName, targetUrl) : undefined;
+          const caseName = item.caseName
+            ? this.resolveValue(item.caseName)
+            : undefined;
+          const traceName = item.traceName
+            ? this.resolveValue(item.traceName, targetUrl)
+            : undefined;
           const waitUntil = item.waitUntil || 'load';
           const postNavigationDelay = item.postNavigationDelay || 0;
           const postCommandDelay = item.postCommandDelay || 0;
@@ -169,9 +184,13 @@ export class Orchestrator {
           );
 
           if (targetUrl) {
-            console.log(`👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`);
+            console.log(
+              `👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`
+            );
           } else {
-            console.log(`👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`);
+            console.log(
+              `👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`
+            );
           }
 
           // A. Thermal Check
@@ -181,19 +200,27 @@ export class Orchestrator {
 
           // B. Pre-Navigation Commands
           if (preNavigationCommands && preNavigationCommands.length > 0) {
-            console.log(`⚙️  [1/5] Executing ${preNavigationCommands.length} pre-navigation commands...`);
+            console.log(
+              `⚙️  [1/5] Executing ${preNavigationCommands.length} pre-navigation commands...`
+            );
             for (let preCmd of preNavigationCommands) {
-              const sanitizedCmd = preCmd.startsWith('/') ? preCmd.substring(1) : preCmd;
+              const sanitizedCmd = preCmd.startsWith('/')
+                ? preCmd.substring(1)
+                : preCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
                 console.log(`   [Command] ${preCmd}: ${response}`);
                 // If it was a clean command, add a small stabilization pause
                 if (sanitizedCmd.includes('clean-state')) {
-                  console.log('⏳ Waiting 5s for device to stabilize after clean...');
+                  console.log(
+                    '⏳ Waiting 5s for device to stabilize after clean...'
+                  );
                   await sleep(5000);
                 }
               } catch (e: unknown) {
-                console.error(`   Pre-navigation command ${preCmd} failed: ${getErrorMessage(e)}`);
+                console.error(
+                  `   Pre-navigation command ${preCmd} failed: ${getErrorMessage(e)}`
+                );
               }
             }
           } else {
@@ -202,7 +229,9 @@ export class Orchestrator {
 
           // C. Navigate to target URL (Only if targetUrl is provided)
           if (targetUrl) {
-            console.log(`🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`);
+            console.log(
+              `🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
+            );
             const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
               const response = await sendCommand(navCmd);
@@ -228,20 +257,28 @@ export class Orchestrator {
 
           // E. Execute Setup Commands
           if (setupCommands && setupCommands.length > 0) {
-            console.log(`⚙️  [4/5] Executing ${setupCommands.length} setup commands...`);
+            console.log(
+              `⚙️  [4/5] Executing ${setupCommands.length} setup commands...`
+            );
             for (let setupCmd of setupCommands) {
-              const sanitizedCmd = setupCmd.startsWith('/') ? setupCmd.substring(1) : setupCmd;
+              const sanitizedCmd = setupCmd.startsWith('/')
+                ? setupCmd.substring(1)
+                : setupCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
                 console.log(`   [Command] ${setupCmd}: ${response}`);
               } catch (e: unknown) {
-                console.error(`   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`);
+                console.error(
+                  `   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`
+                );
               }
             }
           }
 
           if (postCommandDelay > 0) {
-            console.log(`⏳ Waiting ${postCommandDelay}ms after setup commands...`);
+            console.log(
+              `⏳ Waiting ${postCommandDelay}ms after setup commands...`
+            );
             await sleep(postCommandDelay);
           }
 
@@ -249,14 +286,22 @@ export class Orchestrator {
           if (caseName) {
             console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
             // Use provided traceName or fallback to step index + case name
-            const finalTraceName = traceName || `step${itemIndex}_${caseName}`;
+            const baseTraceName = traceName || `step${itemIndex}_${caseName}`;
+            // If we have multiple runs, append the take number to prevent overwriting
+            const finalTraceName =
+              runs > 1 ? `${baseTraceName}-${run}` : baseTraceName;
+
             try {
               await this.runProfileProcess(caseName, finalTraceName);
             } catch (e: unknown) {
-              console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
+              console.error(
+                `❌ Case ${caseName} failed: ${getErrorMessage(e)}`
+              );
             }
           } else {
-            console.log(`⏩ [5/5] No test case provided. Skipping profiling step.`);
+            console.log(
+              `⏩ [5/5] No test case provided. Skipping profiling step.`
+            );
           }
 
           await sleep(2000);
@@ -265,7 +310,6 @@ export class Orchestrator {
       }
 
       console.log('\n✅ All runs completed.');
-
     } catch (e: unknown) {
       console.error(`\n💥 Orchestration Failed: ${getErrorMessage(e)}`);
     } finally {
@@ -328,7 +372,12 @@ export class Orchestrator {
       console.log('🛑 Stopping Server...');
       if (process.platform === 'win32' && this.serverProcess.pid) {
         try {
-          spawn('taskkill', ['/pid', this.serverProcess.pid.toString(), '/f', '/t']);
+          spawn('taskkill', [
+            '/pid',
+            this.serverProcess.pid.toString(),
+            '/f',
+            '/t',
+          ]);
         } catch (e) {
           /* ignore */
         }
