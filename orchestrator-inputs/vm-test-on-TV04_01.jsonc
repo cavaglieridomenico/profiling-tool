@@ -1,0 +1,20 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "targetUrl": "urls.VMMV_TV04_01",
+      "configOverrides": [
+        "COMMANDS.CONFIG_OVERRIDES?target=https://vmcore.luxottica.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
+        "COMMANDS.CONFIG_OVERRIDES?target=https://test-gateway-vtoprofile.luxdeepblue.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc"
+      ],
+      "postNavigationDelay": 10000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"]
+    }
+  ]
+}
