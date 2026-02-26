@@ -4,7 +4,6 @@ import fs from 'fs';
 import { ensureDeviceIsCool } from '../thermal';
 import { sendCommand, getErrorMessage } from '../utils';
 import { OrchestratorConfig } from './config';
-import { runTestCase } from '../../bin/profile';
 import { urls } from '../urls';
 import { COMMANDS } from '../commands';
 import { testCases } from '../testCases';
@@ -68,6 +67,49 @@ export class Orchestrator {
     }
 
     return value;
+  }
+
+  /**
+   * Runs a test case by spawning bin/profile.ts as an isolated child process.
+   */
+  private runProfileProcess(caseName: string, traceName: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+
+      console.log(`🚀 Spawning profile process for: ${caseName}...`);
+
+      const profileProcess = spawn(
+        npxCmd,
+        ['ts-node', 'bin/profile.ts', caseName, traceName],
+        {
+          cwd: process.cwd(),
+          stdio: 'pipe',
+          shell: true,
+        }
+      );
+
+      if (profileProcess.stdout) {
+        profileProcess.stdout.on('data', (data) => {
+          process.stdout.write(`[Profile:${caseName}] ${data}`);
+        });
+      }
+
+      if (profileProcess.stderr) {
+        profileProcess.stderr.on('data', (data) => {
+          process.stderr.write(`[Profile:${caseName} Err] ${data}`);
+        });
+      }
+
+      profileProcess.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Profile process exited with code ${code}`));
+        }
+      });
+
+      profileProcess.on('error', (err) => reject(err));
+    });
   }
 
   public async start(): Promise<void> {
@@ -209,7 +251,7 @@ export class Orchestrator {
             // Use provided traceName or fallback to step index + case name
             const finalTraceName = traceName || `step${itemIndex}_${caseName}`;
             try {
-              await runTestCase(caseName, finalTraceName);
+              await this.runProfileProcess(caseName, finalTraceName);
             } catch (e: unknown) {
               console.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
             }
