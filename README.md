@@ -82,7 +82,20 @@ While the main script (`npm start`, `npm run start:mobile`, or `npm run start:de
 
 #### Override
 
-command example: `config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js`
+Allows you to intercept network requests and respond with local file content. This is useful for mocking APIs, overriding configurations, or testing local code changes.
+
+**Command Examples:**
+
+- `config:overrides?target=vmp-ui-496.js&replacement=./overrides/vmp-ui-496.js`
+- `config:overrides?target=https://vmcore.luxottica.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc`
+
+**Best Practices & Key Features:**
+
+- **Uniqueness (Target):** While partial matching is supported (e.g., `target=app.js`), it is **highly recommended** to use the full URL (including protocol) to uniquely identify the endpoint. This prevents accidental overrides of unrelated requests.
+  - _Example:_ `target=https://vmcore.luxottica.com/services/v1/get-functionalities`
+- **Smart MIME Detection:** The tool automatically detects the correct MIME type based on file extensions (`.js`, `.css`, `.wasm`, `.json`). If a file has no extension (e.g., a GUID), it will inspect the content to identify and serve it as `application/json` if appropriate.
+- **CORS Support:** Overridden responses automatically include permissive CORS headers (`Access-Control-Allow-Origin: *`). The tool also automatically handles `OPTIONS` (pre-flight) requests for target URLs, ensuring the browser doesn't block the mocked data.
+- **Automatic Cache Disabling:** When request interception is enabled for overrides, the browser cache is automatically disabled to ensure the latest local files are always served.
 
 <br/>
 
@@ -93,6 +106,8 @@ To close all open tabs on the Android device and open a single fresh `about:blan
 ```bash
 npm run device:close-all-tabs
 ```
+
+> **Note:** This command is often preferred over `Device Clean Process` during automation because it provides a clean, isolated tab environment **without** clearing the browser's persistent storage (cookies/IndexedDB). This prevents intrusive privacy or consent modals from reappearing and disrupting the profiling flow.
 
 <br/>
 
@@ -250,7 +265,9 @@ Example `orchestrator.jsonc`:
       "waitUntil": "networkidle2",
       "configOverrides": [
         "COMMANDS.CONFIG_OVERRIDES?target=app.js&replacement=./overrides/app.js",
-        "COMMANDS.CONFIG_OVERRIDES?target=config.json&replacement=./overrides/config.json"
+        "COMMANDS.CONFIG_OVERRIDES?target=config.json&replacement=./overrides/config.json",
+        "COMMANDS.CONFIG_OVERRIDES?target=https://vmcore.luxottica.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
+        "COMMANDS.CONFIG_OVERRIDES?target=https://test-gateway-vtoprofile.luxdeepblue.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
       ],
       "postNavigationDelay": 5000,
       "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],

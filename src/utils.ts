@@ -17,7 +17,7 @@ dotenv.config({ path: envPath });
 
 // State to track active overrides
 let activeOverrides: Record<string, string> = {};
-let isInterceptionEnabled = false;
+let lastInterceptedPage: Page | null = null;
 
 /**
  * Safely extracts an error message from any error type.
@@ -358,11 +358,15 @@ export async function handleConfigOverrides(
     // If no params provided, disable overrides
     if (!targetUrl || !localFilePath) {
       activeOverrides = {};
-      if (isInterceptionEnabled) {
-        await page.setRequestInterception(false);
-        isInterceptionEnabled = false;
-        console.log('Overrides disabled. Request interception turned off.');
+      if (lastInterceptedPage && !lastInterceptedPage.isClosed()) {
+        try {
+          await lastInterceptedPage.setRequestInterception(false);
+          console.log('Overrides disabled. Request interception turned off.');
+        } catch (e) {
+          console.warn('Could not disable interception on closed page.');
+        }
       }
+      lastInterceptedPage = null;
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end('Overrides disabled.\n');
       return;
@@ -372,49 +376,100 @@ export async function handleConfigOverrides(
     activeOverrides[targetUrl] = localFilePath;
     console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
 
-    if (!isInterceptionEnabled) {
+    // If we have a new page or haven't enabled interception yet
+    if (lastInterceptedPage !== page) {
+      console.log('Enabling request interception on new page instance...');
       await page.setRequestInterception(true);
-      isInterceptionEnabled = true;
+      await page.setCacheEnabled(false); // Force disable cache for overrides
+      lastInterceptedPage = page;
 
-      page.on('request', (request: HTTPRequest) => {
+      page.on('request', async (request: HTTPRequest) => {
         const url = request.url();
+        const method = request.method();
+
         // Check if this URL matches any of our overrides
-        // We look for partial matches (contains) or exact matches
         const matchKey = Object.keys(activeOverrides).find((key) =>
           url.includes(key)
         );
 
         if (matchKey) {
+          // 1. Handle Pre-flight OPTIONS requests
+          if (method === 'OPTIONS') {
+            console.log(`[Override] Handling OPTIONS pre-flight for: ${url}`);
+            try {
+              await request.respond({
+                status: 204,
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Methods':
+                    'GET, POST, PUT, DELETE, OPTIONS',
+                  'Access-Control-Allow-Headers': '*',
+                  'Access-Control-Max-Age': '86400',
+                },
+              });
+              return;
+            } catch (err) {
+              /* fallback to continue below */
+            }
+          }
+
           const filePath = activeOverrides[matchKey];
           const absolutePath = path.resolve(process.cwd(), filePath);
 
           if (fs.existsSync(absolutePath)) {
-            console.log(`[Override] Serving local file for: ${url}`);
-
             // Determine correct MIME type
             const ext = path.extname(absolutePath).toLowerCase();
             let contentType = 'application/javascript'; // Default
-            if (ext === '.wasm') contentType = 'application/wasm';
-            if (ext === '.css') contentType = 'text/css';
-            if (ext === '.json') contentType = 'application/json';
 
-            // Respond with the local file content
-            request.respond({
-              status: 200,
-              contentType: contentType,
-              body: fs.readFileSync(absolutePath),
-            });
-            return;
+            // Read file content once to check for JSON if no extension
+            const fileBuffer = fs.readFileSync(absolutePath);
+            const firstChar = fileBuffer.toString().trim()[0];
+
+            if (
+              ext === '.json' ||
+              (ext === '' && (firstChar === '{' || firstChar === '['))
+            ) {
+              contentType = 'application/json';
+            } else if (ext === '.wasm') {
+              contentType = 'application/wasm';
+            } else if (ext === '.css') {
+              contentType = 'text/css';
+            }
+
+            // Respond with the local file content and CORS headers
+            try {
+              console.log(`[Override] Sending ${contentType} for: ${url}`);
+              await request.respond({
+                status: 200,
+                contentType: contentType,
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Methods':
+                    'GET, POST, PUT, DELETE, OPTIONS',
+                  'Access-Control-Allow-Headers': '*',
+                },
+                body: fileBuffer,
+              });
+              return;
+            } catch (err) {
+              console.error(`[Override Error] Failed to respond: ${err}`);
+              // Fallback to continue if respond fails
+            }
           } else {
             console.error(
               `[Override Error] Local file not found: ${absolutePath}`
             );
           }
         }
-        // Continue normal network request if no match
-        request.continue();
+
+        // Continue normal network request if no match or if response failed
+        try {
+          request.continue();
+        } catch (err) {
+          // Ignore "request is already handled" errors
+        }
       });
-      console.log('Request interception enabled.');
+      console.log('Request interception enabled and listener attached.');
     }
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });

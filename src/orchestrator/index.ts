@@ -230,26 +230,10 @@ export class Orchestrator {
             console.log(`⏩ [1/6] No pre-navigation commands.`);
           }
 
-          // C. Navigate to target URL (Only if targetUrl is provided)
-          if (targetUrl) {
-            console.log(
-              `🌐 [2/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
-            );
-            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
-            try {
-              const response = await sendCommand(navCmd);
-              console.log(`   [Navigation]: ${response}`);
-            } catch (e: unknown) {
-              console.error(`   Navigation failed: ${getErrorMessage(e)}`);
-            }
-          } else {
-            console.log(`⏩ [2/6] No target URL. Skipping navigation.`);
-          }
-
-          // D. Execute Config Overrides
+          // C. Execute Config Overrides
           if (configOverrides && configOverrides.length > 0) {
             console.log(
-              `⚙️  [3/6] Executing ${configOverrides.length} config overrides...`
+              `⚙️  [2/6] Executing ${configOverrides.length} config overrides...`
             );
             for (let overrideCmd of configOverrides) {
               const sanitizedCmd = overrideCmd.startsWith('/')
@@ -265,7 +249,23 @@ export class Orchestrator {
               }
             }
           } else {
-            console.log(`⏩ [3/6] No config overrides.`);
+            console.log(`⏩ [2/6] No config overrides.`);
+          }
+
+          // D. Navigate to target URL (Only if targetUrl is provided)
+          if (targetUrl) {
+            console.log(
+              `🌐 [3/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
+            );
+            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
+            try {
+              const response = await sendCommand(navCmd);
+              console.log(`   [Navigation]: ${response}`);
+            } catch (e: unknown) {
+              console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+            }
+          } else {
+            console.log(`⏩ [3/6] No target URL. Skipping navigation.`);
           }
 
           // E. Post-Navigation Delay
