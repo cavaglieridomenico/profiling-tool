@@ -1,0 +1,28 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "preNavigationCommands": [
+        "COMMANDS.DEVICE_CLEAN_STATE"
+      ],
+      "targetUrl": "urls.VMMV_TV25_01",
+      "postNavigationDelay": 5000,
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_PRIVACY"
+      ],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.VMMV_TV25_01",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "quick-test-trace",
+      "runs": 2
+    }
+  ]
+}

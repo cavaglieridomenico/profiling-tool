@@ -10,7 +10,7 @@
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE"
       ],
-      "targetUrl": "urls.SPEED_TEST",
+      "targetUrl": "urls.TV20",
       "postNavigationDelay": 10000,
       "setupCommands": [
         "COMMANDS.INPUT_TAP_TOP_CENTER"
