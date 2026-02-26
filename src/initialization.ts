@@ -1,8 +1,7 @@
 import { Browser } from 'puppeteer';
-import { initializeBrowser } from './browser';
+import { initializeBrowser, standardConnection } from './browser';
 import { checkForPuppeteerUpdates } from './version-checker';
 import { validateEnv, getErrorMessage } from './utils';
-import { standardConnection } from '../bin/connect';
 import { ensureDeviceIsCool } from './thermal';
 
 export interface SetupOptions {
@@ -17,8 +16,16 @@ export interface SetupOptions {
  * Centralized initialization flow for the Profiling Tool.
  * Handles env validation, version checks, ADB connection, and thermal baseline.
  */
-export async function performApplicationSetup(options: SetupOptions): Promise<Browser> {
-  const { mode, checkUpdates = true, checkThermal = false, skipAdb = false, strictVersionCheck = false } = options;
+export async function performApplicationSetup(
+  options: SetupOptions
+): Promise<Browser> {
+  const {
+    mode,
+    checkUpdates = true,
+    checkThermal = false,
+    skipAdb = false,
+    strictVersionCheck = false,
+  } = options;
 
   console.log(`🚀 Initializing Profiling Tool in ${mode} mode...`);
 
@@ -26,7 +33,9 @@ export async function performApplicationSetup(options: SetupOptions): Promise<Br
   if (checkUpdates) {
     const updateAvailable = await checkForPuppeteerUpdates();
     if (updateAvailable && strictVersionCheck) {
-      throw new Error('A mandatory Puppeteer update is available. Please update your dependencies to continue (Strict Mode enabled).');
+      throw new Error(
+        'A mandatory Puppeteer update is available. Please update your dependencies to continue (Strict Mode enabled).'
+      );
     }
   }
 
