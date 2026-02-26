@@ -285,14 +285,15 @@ export class Orchestrator {
           // F. Execute actual Profile Test Case
           if (caseName) {
             console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
-            // Use provided traceName or fallback to step index + case name
-            const baseTraceName = traceName || `step${itemIndex}_${caseName}`;
-            // If we have multiple runs, append the take number to prevent overwriting
-            const finalTraceName =
-              runs > 1 ? `${baseTraceName}-${run}` : baseTraceName;
+
+            // Just resolve the base name. The server will handle the -1, -2 appending.
+            const finalTraceName = traceName
+              ? this.resolveValue(traceName, targetUrl)
+              : `step${itemIndex}_${caseName}`;
 
             try {
               await this.runProfileProcess(caseName, finalTraceName);
+              console.log(`✅ Case ${caseName} completed successfully.`);
             } catch (e: unknown) {
               console.error(
                 `❌ Case ${caseName} failed: ${getErrorMessage(e)}`
