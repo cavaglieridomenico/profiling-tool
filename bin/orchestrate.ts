@@ -58,6 +58,7 @@ if (!fs.existsSync(absPath)) {
     }
 
     const config = configResult.data;
+    console.log('✅ Configuration validated successfully.');
 
     if (config.timeline.length === 0) {
       throw new Error(

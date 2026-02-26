@@ -3,37 +3,49 @@ import { z } from 'zod';
 /**
  * Zod schema for a single timeline item.
  */
-export const TimelineItemSchema = z.object({
-  targetUrl: z.string().optional(),
-  /**
-   * Optional: A list of command endpoints or COMMANDS.<KEY> to call BEFORE navigating.
-   */
-  preNavigationCommands: z.array(z.string()).default([]),
-  setupCommands: z.array(z.string()).default([]),
-  caseName: z.string().optional(),
-  traceName: z.string().optional(),
-  /**
-   * Optional: Number of times to repeat this timeline item.
-   * Defaults to 1.
-   */
-  runs: z.number().int().positive().default(1),
-  /**
-   * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
-   * Defaults to 'load'.
-   */
-  waitUntil: z
-    .enum(['load', 'domcontentloaded', 'networkidle0', 'networkidle2'])
-    .default('load'),
-  /**
-   * Optional: Delay in milliseconds to wait AFTER the navigation event completes
-   * but BEFORE setup commands or the test case starts.
-   */
-  postNavigationDelay: z.number().nonnegative().default(0),
-  /**
-   * Optional: Delay in milliseconds to wait AFTER the setup commands or the test case completes.
-   */
-  postCommandDelay: z.number().nonnegative().default(0),
-});
+export const TimelineItemSchema = z
+  .object({
+    targetUrl: z.string().optional(),
+    /**
+     * Optional: A list of command endpoints or COMMANDS.<KEY> to call BEFORE navigating.
+     */
+    preNavigationCommands: z.array(z.string()).default([]),
+    setupCommands: z.array(z.string()).default([]),
+    caseName: z.string().optional(),
+    traceName: z.string().optional(),
+    /**
+     * Optional: Number of times to repeat this timeline item.
+     * Defaults to 1.
+     */
+    runs: z.number().int().positive().default(1),
+    /**
+     * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
+     * Defaults to 'load'.
+     */
+    waitUntil: z
+      .enum(['load', 'domcontentloaded', 'networkidle0', 'networkidle2'])
+      .default('load'),
+    /**
+     * Optional: Delay in milliseconds to wait AFTER the navigation event completes
+     * but BEFORE setup commands or the test case starts.
+     */
+    postNavigationDelay: z.number().nonnegative().default(0),
+    /**
+     * Optional: Delay in milliseconds to wait AFTER the setup commands or the test case completes.
+     */
+    postCommandDelay: z.number().nonnegative().default(0),
+  })
+  .refine(
+    (item) =>
+      item.targetUrl ||
+      item.caseName ||
+      item.setupCommands.length > 0 ||
+      item.preNavigationCommands.length > 0,
+    {
+      message:
+        'Timeline item must have at least one of: targetUrl, caseName, setupCommands, or preNavigationCommands',
+    }
+  );
 
 /**
  * Zod schema for the root orchestrator configuration.

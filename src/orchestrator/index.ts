@@ -154,21 +154,6 @@ export class Orchestrator {
 
       let itemIndex = 1;
       for (const item of this.config.timeline) {
-        // Validation Gate: Ensure the item has at least one actionable property
-        if (
-          !item.targetUrl &&
-          !item.caseName &&
-          (!item.setupCommands || item.setupCommands.length === 0) &&
-          (!item.preNavigationCommands ||
-            item.preNavigationCommands.length === 0)
-        ) {
-          console.warn(
-            `⚠️ [Warning] Step ${itemIndex} is entirely empty or missing actionable properties. Skipping...`
-          );
-          itemIndex++;
-          continue; // Instantly skip to the next item
-        }
-
         const runs = item.runs || 1;
 
         for (let run = 1; run <= runs; run++) {
