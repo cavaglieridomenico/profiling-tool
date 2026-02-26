@@ -10,6 +10,10 @@ export const TimelineItemSchema = z
      * Optional: A list of command endpoints or COMMANDS.<KEY> to call BEFORE navigating.
      */
     preNavigationCommands: z.array(z.string()).default([]),
+    /**
+     * Optional: A list of command endpoints to configure network/config overrides.
+     */
+    configOverrides: z.array(z.string()).default([]),
     setupCommands: z.array(z.string()).default([]),
     caseName: z.string().optional(),
     traceName: z.string().optional(),
@@ -40,10 +44,11 @@ export const TimelineItemSchema = z
       item.targetUrl ||
       item.caseName ||
       item.setupCommands.length > 0 ||
-      item.preNavigationCommands.length > 0,
+      item.preNavigationCommands.length > 0 ||
+      item.configOverrides.length > 0,
     {
       message:
-        'Timeline item must have at least one of: targetUrl, caseName, setupCommands, or preNavigationCommands',
+        'Timeline item must have at least one of: targetUrl, caseName, setupCommands, preNavigationCommands, or configOverrides',
     }
   );
 

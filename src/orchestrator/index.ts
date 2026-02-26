@@ -167,6 +167,9 @@ export class Orchestrator {
           const setupCommands = (item.setupCommands || []).map((cmd) =>
             this.resolveValue(cmd, targetUrl)
           );
+          const configOverrides = (item.configOverrides || []).map((cmd) =>
+            this.resolveValue(cmd, targetUrl)
+          );
           const caseName = item.caseName
             ? this.resolveValue(item.caseName)
             : undefined;
@@ -201,7 +204,7 @@ export class Orchestrator {
           // B. Pre-Navigation Commands
           if (preNavigationCommands && preNavigationCommands.length > 0) {
             console.log(
-              `⚙️  [1/5] Executing ${preNavigationCommands.length} pre-navigation commands...`
+              `⚙️  [1/6] Executing ${preNavigationCommands.length} pre-navigation commands...`
             );
             for (let preCmd of preNavigationCommands) {
               const sanitizedCmd = preCmd.startsWith('/')
@@ -224,13 +227,13 @@ export class Orchestrator {
               }
             }
           } else {
-            console.log(`⏩ [1/5] No pre-navigation commands.`);
+            console.log(`⏩ [1/6] No pre-navigation commands.`);
           }
 
           // C. Navigate to target URL (Only if targetUrl is provided)
           if (targetUrl) {
             console.log(
-              `🌐 [2/5] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
+              `🌐 [2/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
             );
             const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
@@ -240,25 +243,47 @@ export class Orchestrator {
               console.error(`   Navigation failed: ${getErrorMessage(e)}`);
             }
           } else {
-            console.log(`⏩ [2/5] No target URL. Skipping navigation.`);
+            console.log(`⏩ [2/6] No target URL. Skipping navigation.`);
           }
 
-          // D. Post-Navigation Delay
+          // D. Execute Config Overrides
+          if (configOverrides && configOverrides.length > 0) {
+            console.log(
+              `⚙️  [3/6] Executing ${configOverrides.length} config overrides...`
+            );
+            for (let overrideCmd of configOverrides) {
+              const sanitizedCmd = overrideCmd.startsWith('/')
+                ? overrideCmd.substring(1)
+                : overrideCmd;
+              try {
+                const response = await sendCommand(sanitizedCmd);
+                console.log(`   [Override] ${overrideCmd}: ${response}`);
+              } catch (e: unknown) {
+                console.error(
+                  `   Override command ${overrideCmd} failed: ${getErrorMessage(e)}`
+                );
+              }
+            }
+          } else {
+            console.log(`⏩ [3/6] No config overrides.`);
+          }
+
+          // E. Post-Navigation Delay
           if (postNavigationDelay > 0) {
             console.log(
-              `⏳ [3/5] Waiting ${postNavigationDelay}ms for ${
+              `⏳ [4/6] Waiting ${postNavigationDelay}ms for ${
                 targetUrl ? 'page stabilization' : 'stabilization'
               }...`
             );
             await sleep(postNavigationDelay);
           } else {
-            console.log(`⏩ [3/5] No stabilization delay.`);
+            console.log(`⏩ [4/6] No stabilization delay.`);
           }
 
-          // E. Execute Setup Commands
+          // F. Execute Setup Commands
           if (setupCommands && setupCommands.length > 0) {
             console.log(
-              `⚙️  [4/5] Executing ${setupCommands.length} setup commands...`
+              `⚙️  [5/6] Executing ${setupCommands.length} setup commands...`
             );
             for (let setupCmd of setupCommands) {
               const sanitizedCmd = setupCmd.startsWith('/')
@@ -282,9 +307,9 @@ export class Orchestrator {
             await sleep(postCommandDelay);
           }
 
-          // F. Execute actual Profile Test Case
+          // G. Execute actual Profile Test Case
           if (caseName) {
-            console.log(`🧪 [5/5] Executing test case: ${caseName}...`);
+            console.log(`🧪 [6/6] Executing test case: ${caseName}...`);
 
             // Just resolve the base name. The server will handle the -1, -2 appending.
             const finalTraceName = traceName
@@ -301,7 +326,7 @@ export class Orchestrator {
             }
           } else {
             console.log(
-              `⏩ [5/5] No test case provided. Skipping profiling step.`
+              `⏩ [6/6] No test case provided. Skipping profiling step.`
             );
           }
 

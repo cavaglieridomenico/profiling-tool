@@ -1,11 +1,12 @@
 export const urls: Record<string, string> = {
   VMCORE_BYPASS: 'https://vmcore.luxottica.com/luxotticabypass',
   VMMV_TV28:
-    'https://vmmv-uat.luxottica.com/v/5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E32',
+    'https://vmmv-uat.luxottica.com/v/5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E31',
   VMMV_TV25_01:
     'https://vmmv-uat.luxottica.com/v/5.5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E31',
   VMMV_TV25_02:
     'https://vmmv-uat.luxottica.com/v/5.5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E32',
+  VMMV_TV25_03: 'https://vmmv-uat.luxottica.com/v/5.5.6/demo/demo.html',
   VMMV_TV20:
     'https://vmmv-uat.luxottica.com/v/5.5.2/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E31',
   VMMV_TV20_01:
@@ -17,6 +18,7 @@ export const urls: Record<string, string> = {
   VMMV_TV13_01: 'https://www.sunglasshut.com/us/ray-ban/rb3565-8056597586030',
   VMMV_TV13:
     'https://www.ray-ban.com/usa/electronics/RW4006ray-ban%20%7C%20meta%20wayfarer%20-%20gen%201-black/8056597982788',
+  VMMV_TV04_01: 'https://vmmv-uat.luxottica.com/v/4.20/demo/demo.html',
   VMCORE_VMP_TV26:
     'https://vmcore-test.luxottica.com/demo/VMP-UI/feature/2.1.3_baseline/index.html#/',
   VMCORE_VMP_TV27_02:

@@ -221,8 +221,19 @@ Alternatively, add this line to your `.env` or `.env.<environment>` file:
 STRICT_VERSION_CHECK=true
 ```
 
-- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`): - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page**. - `preNavigationCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call BEFORE navigating. This is the recommended place for `COMMANDS.DEVICE_CLEAN_STATE`. - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0`, or `networkidle2`. Only applicable if `targetUrl` is provided. - `postNavigationDelay`: (optional) Number of milliseconds to wait after the navigation event (if any) or as a general stabilization pause before proceeding to setup commands. - `postCommandDelay`: (optional) Number of milliseconds to wait AFTER the setup commands or the test case completes. - `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call. - `caseName`: (optional) The name of the test case to execute. - `traceName`: (optional) A custom name for the trace files. - `runs`: (optional) Number of times to repeat this specific timeline item (default: 1).
-  Example `orchestrator.jsonc`:
+- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
+- `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page**.
+- `preNavigationCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call BEFORE navigating. This is the recommended place for `COMMANDS.DEVICE_CLEAN_STATE`.
+- `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0`, or `networkidle2`. Only applicable if `targetUrl` is provided.
+- `configOverrides`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call AFTER navigation but BEFORE stabilization. Ideal for `COMMANDS.CONFIG_OVERRIDES`.
+- `postNavigationDelay`: (optional) Number of milliseconds to wait after navigation and config overrides (if any) or as a general stabilization pause before proceeding to setup commands.
+- `postCommandDelay`: (optional) Number of milliseconds to wait AFTER the setup commands or the test case completes.
+- `setupCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call.
+- `caseName`: (optional) The name of the test case to execute.
+- `traceName`: (optional) A custom name for the trace files.
+- `runs`: (optional) Number of times to repeat this specific timeline item (default: 1).
+
+Example `orchestrator.jsonc`:
 
 ```jsonc
 {
@@ -237,6 +248,10 @@ STRICT_VERSION_CHECK=true
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.VMMV_TV20",
       "waitUntil": "networkidle2",
+      "configOverrides": [
+        "COMMANDS.CONFIG_OVERRIDES?target=app.js&replacement=./overrides/app.js",
+        "COMMANDS.CONFIG_OVERRIDES?target=config.json&replacement=./overrides/config.json"
+      ],
       "postNavigationDelay": 5000,
       "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
       "caseName": "testCases.perfetto_tc04",
