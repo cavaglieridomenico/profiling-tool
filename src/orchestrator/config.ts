@@ -1,49 +1,62 @@
-export interface TimelineItem {
-  targetUrl?: string;
+import { z } from 'zod';
+
+/**
+ * Zod schema for a single timeline item.
+ */
+export const TimelineItemSchema = z.object({
+  targetUrl: z.string().optional(),
   /**
    * Optional: A list of command endpoints or COMMANDS.<KEY> to call BEFORE navigating.
    */
-  preNavigationCommands?: string[];
-  setupCommands?: string[];
-  caseName?: string;
-  traceName?: string;
+  preNavigationCommands: z.array(z.string()).default([]),
+  setupCommands: z.array(z.string()).default([]),
+  caseName: z.string().optional(),
+  traceName: z.string().optional(),
   /**
    * Optional: Number of times to repeat this timeline item.
    * Defaults to 1.
    */
-  runs?: number;
+  runs: z.number().int().positive().default(1),
   /**
    * Optional: Wait condition for navigation (load, domcontentloaded, networkidle0, networkidle2).
    * Defaults to 'load'.
    */
-  waitUntil?: 'load' | 'domcontentloaded' | 'networkidle0' | 'networkidle2';
+  waitUntil: z
+    .enum(['load', 'domcontentloaded', 'networkidle0', 'networkidle2'])
+    .default('load'),
   /**
-   * Optional: Delay in milliseconds to wait AFTER the navigation event completes 
+   * Optional: Delay in milliseconds to wait AFTER the navigation event completes
    * but BEFORE setup commands or the test case starts.
    */
-  postNavigationDelay?: number;
+  postNavigationDelay: z.number().nonnegative().default(0),
   /**
    * Optional: Delay in milliseconds to wait AFTER the setup commands or the test case completes.
    */
-  postCommandDelay?: number;
-}
+  postCommandDelay: z.number().nonnegative().default(0),
+});
 
-export interface OrchestratorConfig {
-  timeline: TimelineItem[];
-  setup: {
-    connect?: boolean;
-    checkThermal?: boolean;
+/**
+ * Zod schema for the root orchestrator configuration.
+ */
+export const OrchestratorConfigSchema = z.object({
+  timeline: z.array(TimelineItemSchema),
+  setup: z.object({
+    connect: z.boolean().default(true),
+    checkThermal: z.boolean().default(true),
     /**
      * Optional environment name (e.g. 'vmcore', 'pdwuat').
      * Corresponds to PUPPETEER_ENV variable.
      */
-    puppeteerEnv?: string;
+    puppeteerEnv: z.string().optional(),
     /**
      * If true, the tool will exit if a newer Puppeteer version is available.
      */
-    strictVersionCheck?: boolean;
-  };
-}
+    strictVersionCheck: z.boolean().default(false),
+  }),
+});
+
+export type TimelineItem = z.infer<typeof TimelineItemSchema>;
+export type OrchestratorConfig = z.infer<typeof OrchestratorConfigSchema>;
 
 export function parseJsonc(content: string): any {
   // Regex to strip block comments and single line comments
