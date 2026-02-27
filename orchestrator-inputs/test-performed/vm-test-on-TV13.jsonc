@@ -39,7 +39,7 @@
     {
       "targetUrl": "urls.VMMV_TV13",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.vmmv_tc08__tc04_rb",
+      "caseName": "testCases.vmmv_tc08_rb",
       "traceName": "TV13-TC08__TC04-TD31_03",
       "runs": 3
     },

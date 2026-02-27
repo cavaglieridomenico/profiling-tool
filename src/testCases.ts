@@ -9,40 +9,40 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:start', delay: 10000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc01__tc04: [
+  vmmv_tc01: [
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 20000 },
+    { command: 'navigate:refresh', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc05__tc06: [
+  vmmv_tc05: [
     { command: 'devtools:start', delay: 2000 },
-    { command: 'input:tap-vmmv-multivm', delay: 13000 },
+    { command: 'input:tap-vmmv-multivm', delay: 10000 },
     { command: 'input:tap-vmmv-multivm', delay: 5000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc08__tc04: [
+  vmmv_tc08: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-tryonbutton', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc08__tc04_sgh: [
+  vmmv_tc08_sgh: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-tryonbutton-sgh', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-sgh', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc08__tc04_rb: [
+  vmmv_tc08_rb: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-tryonbutton-rb', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-rb', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc08__tc04_nu: [
+  vmmv_tc08_nu: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-tryonbutton-nu', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-nu', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc08__tc04_oo: [
+  vmmv_tc08_oo: [
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-tryonbutton-oo', delay: 20000 },
+    { command: 'input:tap-vmmv-tryonbutton-oo', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc09: [

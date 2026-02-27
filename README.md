@@ -156,7 +156,7 @@ To run a test case, use the following command:
 npx ts-node bin/profile.ts <test_case_name>
 ```
 
-Replace `<test_case_name>` with the name of the test case you want to run (e.g., `vmmv_tc01__tc04`).
+Replace `<test_case_name>` with the name of the test case you want to run (e.g., `vmmv_tc01`).
 
 #### Running a Test Case with a Custom Trace Name
 
@@ -166,10 +166,10 @@ You can also provide a custom name for the trace file by adding it as a second a
 npx ts-node bin/profile.ts <test_case_name> <custom_trace_name>
 ```
 
-For example, to run `vmmv_tc01__tc04` and save the traces as `my-custom-trace-1.json` (Puppeteer) and `my-custom-trace-1.pftrace` (Perfetto, if enabled), use:
+For example, to run `vmmv_tc01` and save the traces as `my-custom-trace-1.json` (Puppeteer) and `my-custom-trace-1.pftrace` (Perfetto, if enabled), use:
 
 ```bash
-npx ts-node bin/profile.ts vmmv_tc01__tc04 my-custom-trace
+npx ts-node bin/profile.ts vmmv_tc01 my-custom-trace
 ```
 
 **Note on Trace Files:**
