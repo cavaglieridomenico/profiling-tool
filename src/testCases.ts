@@ -15,7 +15,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000,
     },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:url?url=TARGET_URL', delay: 15000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc05: [

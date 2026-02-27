@@ -158,6 +158,95 @@ export function handleSwipe(
   );
 }
 
+/**
+ * Internal helper to apply active overrides to a page instance.
+ */
+async function applyOverridesIfActive(page: Page): Promise<void> {
+  if (Object.keys(activeOverrides).length === 0) return;
+
+  try {
+    console.log(
+      `[Sticky Overrides] Re-applying ${
+        Object.keys(activeOverrides).length
+      } active override(s) to page.`
+    );
+    await page.setRequestInterception(true);
+    await page.setCacheEnabled(false);
+    lastInterceptedPage = page;
+
+    page.removeAllListeners('request');
+
+    page.on('request', async (request: HTTPRequest) => {
+      const url = request.url();
+      const method = request.method();
+
+      const matchKey = Object.keys(activeOverrides).find((key) =>
+        url.includes(key)
+      );
+
+      if (matchKey) {
+        if (method === 'OPTIONS') {
+          try {
+            await request.respond({
+              status: 204,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Max-Age': '86400',
+              },
+            });
+            return;
+          } catch (err) {}
+        }
+
+        const filePath = activeOverrides[matchKey];
+        const absolutePath = path.resolve(process.cwd(), filePath);
+
+        if (fs.existsSync(absolutePath)) {
+          const ext = path.extname(absolutePath).toLowerCase();
+          let contentType = 'application/javascript';
+          const fileBuffer = fs.readFileSync(absolutePath);
+          const firstChar = fileBuffer.toString().trim()[0];
+
+          if (
+            ext === '.json' ||
+            (ext === '' && (firstChar === '{' || firstChar === '['))
+          ) {
+            contentType = 'application/json';
+          } else if (ext === '.wasm') {
+            contentType = 'application/wasm';
+          } else if (ext === '.css') {
+            contentType = 'text/css';
+          }
+
+          try {
+            await request.respond({
+              status: 200,
+              contentType: contentType,
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': '*',
+              },
+              body: fileBuffer,
+            });
+            return;
+          } catch (err) {
+            console.error(`[Override Error] Failed to respond: ${err}`);
+          }
+        }
+      }
+
+      try {
+        await request.continue();
+      } catch (err) {}
+    });
+  } catch (err) {
+    console.warn('[Sticky Overrides] Could not apply interception:', getErrorMessage(err));
+  }
+}
+
 export async function handleNavigation(
   page: Page,
   url: string,
@@ -171,6 +260,8 @@ export async function handleNavigation(
   try {
     const { PUPPETEER_USERNAME, PUPPETEER_PASSWORD } = process.env;
     const resolvedUrl = resolveUrl(url);
+
+    await applyOverridesIfActive(page);
 
     if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
       await page.authenticate({
@@ -225,7 +316,6 @@ export async function handleCleanState(
     let pages = await browser.pages();
     let targetPage = page;
 
-    // Robustness: Check if the passed 'page' is actually still valid/attached
     if (!pages.includes(page)) {
       console.warn(
         'Warning: Current page reference is stale or detached. Switching to first available page.'
@@ -234,7 +324,7 @@ export async function handleCleanState(
         targetPage = pages[0];
       } else {
         targetPage = await browser.newPage();
-        pages = await browser.pages(); // refresh list
+        pages = await browser.pages();
       }
     }
 
@@ -244,10 +334,8 @@ export async function handleCleanState(
       })...`
     );
 
-    // 1. Connect to CDP for Low-Level Control
     const client = await targetPage.target().createCDPSession();
 
-    // 2. Targeted Storage Wipe (with robust URL parsing)
     let origin: string;
     try {
       origin = new URL(resolvedUrl).origin;
@@ -261,11 +349,8 @@ export async function handleCleanState(
       origin: origin,
       storageTypes: storageTypes,
     });
-    console.log(
-      `- Storage (${storageTypes}) cleared for origin: ${origin}`
-    );
+    console.log(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
 
-    // 3. Environment Hygiene: Close background tabs & Disable Cache
     let closedCount = 0;
     for (const p of pages) {
       if (p !== targetPage) {
@@ -277,26 +362,25 @@ export async function handleCleanState(
         }
       }
     }
-    if (closedCount > 0)
-      console.log(`- Closed ${closedCount} background tabs.`);
+    if (closedCount > 0) console.log(`- Closed ${closedCount} background tabs.`);
 
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true,
     } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 
-    // 4. Tab Destruction & Active View Reset
-    await client.detach(); // Detach from the polluted tab first
+    await client.detach();
     console.log('- CDP Session detached from polluted tab.');
 
-    await targetPage.close(); // Destroy the tab to drop V8 Isolates and Wasm memory
+    await targetPage.close();
     console.log('- Polluted execution tab destroyed.');
 
-    const pristinePage = await browser.newPage(); // Spawn a fresh tab
+    const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
     console.log('- Spawned fresh tab and navigated to about:blank.');
 
-    // 5. Memory Sanitization on the Pristine Tab
+    await applyOverridesIfActive(pristinePage);
+
     const pristineClient = await pristinePage.target().createCDPSession();
     await pristineClient.send('HeapProfiler.collectGarbage');
     await pristineClient.detach();
@@ -332,11 +416,9 @@ export async function handleCloseAllTabs(
 
     console.log(`Closing ${closedCount} open tabs...`);
 
-    // Create a new fresh page first so the browser doesn't close
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
 
-    // Close all old pages
     for (const p of pages) {
       try {
         await p.close();
@@ -365,12 +447,12 @@ export async function handleConfigOverrides(
   if (!page) return;
 
   try {
-    // If no params provided, disable overrides
     if (!targetUrl || !localFilePath) {
       activeOverrides = {};
       if (lastInterceptedPage && !lastInterceptedPage.isClosed()) {
         try {
           await lastInterceptedPage.setRequestInterception(false);
+          lastInterceptedPage.removeAllListeners('request');
           console.log('Overrides disabled. Request interception turned off.');
         } catch (e) {
           console.warn('Could not disable interception on closed page.');
@@ -382,105 +464,10 @@ export async function handleConfigOverrides(
       return;
     }
 
-    // Activate Overrides
     activeOverrides[targetUrl] = localFilePath;
     console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
 
-    // If we have a new page or haven't enabled interception yet
-    if (lastInterceptedPage !== page) {
-      console.log('Enabling request interception on new page instance...');
-      await page.setRequestInterception(true);
-      await page.setCacheEnabled(false); // Force disable cache for overrides
-      lastInterceptedPage = page;
-
-      page.on('request', async (request: HTTPRequest) => {
-        const url = request.url();
-        const method = request.method();
-
-        // Check if this URL matches any of our overrides
-        const matchKey = Object.keys(activeOverrides).find((key) =>
-          url.includes(key)
-        );
-
-        if (matchKey) {
-          // 1. Handle Pre-flight OPTIONS requests
-          if (method === 'OPTIONS') {
-            console.log(`[Override] Handling OPTIONS pre-flight for: ${url}`);
-            try {
-              await request.respond({
-                status: 204,
-                headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Methods':
-                    'GET, POST, PUT, DELETE, OPTIONS',
-                  'Access-Control-Allow-Headers': '*',
-                  'Access-Control-Max-Age': '86400',
-                },
-              });
-              return;
-            } catch (err) {
-              /* fallback to continue below */
-            }
-          }
-
-          const filePath = activeOverrides[matchKey];
-          const absolutePath = path.resolve(process.cwd(), filePath);
-
-          if (fs.existsSync(absolutePath)) {
-            // Determine correct MIME type
-            const ext = path.extname(absolutePath).toLowerCase();
-            let contentType = 'application/javascript'; // Default
-
-            // Read file content once to check for JSON if no extension
-            const fileBuffer = fs.readFileSync(absolutePath);
-            const firstChar = fileBuffer.toString().trim()[0];
-
-            if (
-              ext === '.json' ||
-              (ext === '' && (firstChar === '{' || firstChar === '['))
-            ) {
-              contentType = 'application/json';
-            } else if (ext === '.wasm') {
-              contentType = 'application/wasm';
-            } else if (ext === '.css') {
-              contentType = 'text/css';
-            }
-
-            // Respond with the local file content and CORS headers
-            try {
-              console.log(`[Override] Sending ${contentType} for: ${url}`);
-              await request.respond({
-                status: 200,
-                contentType: contentType,
-                headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  'Access-Control-Allow-Methods':
-                    'GET, POST, PUT, DELETE, OPTIONS',
-                  'Access-Control-Allow-Headers': '*',
-                },
-                body: fileBuffer,
-              });
-              return;
-            } catch (err) {
-              console.error(`[Override Error] Failed to respond: ${err}`);
-              // Fallback to continue if respond fails
-            }
-          } else {
-            console.error(
-              `[Override Error] Local file not found: ${absolutePath}`
-            );
-          }
-        }
-
-        // Continue normal network request if no match or if response failed
-        try {
-          request.continue();
-        } catch (err) {
-          // Ignore "request is already handled" errors
-        }
-      });
-      console.log('Request interception enabled and listener attached.');
-    }
+    await applyOverridesIfActive(page);
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Override active for ${targetUrl}\n`);

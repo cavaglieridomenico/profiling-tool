@@ -96,6 +96,11 @@ Allows you to intercept network requests and respond with local file content. Th
 - **Smart MIME Detection:** The tool automatically detects the correct MIME type based on file extensions (`.js`, `.css`, `.wasm`, `.json`). If a file has no extension (e.g., a GUID), it will inspect the content to identify and serve it as `application/json` if appropriate.
 - **CORS Support:** Overridden responses automatically include permissive CORS headers (`Access-Control-Allow-Origin: *`). The tool also automatically handles `OPTIONS` (pre-flight) requests for target URLs, ensuring the browser doesn't block the mocked data.
 - **Automatic Cache Disabling:** When request interception is enabled for overrides, the browser cache is automatically disabled to ensure the latest local files are always served.
+- **Sticky Overrides (Persistence):** Overrides are "sticky"—they persist across navigations and tab recreations (e.g., after a `Device Clean Process`). The tool automatically re-attaches the interception logic to any fresh tab spawned during the session if overrides are active.
+
+**Disabling Overrides:**
+To stop intercepting requests and return the browser to its default state, send a request to the endpoint without parameters:
+`COMMANDS.CONFIG_OVERRIDES` (or `http://localhost:8080/config:overrides`)
 
 <br/>
 
