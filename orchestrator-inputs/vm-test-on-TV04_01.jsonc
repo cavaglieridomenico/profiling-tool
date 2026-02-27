@@ -18,15 +18,12 @@
       "postCommandDelay": 10000
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 10000
-    },
-    {
       "caseName": "testCases.vmmv_tc01",
       "traceName": "TV04_01-TC01-TD31_03",
       "runs": 3
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
       "postNavigationDelay": 10000,
       "caseName": "testCases.devtools_tc04",
@@ -34,6 +31,7 @@
       "runs": 3
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
       "postNavigationDelay": 10000,
       "caseName": "testCases.perfetto_tc04",

@@ -79,7 +79,8 @@ export class Orchestrator {
    */
   private runProfileProcess(
     caseName: string,
-    traceName: string
+    traceName: string,
+    targetUrl: string
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
@@ -88,7 +89,7 @@ export class Orchestrator {
 
       const profileProcess = spawn(
         npxCmd,
-        ['ts-node', 'bin/profile.ts', caseName, traceName],
+        ['ts-node', 'bin/profile.ts', caseName, traceName, targetUrl],
         {
           cwd: process.cwd(),
           stdio: 'pipe',
@@ -258,7 +259,7 @@ export class Orchestrator {
             console.log(
               `🌐 [3/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
             );
-            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
+            const navCmd = `Maps:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
               const response = await sendCommand(navCmd);
               console.log(`   [Navigation]: ${response}`);
@@ -318,7 +319,11 @@ export class Orchestrator {
               : `step${itemIndex}_${caseName}`;
 
             try {
-              await this.runProfileProcess(caseName, finalTraceName);
+              await this.runProfileProcess(
+                caseName,
+                finalTraceName,
+                targetUrl || ''
+              );
               console.log(`✅ Case ${caseName} completed successfully.`);
             } catch (e: unknown) {
               console.error(

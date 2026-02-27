@@ -10,8 +10,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc01: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000,
+    },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 15000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc05: [

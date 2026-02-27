@@ -172,6 +172,27 @@ For example, to run `vmmv_tc01` and save the traces as `my-custom-trace-1.json` 
 npx ts-node bin/profile.ts vmmv_tc01 my-custom-trace
 ```
 
+### Template Pattern for Dynamic URLs
+
+To reuse profiling sequences across different environments without modifying code, use the `TARGET_URL` placeholder inside `src/testCases.ts`.
+
+**Example:**
+
+```javascript
+vmmv_tc01: [
+  {
+    command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+    delay: 5000,
+  },
+  { command: 'devtools:start', delay: 2000 },
+  { command: 'navigate:url?url=TARGET_URL', delay: 15000 },
+  { command: 'devtools:stop', delay: 0 },
+];
+```
+
+Pass the raw URL or alias as the third argument. The script automatically resolves it against your dictionary and replaces TARGET_URL prior to execution:
+`npx ts-node bin/profile.ts vmmv_tc01 MyTraceName urls.VMMV_TV20`
+
 **Note on Trace Files:**
 
 - **DevTools Traces:** Saved in the `devtools-output/` directory.
@@ -286,6 +307,9 @@ Example `orchestrator.jsonc`:
   ],
 }
 ```
+
+**Note on test cases with template:**
+No syntax changes are required in your configuration. The Orchestrator inherently resolves and injects the `?url=TARGET_URL` defined in the JSONC blueprint directly into the executing test case.
 
 ## Enabling Memory Profiling on Android device
 
