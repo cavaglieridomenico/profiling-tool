@@ -20,7 +20,7 @@ export const routeHandlers: RouteHandlers = {
     try {
       const traceName = url.searchParams.get('name') || undefined;
       perfettoTraceManager.startPerfetto(traceName || null);
-      sendResponse(res, 200, 'Perfetto tracing started (background).');
+      sendResponse(res, 200, '🛑 Perfetto tracing started (background).');
     } catch (error: unknown) {
       sendResponse(
         res,
@@ -35,7 +35,7 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(
         res,
         200,
-        `Perfetto tracing stopped. Saved to: ${tracePath}`
+        `⏹️ Perfetto tracing stopped. Saved to: ${tracePath}`
       );
     } catch (error: unknown) {
       sendResponse(
@@ -49,7 +49,11 @@ export const routeHandlers: RouteHandlers = {
     try {
       const traceName = url.searchParams.get('name');
       const tracePath = await devtoolsTraceManager.startTrace(page, traceName);
-      sendResponse(res, 200, `🛑 Tracing started. Saving to ${tracePath}`);
+      sendResponse(
+        res,
+        200,
+        `🛑 DevTools tracing started. Saving to ${tracePath}`
+      );
     } catch (error: unknown) {
       sendResponse(res, 404, getErrorMessage(error));
     }
@@ -58,7 +62,11 @@ export const routeHandlers: RouteHandlers = {
     try {
       console.log(`Tracing stopped... Saving...`);
       const traceFile = await devtoolsTraceManager.stopTrace(page);
-      sendResponse(res, 200, `⏹️ Tracing stopped. File ${traceFile} saved.`);
+      sendResponse(
+        res,
+        200,
+        `⏹️ DevTools tracing stopped. File ${traceFile} saved.`
+      );
     } catch (error: unknown) {
       sendResponse(res, 404, getErrorMessage(error));
     }
