@@ -18,6 +18,9 @@
         "COMMANDS.DEVICE_COOLDOWN"
       ],
       "postCommandDelay": 5000
+    },
+    {
+      "setupCommands": ["COMMANDS.CONFIG_OVERRIDES"] // Explicitly disable overrides at the end of the sequence
     }
   ]
 }

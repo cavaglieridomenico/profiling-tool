@@ -1,0 +1,159 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "configOverrides": [
+        "COMMANDS.CONFIG_OVERRIDES?target=https://vmcore.luxottica.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
+        "COMMANDS.CONFIG_OVERRIDES?target=https://test-gateway-vtoprofile.luxdeepblue.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc"
+      ],
+      "postNavigationDelay": 8000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
+      "postCommandDelay": 10000
+    },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "skipNavigation": true,
+    //   "caseName": "testCases.vmmv_tc01",
+    //   "traceName": "TV25_03-TC01-TD31_03",
+    //   "runs": 3
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.devtools_tc04",
+    //   "traceName": "TV25_03-TC04-TD31_03",
+    //   "runs": 3
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.perfetto_tc04",
+    //   "traceName": "TV25_03-TC04-TD31_03",
+    //   "runs": 3
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc10_v4",
+    //   "traceName": "TV25_03-TC10-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.devtools_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.perfetto_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc10_v4",
+    //   "traceName": "TV25_03-TC10-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.devtools_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.perfetto_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc10_v4",
+    //   "traceName": "TV25_03-TC10-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.devtools_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.perfetto_tc04",
+    //   "traceName": "TV25_03-TC11-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc13_v4",
+    //   "traceName": "TV25_03-TC13-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc13_v4",
+    //   "traceName": "TV25_03-TC13-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    // {
+    //   "targetUrl": "urls.VMMV_TV25_03",
+    //   "postNavigationDelay": 15000,
+    //   "caseName": "testCases.vmmv_tc13_v4",
+    //   "traceName": "TV25_03-TC13-TD31_03",
+    //   "runs": 1
+    // },
+    // {
+    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
+    //   "postCommandDelay": 2000
+    // },
+    {
+      "setupCommands": ["COMMANDS.CONFIG_OVERRIDES"] // Reset sticky overrides before completing the orchestration
+    }
+  ]
+}
