@@ -84,7 +84,24 @@ export const routeHandlers: RouteHandlers = {
   [COMMANDS.DEVICE_CLEAN_STATE]: async (req, res, page, url, mode) => {
     if (mode) {
       const targetUrl = url.searchParams.get('url');
-      await handleCleanState(page, res, mode, targetUrl);
+      await handleCleanState(page, res, mode, targetUrl, 'all');
+    } else {
+      sendResponse(res, 400, 'Mode is required for clean state.');
+    }
+  },
+  [COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES]: async (
+    req,
+    res,
+    page,
+    url,
+    mode
+  ) => {
+    if (mode) {
+      const targetUrl = url.searchParams.get('url');
+      // All except 'cookies'
+      const types =
+        'appcache,file_systems,indexeddb,local_storage,shader_cache,websql,service_workers,cache_storage,interest_groups,shared_storage,other';
+      await handleCleanState(page, res, mode, targetUrl, types);
     } else {
       sendResponse(res, 400, 'Mode is required for clean state.');
     }

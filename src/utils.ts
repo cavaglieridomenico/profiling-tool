@@ -68,11 +68,14 @@ export function sendCommand(command: string): Promise<string> {
  */
 export async function runCleanDevice(
   targetUrl: string,
-  mode: string = 'mobile'
+  mode: string = 'mobile',
+  preserveCookies: boolean = false
 ): Promise<string> {
-  const cleanCmd = `device:clean-state?url=${encodeURIComponent(
-    targetUrl
-  )}&mode=${mode}`;
+  const cleanCmd = preserveCookies
+    ? `device:clean-state-preserve-cookies?url=${encodeURIComponent(
+        targetUrl
+      )}&mode=${mode}`
+    : `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=${mode}`;
   return await sendCommand(cleanCmd);
 }
 
@@ -195,7 +198,8 @@ export async function handleCleanState(
   page: Page,
   res: ServerResponse,
   mode: string,
-  targetUrl: string | null
+  targetUrl: string | null,
+  storageTypes: string = 'all'
 ): Promise<void> {
   if (mode !== 'mobile') {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -234,7 +238,11 @@ export async function handleCleanState(
       }
     }
 
-    console.log('Starting Mobile Device Clean State...');
+    console.log(
+      `Starting Mobile Device Clean State (${
+        storageTypes === 'all' ? 'FULL' : 'PRESERVE COOKIES'
+      })...`
+    );
 
     // 1. Connect to CDP for Low-Level Control
     const client = await targetPage.target().createCDPSession();
@@ -251,9 +259,11 @@ export async function handleCleanState(
 
     await client.send('Storage.clearDataForOrigin', {
       origin: origin,
-      storageTypes: 'all',
+      storageTypes: storageTypes,
     });
-    console.log(`- Storage cleared for origin: ${origin}`);
+    console.log(
+      `- Storage (${storageTypes}) cleared for origin: ${origin}`
+    );
 
     // 3. Environment Hygiene: Close background tabs & Disable Cache
     let closedCount = 0;

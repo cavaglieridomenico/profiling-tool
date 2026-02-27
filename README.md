@@ -126,6 +126,14 @@ Execution Sequence:
 
 <br/>
 
+#### Device Clean Process (Preserve Cookies)
+
+Same as `Device Clean Process`, but **preserves browser cookies**. This is useful during profiling runs where you want to clear the application's heavy state (IndexedDB, Cache, etc.) but avoid re-triggering cookie consent banners or login flows that were handled in a previous setup step.
+
+**Command:** `COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES`
+
+<br/>
+
 #### Saving trace files
 
 Trace files will be saved in your project directory with progressive numbering (e.g., `trace-0.json`, `trace-1.json`).

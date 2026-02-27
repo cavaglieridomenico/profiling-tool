@@ -16,6 +16,7 @@
     "device:get-temperature": "curl http://localhost:8080/device:get-temperature",
     "device:cooldown": "curl http://localhost:8080/device:cooldown",
     "device:clean": "ts-node bin/clean.ts",
+    "device:clean:preserve-cookies": "ts-node bin/clean.ts --preserve-cookies",
     "device:close-all-tabs": "curl http://localhost:8080/device:close-all-tabs",
     "perfetto:start": "curl http://localhost:8080/perfetto:start",
     "perfetto:stop": "curl http://localhost:8080/perfetto:stop",

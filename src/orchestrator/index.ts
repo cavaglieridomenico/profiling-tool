@@ -39,7 +39,8 @@ export class Orchestrator {
 
       // Auto-populate targetUrl if it's a clean command and no URL is provided
       if (
-        key === 'DEVICE_CLEAN_STATE' &&
+        (key === 'DEVICE_CLEAN_STATE' ||
+          key === 'DEVICE_CLEAN_STATE_PRESERVE_COOKIES') &&
         !query.includes('url=') &&
         targetUrl
       ) {

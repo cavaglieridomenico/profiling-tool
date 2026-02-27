@@ -15,15 +15,14 @@
       ],
       "postNavigationDelay": 10000,
       "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
-      "postCommandDelay": 5000,
-      "caseName": "testCases.perfetto_tc04",
-      "traceName": "custom_name_example",
-      "runs": 3
+      "postCommandDelay": 5000
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV20",
       "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_RX"],
-      "caseName": "testCases.vmmv_tc01__tc04"
+      "caseName": "testCases.vmmv_tc01__tc04",
+      "runs": 3
     }
   ]
 }
