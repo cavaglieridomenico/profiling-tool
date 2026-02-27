@@ -18,6 +18,11 @@ export const TimelineItemSchema = z
     caseName: z.string().optional(),
     traceName: z.string().optional(),
     /**
+     * If true, skip the internal orchestrator navigation step.
+     * Useful for test cases that handle their own navigation or for pure setup actions.
+     */
+    skipNavigation: z.boolean().default(false),
+    /**
      * Optional: Number of times to repeat this timeline item.
      * Defaults to 1.
      */

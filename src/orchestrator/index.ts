@@ -179,6 +179,7 @@ export class Orchestrator {
             ? this.resolveValue(item.traceName, targetUrl)
             : undefined;
           const waitUntil = item.waitUntil || 'load';
+          const skipNavigation = item.skipNavigation === true;
           const postNavigationDelay = item.postNavigationDelay || 0;
           const postCommandDelay = item.postCommandDelay || 0;
 
@@ -190,7 +191,9 @@ export class Orchestrator {
 
           if (targetUrl) {
             console.log(
-              `👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}`
+              `👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}${
+                skipNavigation ? ' (Skipping internal navigation)' : ''
+              }`
             );
           } else {
             console.log(
@@ -255,17 +258,21 @@ export class Orchestrator {
           }
 
           // D. Navigate to target URL (Only if targetUrl is provided)
-          if (targetUrl) {
+          if (targetUrl && !skipNavigation) {
             console.log(
               `🌐 [3/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
             );
-            const navCmd = `Maps:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
+            const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
               const response = await sendCommand(navCmd);
               console.log(`   [Navigation]: ${response}`);
             } catch (e: unknown) {
               console.error(`   Navigation failed: ${getErrorMessage(e)}`);
             }
+          } else if (targetUrl && skipNavigation) {
+            console.log(
+              `⏩ [3/6] Navigation skipped by request (skipNavigation: true).`
+            );
           } else {
             console.log(`⏩ [3/6] No target URL. Skipping navigation.`);
           }

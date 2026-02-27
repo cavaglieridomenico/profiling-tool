@@ -276,6 +276,7 @@ STRICT_VERSION_CHECK=true
 - `caseName`: (optional) The name of the test case to execute.
 - `traceName`: (optional) A custom name for the trace files.
 - `runs`: (optional) Number of times to repeat this specific timeline item (default: 1).
+- `skipNavigation`: (optional) If set to `true`, the Orchestrator will not perform its built-in navigation step. This is useful for test cases that contain their own navigation logic (e.g., templated test cases using `TARGET_URL`).
 
 Example `orchestrator.jsonc`:
 
@@ -289,18 +290,9 @@ Example `orchestrator.jsonc`:
   },
   "timeline": [
     {
-      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
-      "targetUrl": "urls.VMMV_TV20",
-      "waitUntil": "networkidle2",
-      "configOverrides": [
-        "COMMANDS.CONFIG_OVERRIDES?target=app.js&replacement=./overrides/app.js",
-        "COMMANDS.CONFIG_OVERRIDES?target=config.json&replacement=./overrides/config.json",
-        "COMMANDS.CONFIG_OVERRIDES?target=https://vmcore.luxottica.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
-        "COMMANDS.CONFIG_OVERRIDES?target=https://test-gateway-vtoprofile.luxdeepblue.com/services/vtomoduleprotection/public/v1/get-functionalities/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc&replacement=./overrides/03d8e598-ac0f-4da5-94a0-ef6b7366c5fc",
-      ],
-      "postNavigationDelay": 5000,
-      "setupCommands": ["COMMANDS.INPUT_TAP_TOP_CENTER"],
-      "caseName": "testCases.perfetto_tc04",
+      "targetUrl": "urls.VMMV_TV20", 
+      "skipNavigation": true, // URL is used for template replacement only, internal nav skipped
+      "caseName": "testCases.vmmv_tc01",
       "traceName": "custom_trace_name",
       "runs": 3,
     },
@@ -309,7 +301,7 @@ Example `orchestrator.jsonc`:
 ```
 
 **Note on test cases with template:**
-No syntax changes are required in your configuration. The Orchestrator inherently resolves and injects the `?url=TARGET_URL` defined in the JSONC blueprint directly into the executing test case.
+When using test cases that contain the `TARGET_URL` placeholder, the Orchestrator passes the `targetUrl` defined in your timeline item to the runner for replacement. If the test case already includes its own `navigate:url` command (like `vmmv_tc01`), set `"skipNavigation": true` to avoid redundant navigations.
 
 ## Enabling Memory Profiling on Android device
 

@@ -18,6 +18,8 @@
       "postCommandDelay": 10000
     },
     {
+      "targetUrl": "urls.VMMV_TV04_01",
+      "skipNavigation": true,
       "caseName": "testCases.vmmv_tc01",
       "traceName": "TV04_01-TC01-TD31_03",
       "runs": 3

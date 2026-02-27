@@ -34,8 +34,6 @@ export async function runTestCase(
 
   console.log(`Running test case: ${name}`);
   try {
-    await ensureDeviceIsCool();
-
     for (const step of steps) {
       let { command } = step;
 

@@ -18,10 +18,10 @@
       "postCommandDelay": 5000
     },
     {
-      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV20",
-      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_RX"],
+      "skipNavigation": true, // vmmv_tc01 handles its own clean and navigation via TARGET_URL template
       "caseName": "testCases.vmmv_tc01",
+      "traceName": "TV20-TC01-RUN",
       "runs": 3
     }
   ]
