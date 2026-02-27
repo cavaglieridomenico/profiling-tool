@@ -42,6 +42,11 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 370,
     msg: 'Tapped vmmv-video.',
   },
+  [COMMANDS.INPUT_TAP_VMMV_VIDEO_V4]: {
+    x: 120,
+    y: 920,
+    msg: 'Tapped vmmv-video-v4.',
+  },
   [COMMANDS.INPUT_TAP_VMMV_CONTINUE]: {
     x: 530,
     y: 2050,
@@ -56,6 +61,26 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     x: 970,
     y: 1540,
     msg: 'Tapped on vmmv-vmp-restart.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4]: {
+    x: 970,
+    y: 700,
+    msg: 'Tapped on vmmv-vmp-restart-v4.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_PICTURE_V4]: {
+    x: 110,
+    y: 730,
+    msg: 'Tapped vmmv-picture-v4.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_PICTURE_UPLOAD_V4]: {
+    x: 540,
+    y: 1400,
+    msg: 'Tapped vmmv-picture-upload-v4.',
+  },
+  [COMMANDS.INPUT_TAP_VMMV_PICTURE_OK_UPLOAD_V4]: {
+    x: 540,
+    y: 1700,
+    msg: 'Tapped vmmv-picture-upload-v4.',
   },
   [COMMANDS.INPUT_TAP_VMMV_MULTIVM]: {
     x: 100,
