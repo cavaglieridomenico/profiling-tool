@@ -13,7 +13,7 @@ import { getErrorMessage } from './src/utils';
       mode,
       checkUpdates: true,
       checkThermal: true, // Let's enforce thermal check at startup
-      skipAdb: false,     // Perform ADB forwarding in index.ts for direct runs
+      skipAdb: false, // Perform ADB forwarding in index.ts for direct runs
       strictVersionCheck: process.env.STRICT_VERSION_CHECK === 'true',
     });
 
@@ -25,7 +25,7 @@ import { getErrorMessage } from './src/utils';
   } catch (err: unknown) {
     const msg = getErrorMessage(err);
     console.error(`💥 Startup Failed: ${msg}`);
-    
+
     if (mode === 'mobile') {
       console.error('Mobile troubleshooting:');
       console.error('- Ensure device is connected via USB.');
@@ -34,9 +34,11 @@ import { getErrorMessage } from './src/utils';
       console.error('- Run `adb devices` to verify the connection.');
     } else if (mode === 'desktop') {
       console.error('Desktop troubleshooting:');
-      console.error('- Ensure Chrome is installed and Puppeteer can access it.');
+      console.error(
+        '- Ensure Chrome is installed and Puppeteer can access it.'
+      );
     }
-    
+
     process.exit(1);
   }
 })();

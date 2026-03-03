@@ -295,7 +295,7 @@ Example `orchestrator.jsonc`:
   },
   "timeline": [
     {
-      "targetUrl": "urls.VMMV_TV20", 
+      "targetUrl": "urls.VMMV_TV20",
       "skipNavigation": true, // URL is used for template replacement only, internal nav skipped
       "caseName": "testCases.vmmv_tc01",
       "traceName": "custom_trace_name",

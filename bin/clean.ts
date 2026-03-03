@@ -1,6 +1,11 @@
 import { runCleanDevice, getErrorMessage } from '../src/utils';
 
-const urlArg = process.argv.find((arg) => !arg.startsWith('-') && !arg.includes('ts-node') && !arg.endsWith('clean.ts'));
+const urlArg = process.argv.find(
+  (arg) =>
+    !arg.startsWith('-') &&
+    !arg.includes('ts-node') &&
+    !arg.endsWith('clean.ts')
+);
 const preserveCookies = process.argv.includes('--preserve-cookies');
 
 if (!urlArg) {
