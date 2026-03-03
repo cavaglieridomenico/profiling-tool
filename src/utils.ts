@@ -191,7 +191,8 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               status: 204,
               headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Methods':
+                  'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': '*',
                 'Access-Control-Max-Age': '86400',
               },
@@ -226,7 +227,8 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               contentType: contentType,
               headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Methods':
+                  'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': '*',
               },
               body: fileBuffer,
@@ -243,7 +245,10 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
       } catch (err) {}
     });
   } catch (err) {
-    console.warn('[Sticky Overrides] Could not apply interception:', getErrorMessage(err));
+    console.warn(
+      '[Sticky Overrides] Could not apply interception:',
+      getErrorMessage(err)
+    );
   }
 }
 
@@ -351,6 +356,13 @@ export async function handleCleanState(
     });
     console.log(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
 
+    // Robust tab closing
+    let oldTabIds: string[] = [];
+    if (mode === 'mobile') {
+      const httpTargets = await getTargetsFromHttp();
+      oldTabIds = httpTargets.filter((t) => t.type === 'page').map((t) => t.id);
+    }
+
     let closedCount = 0;
     for (const p of pages) {
       if (p !== targetPage) {
@@ -358,11 +370,28 @@ export async function handleCleanState(
           await p.close();
           closedCount++;
         } catch (e) {
-          console.warn('Failed to close a background tab:', e);
+          // Ignore
         }
       }
     }
-    if (closedCount > 0) console.log(`- Closed ${closedCount} background tabs.`);
+
+    if (mode === 'mobile' && oldTabIds.length > 0) {
+      for (const id of oldTabIds) {
+        try {
+          // We don't want to close the targetPage we are currently using
+          // But targetPage will be closed later anyway.
+          // However, to be safe, we can try to skip it if we knew its ID.
+          // For now, closing all via HTTP is fine because we spawn a fresh tab at the end.
+          await closeTargetViaHttp(id);
+          closedCount++;
+        } catch (e) {
+          // Ignore
+        }
+      }
+    }
+
+    if (closedCount > 0)
+      console.log(`- Closed ${closedCount} background/legacy tabs.`);
 
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true,
@@ -401,7 +430,8 @@ export async function handleCleanState(
 
 export async function handleCloseAllTabs(
   page: Page,
-  res: ServerResponse
+  res: ServerResponse,
+  mode: string = 'mobile'
 ): Promise<void> {
   if (!page) {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
@@ -411,25 +441,59 @@ export async function handleCloseAllTabs(
 
   try {
     const browser = page.browser();
-    const pages = await browser.pages();
-    const closedCount = pages.length;
 
-    console.log(`Closing ${closedCount} open tabs...`);
+    // 1. Gather all existing tab IDs from HTTP (Mobile only)
+    // We do this BEFORE opening the new tab so we don't accidentally close it.
+    let oldTabIds: string[] = [];
+    if (mode === 'mobile') {
+      const httpTargets = await getTargetsFromHttp();
+      oldTabIds = httpTargets.filter((t) => t.type === 'page').map((t) => t.id);
+      console.log(`- Found ${oldTabIds.length} existing tabs via HTTP.`);
+    }
 
+    // 2. Gather all existing pages via Puppeteer
+    const puppeteerPages = await browser.pages();
+    console.log(
+      `- Found ${puppeteerPages.length} existing tabs via Puppeteer.`
+    );
+
+    // 3. Open a single fresh tab
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
+    console.log('- Spawned fresh tab and navigated to about:blank.');
 
-    for (const p of pages) {
-      try {
-        await p.close();
-      } catch (e) {
-        console.warn('Failed to close a tab during bulk close:', e);
+    let closedCount = 0;
+
+    // 4. Close via Puppeteer (Standard approach)
+    for (const p of puppeteerPages) {
+      if (p !== pristinePage) {
+        try {
+          await p.close();
+          closedCount++;
+        } catch (e) {
+          // Ignore if already closed
+        }
+      }
+    }
+
+    // 5. Close via HTTP (Aggressive approach for mobile)
+    if (mode === 'mobile' && oldTabIds.length > 0) {
+      console.log(
+        `- Closing ${oldTabIds.length} tabs via aggressive HTTP API...`
+      );
+      for (const id of oldTabIds) {
+        try {
+          await closeTargetViaHttp(id);
+          closedCount++;
+        } catch (e) {
+          // Ignore
+        }
       }
     }
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(`Closed all ${closedCount} tabs. Fresh tab opened.\n`);
-    console.log(`Successfully closed all ${closedCount} tabs.`);
+    res.end(`Closed all previously open tabs. Fresh tab opened.\n`);
+    console.log(`Successfully finished close-all-tabs operation.`);
   } catch (err: unknown) {
     const message = getErrorMessage(err);
     console.error(`Close All Tabs Error: ${message}`);
@@ -492,4 +556,46 @@ export function sendResponse(
   } else {
     console.error(message);
   }
+}
+
+/**
+ * Robustly fetches all debuggable targets from the local DevTools server via HTTP.
+ * This is especially useful on Android where Puppeteer's target discovery can be flaky.
+ */
+async function getTargetsFromHttp(): Promise<any[]> {
+  return new Promise((resolve) => {
+    http
+      .get('http://localhost:9222/json/list', (res) => {
+        let data = '';
+        res.on('data', (chunk) => (data += chunk));
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      })
+      .on('error', (err) => {
+        console.warn('Could not fetch targets via HTTP:', err.message);
+        resolve([]);
+      });
+  });
+}
+
+/**
+ * Closes a target by its ID via the raw DevTools HTTP API.
+ */
+async function closeTargetViaHttp(id: string): Promise<void> {
+  return new Promise((resolve) => {
+    http
+      .get(`http://localhost:9222/json/close/${id}`, (res) => {
+        res.on('data', () => {});
+        res.on('end', () => resolve());
+      })
+      .on('error', (err) => {
+        console.warn(`Could not close target ${id} via HTTP:`, err.message);
+        resolve();
+      });
+  });
 }

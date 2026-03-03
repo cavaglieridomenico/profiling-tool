@@ -114,8 +114,8 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(res, 400, 'Mode is required for clean state.');
     }
   },
-  [COMMANDS.DEVICE_CLOSE_ALL_TABS]: async (req, res, page) => {
-    await handleCloseAllTabs(page, res);
+  [COMMANDS.DEVICE_CLOSE_ALL_TABS]: async (req, res, page, url, mode) => {
+    await handleCloseAllTabs(page, res, mode);
   },
   [COMMANDS.CONFIG_OVERRIDES]: async (req, res, page, url) => {
     const target = url.searchParams.get('target');
