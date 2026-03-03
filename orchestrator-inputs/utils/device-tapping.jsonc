@@ -1,0 +1,40 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMMV_VIDEO"
+    //   ],
+    //   "postCommandDelay": 2000
+    // },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_BOTTOM_CENTER"
+      ],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_BOTTOM_CENTER"
+      ],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": [
+        "COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"
+      ],
+      "postCommandDelay": 2000
+    }
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"
+    //   ],
+    //   "postCommandDelay": 2000
+    // }
+  ]
+}

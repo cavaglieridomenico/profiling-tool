@@ -43,21 +43,17 @@
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc10_v4",
       "traceName": "TV04_01-TC10-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.devtools_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.perfetto_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
@@ -69,21 +65,17 @@
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc10_v4",
       "traceName": "TV04_01-TC10-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.devtools_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.perfetto_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
@@ -95,21 +87,17 @@
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc10_v4",
       "traceName": "TV04_01-TC10-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.devtools_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
     },
     {
-      "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
       "caseName": "testCases.perfetto_tc04",
       "traceName": "TV04_01-TC11-TD31_03",
       "runs": 1
@@ -121,7 +109,7 @@
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc13_v4",
       "traceName": "TV04_01-TC13-TD31_03",
       "runs": 1
@@ -131,8 +119,9 @@
       "postCommandDelay": 2000
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc13_v4",
       "traceName": "TV04_01-TC13-TD31_03",
       "runs": 1
@@ -142,8 +131,9 @@
       "postCommandDelay": 2000
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV04_01",
-      "postNavigationDelay": 15000,
+      "postNavigationDelay": 20000,
       "caseName": "testCases.vmmv_tc13_v4",
       "traceName": "TV04_01-TC13-TD31_03",
       "runs": 1

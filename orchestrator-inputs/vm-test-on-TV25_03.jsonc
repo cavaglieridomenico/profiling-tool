@@ -15,143 +15,157 @@
       ],
       "postNavigationDelay": 8000,
       "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
-      "postCommandDelay": 10000
+      "postCommandDelay": 20000
     },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "skipNavigation": true,
-    //   "caseName": "testCases.vmmv_tc01",
-    //   "traceName": "TV25_03-TC01-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.devtools_tc04",
-    //   "traceName": "TV25_03-TC04-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.perfetto_tc04",
-    //   "traceName": "TV25_03-TC04-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc10_v4",
-    //   "traceName": "TV25_03-TC10-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.devtools_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.perfetto_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc10_v4",
-    //   "traceName": "TV25_03-TC10-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.devtools_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.perfetto_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc10_v4",
-    //   "traceName": "TV25_03-TC10-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.devtools_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.perfetto_tc04",
-    //   "traceName": "TV25_03-TC11-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc13_v4",
-    //   "traceName": "TV25_03-TC13-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc13_v4",
-    //   "traceName": "TV25_03-TC13-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
-    // {
-    //   "targetUrl": "urls.VMMV_TV25_03",
-    //   "postNavigationDelay": 15000,
-    //   "caseName": "testCases.vmmv_tc13_v4",
-    //   "traceName": "TV25_03-TC13-TD31_03",
-    //   "runs": 1
-    // },
-    // {
-    //   "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4"],
-    //   "postCommandDelay": 2000
-    // },
+    {
+      "targetUrl": "urls.VMMV_TV25_03",
+      "skipNavigation": true,
+      "caseName": "testCases.vmmv_tc01",
+      "traceName": "TV25_03-TC01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV25_03-TC04-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.perfetto_tc04",
+      "traceName": "TV25_03-TC04-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV25_03-TC10-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV25_03-TC10-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV25_03-TC10-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_tc04",
+      "traceName": "TV25_03-TC11-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 20000,
+      "caseName": "testCases.vmmv_tc13",
+      "traceName": "TV25_03-TC13-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 20000,
+      "caseName": "testCases.vmmv_tc13",
+      "traceName": "TV25_03-TC13-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_03",
+      "postNavigationDelay": 20000,
+      "caseName": "testCases.vmmv_tc13",
+      "traceName": "TV25_03-TC13-TD31_03",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
     {
       "setupCommands": ["COMMANDS.CONFIG_OVERRIDES"] // Reset sticky overrides before completing the orchestration
     }
