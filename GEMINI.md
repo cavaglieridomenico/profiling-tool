@@ -2,118 +2,75 @@
 
 ## Project Overview
 
-This project provides a comprehensive toolset for connecting Puppeteer to a Chrome instance running on an Android device or a local desktop environment. Its primary purpose is to facilitate remote debugging, automated interaction, and performance tracing (profiling) of web applications.
+This project is a TypeScript-based toolset for automating and profiling web applications using Puppeteer. It supports both local Desktop Chrome and remote Chrome on Android devices (via ADB).
 
-The system operates on a client-server model:
+The system follows a client-server architecture:
 
-1.  **Main Server (`index.ts`):** Establishes the Puppeteer connection to the browser (mobile or desktop) and spins up a local HTTP command server (port 8080).
-2.  **Command Execution:** Users or scripts (like `profile.ts`) send HTTP requests to the command server to trigger actions such as starting/stopping traces, navigating, or simulating user input.
+1.  **Command Server (`index.ts`):** Connects to the browser and exposes an HTTP API (port 8080) for automation commands.
+2.  **CLI Runners:**
+    - `bin/profile.ts`: Executes specific test cases defined in `src/testCases.ts`.
+    - `bin/orchestrate.ts`: Executes complex, multi-step profiling scenarios defined in JSONC configuration files.
 
 ## Key Technologies
 
-- **Runtime:** Node.js (v18.17.0+ recommended)
-- **Browser Automation:** Puppeteer
+- **Runtime:** Node.js (v18.17.0+)
+- **Automation:** Puppeteer
 - **Mobile Bridge:** Android Debug Bridge (ADB)
-- **Language:** TypeScript
-- **Utilities:** `cross-env` for environment variables, `ts-node` for execution.
+- **Validation:** Zod (for configuration parsing)
+- **Format:** JSONC (JSON with comments) for orchestration inputs.
 
 ## Directory Structure
 
-- `index.ts`: Main entry point. Initializes the browser connection and starts the command server.
-- `bin/`: CLI tools for interacting with the server.
-  - `profile.ts`: A CLI runner for executing predefined test cases found in `src/testCases.ts`.
-  - `navigate.ts`: A utility script for simple URL navigation.
-  - `clean.ts`: A utility script for cleaning device state.
-- `src/`: Core logic modules.
-  - `browser.ts`: Handles Puppeteer connection logic (WebSocket discovery for Android, launching for Desktop).
-  - `testCases.ts`: Defines automation scenarios (steps with commands and delays).
-  - `server.ts`: Main server entry point; orchestrates routing and configuration.
-  - `routes.ts`: Defines the HTTP route handlers for the command server.
-  - `tapConfig.ts`: Configuration object for input tap commands.
-  - `devtools-trace-manager.ts`: Encapsulates logic for starting, stopping, and naming standard Chrome DevTools traces.
-  - `perfetto-trace-manager.ts`: Manages Android Perfetto tracing sessions (start, stop, pulling files).
-  - `commands.ts`: Defines constant strings for command endpoints.
-  - `page.ts`: Manages the target Puppeteer page instance.
-  - `urls.ts`: Defines URL aliases for navigation.
-  - `thermal.ts`: Manages device temperature monitoring and cooldown logic.
-  - `utils.ts`: Helper functions for navigation, state cleaning, and responses.
-  - `perfetto-configs/`: Contains configuration files for Perfetto traces (e.g., `trace_config.pbtxt`).
+- `index.ts`: Main entry point for the Command Server.
+- `bin/`: CLI entry points.
+  - `profile.ts`: Run a single test case (`npm run profile:<name>`).
+  - `orchestrate.ts`: Run an orchestration plan (`npm run orchestrate <config>`).
+  - `connect.ts`/`restore.ts`: ADB port forwarding management.
+  - `clean.ts`: Device state cleanup (cache, cookies).
+- `src/`: Core logic.
+  - `orchestrator/`: Logic for multi-step execution plans.
+  - `testCases.ts`: Definition of automation steps (taps, waits, traces).
+  - `tapConfig.ts` / `swipeConfig.ts`: Coordinate-based input configurations.
+  - `devtools-trace-manager.ts` / `perfetto-trace-manager.ts`: Profiling session management.
+  - `server.ts` / `routes.ts`: HTTP API implementation.
+  - `thermal.ts`: Device temperature monitoring and cooldown logic.
+- `orchestrator-inputs/`: JSONC files defining orchestration plans.
+- `traces-output/`: Default destination for generated trace files.
 
-## Setup and Installation
+## Core Workflows
 
-1.  **Dependencies:**
+### 1. Single Test Case Profiling
 
-    ```bash
-    npm install
-    ```
+Used for quick, repetitive testing of a specific interaction.
 
-2.  **ADB Configuration (Mobile only):**
-    - Ensure `adb` is in your PATH, or set the `ADB_PATH` environment variable.
-    - Connect your Android device with USB debugging enabled.
-    - Forward the DevTools port:
-      ```bash
-      adb forward tcp:9222 localabstract:chrome_devtools_remote
-      ```
+1. Start the server: `npm start` (or `npm run start:mobile:<env>`)
+2. Run the profile: `npm run profile:<case_name> [custom_trace_name]`
 
-## Usage
+### 2. Orchestrated Profiling (Recommended)
 
-### 1. Start the Controller Server
+Used for automated, multi-step scenarios including cleanup, navigation, and multiple runs.
 
-**Mobile Mode (Default):**
-Connects to an existing Chrome instance on the connected Android device.
+1. Ensure ADB is connected.
+2. Run: `npm run orchestrate <config_name_in_orchestrator-inputs>`
+   _Example:_ `npm run orchestrate vm-test-on-TV04_01.jsonc`
 
-```bash
-npm start
-# OR specific environments
-npm run start:mobile
-npm run start:mobile:vmcore
-npm run start:mobile:pdwuat
-```
+### 3. Adding New Interactions
 
-**Desktop Mode:**
-Launches a new local Chrome window.
-
-```bash
-npm run start:desktop
-```
-
-### 2. Run Test Cases
-
-In a separate terminal, use the `profile.ts` script to execute scenarios defined in `src/testCases.ts`.
-
-**Syntax:**
-
-```bash
-npm run profile:<test_case_name>
-# OR directly via ts-node
-npx ts-node bin/profile.ts <test_case_name> [custom_trace_name]
-```
-
-**Examples:**
-
-```bash
-npm run profile:vmmv-tc01__tc04
-npm run profile:vmcore_vmp-tc19
-npx ts-node bin/profile.ts vmcore_vmp_tc19 my_custom_trace
-```
-
-### 3. Manual Control
-
-You can manually trigger actions by sending HTTP requests to `localhost:8080`.
-
-- **Start Tracing (DevTools):** `curl http://localhost:8080/devtools:start`
-- **Stop Tracing (DevTools):** `curl http://localhost:8080/devtools:stop`
-- **Start Tracing (Perfetto):** `curl http://localhost:8080/perfetto:start`
-- **Stop Tracing (Perfetto):** `curl http://localhost:8080/perfetto:stop`
-- **Simulate Input:** `curl http://localhost:8080/input:tap-vmmv-video`
-- **Get Temperature:** `curl http://localhost:8080/device:get-temperature`
+- **New Tap:** Add coordinates to `src/tapConfig.ts`.
+- **New Swipe:** Add coordinates/duration to `src/swipeConfig.ts`.
+- **New Test Case:** Define the sequence of actions in `src/testCases.ts`.
+- **New URL Alias:** Add to `src/urls.ts`.
 
 ## Development Conventions
 
-- **Language:** The project is written in TypeScript.
-- **Build:** Run `npm run build` to compile TypeScript to JavaScript (output in `dist/`).
-- **Code Style:** The project uses Prettier. Run `npm run format` to ensure consistency.
-- **Test Cases:** New automation scenarios should be added to `src/testCases.ts`.
-- **Trace Files:**
-  - **DevTools Traces:** Saved in `devtools-output/` (e.g., `trace-1.json`).
-  - **Perfetto Traces:** Saved in `perfetto-output/` (e.g., `trace-1.pftrace`).
+- **Environment Variables:** Use `PUPPETEER_ENV` (e.g., `vmcore`, `pdwuat`) to switch target configurations.
+- **Type Safety:** All configurations (especially for the orchestrator) are validated with **Zod**. See `src/orchestrator/config.ts`.
+- **Formatting:** Prettier is enforced. Run `npm run format` before committing.
+- **Error Handling:** Use the `getErrorMessage` utility from `src/utils.ts` for consistent logging.
+
+## Troubleshooting
+
+- **ADB Connection:** Run `adb devices`. If the device is "unauthorized", accept the prompt on the phone.
+- **Port Conflict:** Ensure port 8080 and 9222 are not in use by other processes.
+- **Thermal Throttling:** The tool will pause if the device exceeds safe temperatures. Use `npm run device:cooldown` to manually trigger a wait.
+- **Zombie Processes:** If the server fails to stop, use `taskkill /F /IM node.exe` (Windows) or `pkill node` (Linux/macOS).
