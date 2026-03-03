@@ -13,21 +13,15 @@
     //   "postCommandDelay": 2000
     // },
     {
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_BOTTOM_CENTER"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
       "postCommandDelay": 2000
     },
     {
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_BOTTOM_CENTER"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
       "postCommandDelay": 2000
     },
     {
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
       "postCommandDelay": 2000
     }
     // {

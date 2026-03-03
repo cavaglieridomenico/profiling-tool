@@ -93,7 +93,7 @@ export class Orchestrator {
         {
           cwd: process.cwd(),
           stdio: 'pipe',
-          shell: true,
+          shell: true
         }
       );
 
@@ -135,7 +135,7 @@ export class Orchestrator {
             checkUpdates: true,
             checkThermal: this.config.setup.checkThermal !== false,
             skipAdb: false, // Ensure ADB forwarding is ready
-            strictVersionCheck: this.config.setup.strictVersionCheck === true,
+            strictVersionCheck: this.config.setup.strictVersionCheck === true
           });
           // Close the pre-check browser connection as we'll spawn the server process next
           await browserPreCheck.disconnect();
@@ -365,7 +365,7 @@ export class Orchestrator {
     const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
     const env: NodeJS.ProcessEnv = {
       ...process.env,
-      ...(puppeteerEnv ? { PUPPETEER_ENV: puppeteerEnv } : {}),
+      ...(puppeteerEnv ? { PUPPETEER_ENV: puppeteerEnv } : {})
     };
 
     this.serverProcess = spawn(npmCmd, ['start', 'mobile'], {
@@ -373,7 +373,7 @@ export class Orchestrator {
       stdio: 'pipe',
       env,
       detached: false,
-      shell: true,
+      shell: true
     });
 
     if (this.serverProcess.stdout) {
@@ -415,7 +415,7 @@ export class Orchestrator {
             '/pid',
             this.serverProcess.pid.toString(),
             '/f',
-            '/t',
+            '/t'
           ]);
         } catch (e) {
           /* ignore */

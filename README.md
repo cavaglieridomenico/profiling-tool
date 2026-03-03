@@ -187,11 +187,11 @@ To reuse profiling sequences across different environments without modifying cod
 vmmv_tc01: [
   {
     command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
-    delay: 5000,
+    delay: 5000
   },
   { command: 'devtools:start', delay: 2000 },
   { command: 'navigate:url?url=TARGET_URL', delay: 15000 },
-  { command: 'devtools:stop', delay: 0 },
+  { command: 'devtools:stop', delay: 0 }
 ];
 ```
 
@@ -291,7 +291,7 @@ Example `orchestrator.jsonc`:
     "connect": true,
     "checkThermal": true,
     "puppeteerEnv": "vmcore",
-    "strictVersionCheck": true,
+    "strictVersionCheck": true
   },
   "timeline": [
     {
@@ -299,9 +299,9 @@ Example `orchestrator.jsonc`:
       "skipNavigation": true, // URL is used for template replacement only, internal nav skipped
       "caseName": "testCases.vmmv_tc01",
       "traceName": "custom_trace_name",
-      "runs": 3,
-    },
-  ],
+      "runs": 3
+    }
+  ]
 }
 ```
 

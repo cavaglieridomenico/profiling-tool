@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {
   parseJsonc,
-  OrchestratorConfigSchema,
+  OrchestratorConfigSchema
 } from '../src/orchestrator/config';
 import { Orchestrator } from '../src/orchestrator/index';
 import { getErrorMessage } from '../src/utils';

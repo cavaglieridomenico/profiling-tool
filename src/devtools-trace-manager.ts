@@ -36,7 +36,7 @@ class DevtoolsTraceManager {
 
     await page.tracing.start({
       path: tracePath,
-      screenshots: true,
+      screenshots: true
     });
 
     return tracePath;

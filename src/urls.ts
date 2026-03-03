@@ -39,5 +39,5 @@ export const urls: Record<string, string> = {
   RTRCORE_TV03_01: 'https://www.sunglasshut.com/us',
   SPEEDOMETER: 'https://browserbench.org/Speedometer3.1/',
   SPEED_TEST:
-    'https://www.google.com/search?q=speed+test&oq=speed+&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg80gEINDI1MGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8',
+    'https://www.google.com/search?q=speed+test&oq=speed+&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg80gEINDI1MGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8'
 };

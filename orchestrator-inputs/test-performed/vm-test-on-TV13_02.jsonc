@@ -7,22 +7,16 @@
   },
   "timeline": [
     {
-      "preNavigationCommands": [
-        "COMMANDS.DEVICE_CLEAN_STATE"
-      ],
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.VMMV_TV13_02",
       "postNavigationDelay": 10000
     },
     {
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_VMMV_TRYON_NU"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_TRYON_NU"],
       "postCommandDelay": 10000
     },
     {
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_VMMV_PRIVACY"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
       "postCommandDelay": 10000
     },
     {
@@ -42,9 +36,7 @@
     {
       "targetUrl": "urls.VMMV_TV13_02",
       "postNavigationDelay": 10000,
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_VMMV_TRYON_NU"
-      ],
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_TRYON_NU"],
       "postCommandDelay": 10000,
       "caseName": "testCases.devtools_tc04",
       "traceName": "TV13_02-TC04-TD31_03",

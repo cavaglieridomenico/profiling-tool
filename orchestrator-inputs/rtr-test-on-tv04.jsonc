@@ -2,7 +2,7 @@
   "setup": {
     "connect": true,
     "checkThermal": true,
-    "puppeteerEnv": "rtrmv",// Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
+    "puppeteerEnv": "rtrmv", // Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
     "strictVersionCheck": true
   },
   "timeline": [
@@ -11,6 +11,7 @@
       "postNavigationDelay": 5000
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.RTRMV_TV04",
       "postNavigationDelay": 15000,
       "caseName": "testCases.rtrmv_tc01",

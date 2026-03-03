@@ -10,7 +10,7 @@ import {
   handleCloseAllTabs,
   handleConfigOverrides,
   sendResponse,
-  getErrorMessage,
+  getErrorMessage
 } from './utils';
 import { getDeviceTemperature, ensureDeviceIsCool } from './thermal';
 import { RouteHandlers } from './types';
@@ -150,5 +150,5 @@ export const routeHandlers: RouteHandlers = {
     } else {
       sendResponse(res, 404, 'No page available for navigation.');
     }
-  },
+  }
 };

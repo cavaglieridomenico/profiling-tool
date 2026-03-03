@@ -152,7 +152,7 @@ export async function initializeBrowser(mode: string): Promise<Browser> {
 
     browserInstance = await puppeteer.connect({
       browserWSEndpoint,
-      defaultViewport: null,
+      defaultViewport: null
     });
     console.log(
       `Connected to mobile browser! version: ${await browserInstance.version()}`
@@ -162,7 +162,7 @@ export async function initializeBrowser(mode: string): Promise<Browser> {
     browserInstance = await puppeteer.launch({
       headless: false, // Set to true for headless mode
       args: ['--start-maximized', '--use-fake-ui-for-media-stream'],
-      defaultViewport: null, // Ensure desktop rendering
+      defaultViewport: null // Ensure desktop rendering
     });
     console.log(
       `Desktop Chrome launched! version: ${await browserInstance.version()}`

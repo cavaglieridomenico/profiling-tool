@@ -13,7 +13,7 @@ export const SWIPE_CONFIG: Record<string, SwipeConfigItem> = {
     endX: limitRxPoint,
     endY: centerVerticalPoint,
     durationMs: 1000,
-    msg: 'Swiped cx-rx.',
+    msg: 'Swiped cx-rx.'
   },
   [COMMANDS.INPUT_SWIPE_RTRMV_RX_LX]: {
     startX: limitRxPoint,
@@ -21,7 +21,7 @@ export const SWIPE_CONFIG: Record<string, SwipeConfigItem> = {
     endX: limitLxPoint,
     endY: centerVerticalPoint,
     durationMs: 1800,
-    msg: 'Swiped rx-lx.',
+    msg: 'Swiped rx-lx.'
   },
   [COMMANDS.INPUT_SWIPE_RTRMV_LX_RX]: {
     startX: limitLxPoint,
@@ -29,6 +29,6 @@ export const SWIPE_CONFIG: Record<string, SwipeConfigItem> = {
     endX: limitRxPoint,
     endY: centerVerticalPoint,
     durationMs: 1800,
-    msg: 'Swiped lx-rx.',
-  },
+    msg: 'Swiped lx-rx.'
+  }
 };

@@ -42,7 +42,7 @@ export const TimelineItemSchema = z
     /**
      * Optional: Delay in milliseconds to wait AFTER the setup commands or the test case completes.
      */
-    postCommandDelay: z.number().nonnegative().default(0),
+    postCommandDelay: z.number().nonnegative().default(0)
   })
   .refine(
     (item) =>
@@ -53,7 +53,7 @@ export const TimelineItemSchema = z
       item.configOverrides.length > 0,
     {
       message:
-        'Timeline item must have at least one of: targetUrl, caseName, setupCommands, preNavigationCommands, or configOverrides',
+        'Timeline item must have at least one of: targetUrl, caseName, setupCommands, preNavigationCommands, or configOverrides'
     }
   );
 
@@ -73,15 +73,15 @@ export const OrchestratorConfigSchema = z.object({
     /**
      * If true, the tool will exit if a newer Puppeteer version is available.
      */
-    strictVersionCheck: z.boolean().default(false),
-  }),
+    strictVersionCheck: z.boolean().default(false)
+  })
 });
 
 export type TimelineItem = z.infer<typeof TimelineItemSchema>;
 export type OrchestratorConfig = z.infer<typeof OrchestratorConfigSchema>;
 
 export function parseJsonc(content: string): any {
-  // Regex to strip block comments and single line comments
+  // Strip block comments (/* ... */) and single line comments (// ...)
   const json = content.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
   return JSON.parse(json);
 }

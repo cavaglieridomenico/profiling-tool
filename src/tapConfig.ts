@@ -5,166 +5,166 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_TOP_LX]: {
     x: 60,
     y: 340,
-    msg: 'Tapped on top-lx.',
+    msg: 'Tapped on top-lx.'
   },
   [COMMANDS.INPUT_TAP_TOP_CENTER]: {
     x: 550,
     y: 370,
-    msg: 'Tapped on top-center.',
+    msg: 'Tapped on top-center.'
   },
   [COMMANDS.INPUT_TAP_TOP_RX]: {
     x: 990,
     y: 340,
-    msg: 'Tapped on top-rx.',
+    msg: 'Tapped on top-rx.'
   },
   [COMMANDS.INPUT_TAP_CENTER_CENTER]: {
     x: 550,
     y: 1280,
-    msg: 'Tapped on center-center.',
+    msg: 'Tapped on center-center.'
   },
   [COMMANDS.INPUT_TAP_BOTTOM_CENTER]: {
     x: 550,
     y: 2100,
-    msg: 'Tapped on bottom-center.',
+    msg: 'Tapped on bottom-center.'
   },
   [COMMANDS.INPUT_TAP_BOTTOM_RX]: {
     x: 820,
     y: 2020,
-    msg: 'Tapped on bottom-rx.',
+    msg: 'Tapped on bottom-rx.'
   },
   [COMMANDS.INPUT_TAP_COOKIES_NU]: {
     x: 500,
     y: 1700,
-    msg: 'Tapped on cookies-nu.',
+    msg: 'Tapped on cookies-nu.'
   },
   [COMMANDS.INPUT_TAP_VMMV_VIDEO]: {
     x: 760,
     y: 370,
-    msg: 'Tapped vmmv-video.',
+    msg: 'Tapped vmmv-video.'
   },
   [COMMANDS.INPUT_TAP_VMMV_VIDEO_V4]: {
     x: 120,
     y: 920,
-    msg: 'Tapped vmmv-video-v4.',
+    msg: 'Tapped vmmv-video-v4.'
   },
   [COMMANDS.INPUT_TAP_VMMV_CONTINUE]: {
     x: 530,
     y: 2050,
-    msg: 'Tapped on vmmv-vmp-continue.',
+    msg: 'Tapped on vmmv-vmp-continue.'
   },
   [COMMANDS.INPUT_TAP_VMMV_REC]: {
     x: 555,
     y: 2030,
-    msg: 'Tapped on vmmv-vmp-rec.',
+    msg: 'Tapped on vmmv-vmp-rec.'
   },
   [COMMANDS.INPUT_TAP_VMMV_VMP_RESTART]: {
     x: 970,
     y: 1540,
-    msg: 'Tapped on vmmv-vmp-restart.',
+    msg: 'Tapped on vmmv-vmp-restart.'
   },
   [COMMANDS.INPUT_TAP_VMMV_VMP_RESTART_V4]: {
     x: 970,
     y: 700,
-    msg: 'Tapped on vmmv-vmp-restart-v4.',
+    msg: 'Tapped on vmmv-vmp-restart-v4.'
   },
   [COMMANDS.INPUT_TAP_VMMV_PICTURE_V4]: {
     x: 110,
     y: 730,
-    msg: 'Tapped vmmv-picture-v4.',
+    msg: 'Tapped vmmv-picture-v4.'
   },
   [COMMANDS.INPUT_TAP_VMMV_PICTURE_UPLOAD_V4]: {
     x: 540,
     y: 1400,
-    msg: 'Tapped vmmv-picture-upload-v4.',
+    msg: 'Tapped vmmv-picture-upload-v4.'
   },
   [COMMANDS.INPUT_TAP_VMMV_PICTURE_OK_UPLOAD_V4]: {
     x: 540,
     y: 1700,
-    msg: 'Tapped vmmv-picture-ok-upload-v4.',
+    msg: 'Tapped vmmv-picture-ok-upload-v4.'
   },
   [COMMANDS.INPUT_TAP_VMMV_MULTIVM]: {
     x: 100,
     y: 1680,
-    msg: 'Tapped on vmmv-multivm.',
+    msg: 'Tapped on vmmv-multivm.'
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON]: {
     x: 550,
     y: 850,
-    msg: 'Tapped on vmmv-tryonbutton.',
+    msg: 'Tapped on vmmv-tryonbutton.'
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON_SGH]: {
     x: 900,
     y: 1522,
-    msg: 'Tapped on vmmv-tryonbutton-sgh.',
+    msg: 'Tapped on vmmv-tryonbutton-sgh.'
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON_RB]: {
     x: 490,
     y: 710,
-    msg: 'Tapped on vmmv-tryonbutton-rb.',
+    msg: 'Tapped on vmmv-tryonbutton-rb.'
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON_NU]: {
     x: 550,
     y: 1600,
-    msg: 'Tapped on vmmv-tryonbutton-nu.',
+    msg: 'Tapped on vmmv-tryonbutton-nu.'
   },
   [COMMANDS.INPUT_TAP_VMMV_TRYON_OO]: {
     x: 490,
     y: 710,
-    msg: 'Tapped on vmmv-tryonbutton-oo.',
+    msg: 'Tapped on vmmv-tryonbutton-oo.'
   },
   [COMMANDS.INPUT_TAP_VMMV_USA_SGH]: {
     x: 530,
     y: 1530,
-    msg: 'Tapped on vmmv-usabutton-sgh.',
+    msg: 'Tapped on vmmv-usabutton-sgh.'
   },
   [COMMANDS.INPUT_TAP_VMMV_USA_RB]: {
     x: 330,
     y: 1730,
-    msg: 'Tapped on vmmv-usabutton-rb.',
+    msg: 'Tapped on vmmv-usabutton-rb.'
   },
   [COMMANDS.INPUT_TAP_VMMV_PRIVACY]: {
     x: 800,
     y: 2140,
-    msg: 'Tapped on vmmv-privacybutton.',
+    msg: 'Tapped on vmmv-privacybutton.'
   },
   [COMMANDS.INPUT_TAP_VMCORE_VMP_PDPLIGHT]: {
     x: 540,
     y: 1240,
-    msg: 'Tapped on vmcore-vmp-pdplight.',
+    msg: 'Tapped on vmcore-vmp-pdplight.'
   },
   [COMMANDS.INPUT_TAP_VMCORE_VMP_REC]: {
     x: 100,
     y: 2040,
-    msg: 'Tapped on vmcore-vmp-rec.',
+    msg: 'Tapped on vmcore-vmp-rec.'
   },
   [COMMANDS.INPUT_TAP_VMCORE_VMP_IMAGE]: {
     x: 100,
     y: 1680,
-    msg: 'Tapped on vmcore-vmp-image.',
+    msg: 'Tapped on vmcore-vmp-image.'
   },
   [COMMANDS.INPUT_TAP_VMCORE_VMP_RESTART]: {
     x: 330,
     y: 1430,
-    msg: 'Tapped on vmcore-vmp-restart.',
+    msg: 'Tapped on vmcore-vmp-restart.'
   },
   [COMMANDS.INPUT_TAP_PDW_LINK]: {
     x: 380,
     y: 1900,
-    msg: 'Tapped on pdwmw-link.',
+    msg: 'Tapped on pdwmw-link.'
   },
   [COMMANDS.INPUT_TAP_PDWMV_BUTTONS_SGH]: {
     x: 550,
     y: 1820,
-    msg: 'Tapped on pdw-buttons-sgh.',
+    msg: 'Tapped on pdw-buttons-sgh.'
   },
   [COMMANDS.INPUT_TAP_RTRMV_ZOOM]: {
     x: 850,
     y: 500,
-    msg: 'Tapped on rtr-zoom.',
+    msg: 'Tapped on rtr-zoom.'
   },
   [COMMANDS.INPUT_TAP_RTRMV_START_SGH]: {
     x: 620,
     y: 1530,
-    msg: 'Tapped on rtr-start-sgh.',
-  },
+    msg: 'Tapped on rtr-start-sgh.'
+  }
 };

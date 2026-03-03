@@ -7,14 +7,10 @@
   },
   "timeline": [
     {
-      "preNavigationCommands": [
-        "COMMANDS.DEVICE_CLEAN_STATE"
-      ],
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.SPEED_TEST",
       "postNavigationDelay": 10000,
-      "setupCommands": [
-        "COMMANDS.INPUT_TAP_BOTTOM_RX"
-      ]
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_RX"]
       //"caseName": "testCases.perfetto_tc04"
     }
   ]

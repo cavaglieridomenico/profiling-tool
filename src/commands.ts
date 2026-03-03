@@ -57,7 +57,7 @@ export const COMMANDS = {
   // Swipe Action
   INPUT_SWIPE_RTRMV_CX_RX: '/input:swipe-rtrmv-cx-rx',
   INPUT_SWIPE_RTRMV_RX_LX: '/input:swipe-rtrmv-rx-lx',
-  INPUT_SWIPE_RTRMV_LX_RX: '/input:swipe-rtrmv-lx-rx',
+  INPUT_SWIPE_RTRMV_LX_RX: '/input:swipe-rtrmv-lx-rx'
 } as const;
 
 export type CommandValue = (typeof COMMANDS)[keyof typeof COMMANDS];

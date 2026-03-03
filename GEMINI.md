@@ -19,6 +19,8 @@ The system follows a client-server architecture:
 - **Validation:** Zod (for configuration parsing)
 - **Format:** JSONC (JSON with comments) for orchestration inputs.
 
+> **Note on Prettier:** The project configuration disables trailing commas globally (`trailingComma: 'none'`). This ensures compatibility with the JSONC files used by the Orchestrator without needing extra processing.
+
 ## Directory Structure
 
 - `index.ts`: Main entry point for the Command Server.

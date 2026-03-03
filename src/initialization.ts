@@ -24,7 +24,7 @@ export async function performApplicationSetup(
     checkUpdates = true,
     checkThermal = false,
     skipAdb = false,
-    strictVersionCheck = false,
+    strictVersionCheck = false
   } = options;
 
   console.log(`🚀 Initializing Profiling Tool in ${mode} mode...`);

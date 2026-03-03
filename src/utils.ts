@@ -194,8 +194,8 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
                 'Access-Control-Allow-Methods':
                   'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': '*',
-                'Access-Control-Max-Age': '86400',
-              },
+                'Access-Control-Max-Age': '86400'
+              }
             });
             return;
           } catch (err) {}
@@ -229,9 +229,9 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods':
                   'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Headers': '*'
               },
-              body: fileBuffer,
+              body: fileBuffer
             });
             return;
           } catch (err) {
@@ -271,7 +271,7 @@ export async function handleNavigation(
     if (PUPPETEER_USERNAME && PUPPETEER_PASSWORD) {
       await page.authenticate({
         username: PUPPETEER_USERNAME,
-        password: PUPPETEER_PASSWORD,
+        password: PUPPETEER_PASSWORD
       });
       console.log(
         'Using authentication credentials from environment variables.'
@@ -352,7 +352,7 @@ export async function handleCleanState(
 
     await client.send('Storage.clearDataForOrigin', {
       origin: origin,
-      storageTypes: storageTypes,
+      storageTypes: storageTypes
     });
     console.log(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
 
@@ -394,7 +394,7 @@ export async function handleCleanState(
       console.log(`- Closed ${closedCount} background/legacy tabs.`);
 
     await client.send('Network.setCacheDisabled', {
-      cacheDisabled: true,
+      cacheDisabled: true
     } as Protocol.Network.SetCacheDisabledRequest);
     console.log('- Network Cache disabled.');
 

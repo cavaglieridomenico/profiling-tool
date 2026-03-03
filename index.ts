@@ -14,7 +14,7 @@ import { getErrorMessage } from './src/utils';
       checkUpdates: true,
       checkThermal: true, // Let's enforce thermal check at startup
       skipAdb: false, // Perform ADB forwarding in index.ts for direct runs
-      strictVersionCheck: process.env.STRICT_VERSION_CHECK === 'true',
+      strictVersionCheck: process.env.STRICT_VERSION_CHECK === 'true'
     });
 
     // 2. Target Identification

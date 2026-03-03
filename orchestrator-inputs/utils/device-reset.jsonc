@@ -7,9 +7,7 @@
   },
   "timeline": [
     {
-      "setupCommands": [
-        "COMMANDS.DEVICE_CLOSE_ALL_TABS"
-      ],
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
       "postCommandDelay": 5000
     },
     {
