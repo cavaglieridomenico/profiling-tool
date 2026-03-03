@@ -80,7 +80,7 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
   [COMMANDS.INPUT_TAP_VMMV_PICTURE_OK_UPLOAD_V4]: {
     x: 540,
     y: 1700,
-    msg: 'Tapped vmmv-picture-upload-v4.',
+    msg: 'Tapped vmmv-picture-ok-upload-v4.',
   },
   [COMMANDS.INPUT_TAP_VMMV_MULTIVM]: {
     x: 100,
