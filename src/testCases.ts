@@ -65,7 +65,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-top-lx', delay: 3000 },
     { command: 'input:tap-vmmv-video-v4', delay: 2000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 10000 },
-    { command: 'devtools:start', delay: 30000 },
+    { command: 'devtools:start', delay: 50000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmmv_tc13: [
@@ -75,14 +75,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-vmp-continue', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
-  vmmv_tc13_V4: [
+  vmmv_tc13_v4: [
     { command: 'input:tap-top-lx', delay: 3000 },
     { command: 'input:tap-vmmv-picture-v4', delay: 2000 },
     { command: 'input:tap-vmmv-picture-upload-v4', delay: 5000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
     { command: 'devtools:start', delay: 3000 },
-    { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
-    { command: 'input:input:tap-vmmv-picture-ok-upload-v4', delay: 15000 },
+    { command: 'input:tap-vmmv-picture-ok-upload-v4', delay: 15000 },
     { command: 'devtools:stop', delay: 0 },
   ],
   vmcore_vmp_tc19: [
