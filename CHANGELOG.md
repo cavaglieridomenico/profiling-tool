@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# 1.11.0
+
+### Added
+
+- Orchestrator logic for automated tests
+- New automated tests
+- General improvement: Puppeteer version check, error and types handling, centralized initial server, trace naming
+- New test case profiles
+
 # 1.10.0
 
 ### Added
