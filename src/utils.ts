@@ -197,6 +197,9 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
                 'Access-Control-Max-Age': '86400'
               }
             });
+            console.log(
+              `[Override] Handled pre-flight OPTIONS for: ${url.substring(0, 80)}...`
+            );
             return;
           } catch (err) {}
         }
@@ -233,6 +236,9 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               },
               body: fileBuffer
             });
+            console.log(
+              `[Override] SUCCESS: ${url.substring(0, 80)}... -> ${filePath}`
+            );
             return;
           } catch (err) {
             console.error(`[Override Error] Failed to respond: ${err}`);
