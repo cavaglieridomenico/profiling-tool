@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { getAdbPath } from './browser';
-import { getErrorMessage } from './utils';
+import { getErrorMessage, logger } from './utils';
 import { TRACES_OUTPUT_DIR } from './config/constants';
 
 const DEVICE_CONFIG_PATH = '/data/local/tmp/trace_config.pbtxt';
@@ -45,18 +45,17 @@ class PerfettoTraceManager {
     this.traceFileName = finalFileName;
 
     try {
-      console.log(`[Perfetto] Initializing trace: ${this.traceFileName}`);
-      console.log('[Perfetto] Pushing configuration...');
+      logger.info(`[Perfetto] Initializing trace: ${this.traceFileName}`);
+      logger.info('[Perfetto] Pushing configuration...');
       execSync(`${adbPath} push "${LOCAL_CONFIG}" "${DEVICE_CONFIG_PATH}"`);
 
-      console.log('[Perfetto] Starting detached session...');
+      logger.info('[Perfetto] Starting detached session...');
       execSync(
         `${adbPath} shell "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
       );
-      console.log('✅ Perfetto started (Background).');
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      console.error(`[Perfetto] Start failed: ${message}`);
+      logger.error(`[Perfetto] Start failed: ${message}`);
       throw e;
     }
   }
@@ -64,18 +63,18 @@ class PerfettoTraceManager {
   public stopPerfetto(): string {
     const adbPath = getAdbPath();
     try {
-      console.log('[Perfetto] Stopping session...');
+      logger.info('[Perfetto] Stopping session...');
       execSync(`${adbPath} shell perfetto --attach=cv_session --stop`);
 
       const localPath = path.join(TRACES_OUTPUT_DIR, this.traceFileName);
 
-      console.log(`[Perfetto] Pulling trace to ${localPath}...`);
+      logger.info(`[Perfetto] Pulling trace to ${localPath}...`);
       execSync(`${adbPath} pull "${DEVICE_TRACE_PATH}" "${localPath}"`);
 
       return localPath;
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      console.error(`[Perfetto] Stop failed: ${message}`);
+      logger.error(`[Perfetto] Stop failed: ${message}`);
       throw e;
     }
   }

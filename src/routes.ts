@@ -10,7 +10,8 @@ import {
   handleCloseAllTabs,
   handleConfigOverrides,
   sendResponse,
-  getErrorMessage
+  getErrorMessage,
+  logger
 } from './utils';
 import { getDeviceTemperature, ensureDeviceIsCool } from './thermal';
 import { RouteHandlers } from './types';
@@ -20,7 +21,7 @@ export const routeHandlers: RouteHandlers = {
     try {
       const traceName = url.searchParams.get('name') || undefined;
       perfettoTraceManager.startPerfetto(traceName || null);
-      sendResponse(res, 200, '🛑 Perfetto tracing started (background).');
+      sendResponse(res, 200, 'Perfetto tracing started (background).');
     } catch (error: unknown) {
       sendResponse(
         res,
@@ -35,7 +36,7 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(
         res,
         200,
-        `⏹️ Perfetto tracing stopped. Saved to: ${tracePath}`
+        `Perfetto tracing stopped. Saved to: ${tracePath}`
       );
     } catch (error: unknown) {
       sendResponse(
@@ -52,7 +53,7 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(
         res,
         200,
-        `🛑 DevTools tracing started. Saving to ${tracePath}`
+        `DevTools tracing started. Saving to ${tracePath}`
       );
     } catch (error: unknown) {
       sendResponse(res, 404, getErrorMessage(error));
@@ -60,12 +61,11 @@ export const routeHandlers: RouteHandlers = {
   },
   [COMMANDS.DEVTOOLS_STOP]: async (req, res, page) => {
     try {
-      console.log(`Tracing stopped... Saving...`);
       const traceFile = await devtoolsTraceManager.stopTrace(page);
       sendResponse(
         res,
         200,
-        `⏹️ DevTools tracing stopped. File ${traceFile} saved.`
+        `DevTools tracing stopped. File ${traceFile} saved.`
       );
     } catch (error: unknown) {
       sendResponse(res, 404, getErrorMessage(error));
@@ -74,8 +74,8 @@ export const routeHandlers: RouteHandlers = {
   [COMMANDS.DEVICE_GET_TEMPERATURE]: async (req, res) => {
     try {
       const temp = await getDeviceTemperature();
-      console.log(`Device temperature: ${temp.toFixed(1)}°C`);
-      sendResponse(res, 200, `Device temperature: ${temp.toFixed(1)}°C`);
+      const message = `Device temperature: ${temp.toFixed(1)}°C`;
+      sendResponse(res, 200, message);
     } catch (error: unknown) {
       sendResponse(res, 500, `Failed to get device temperature`);
     }

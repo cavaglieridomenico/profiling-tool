@@ -1,6 +1,6 @@
 import { testCases } from '../src/testCases';
 import { ensureDeviceIsCool } from '../src/thermal';
-import { sendCommand, getErrorMessage } from '../src/utils';
+import { sendCommand, getErrorMessage, logger } from '../src/utils';
 // 1. Import the dictionary
 import { urls } from '../src/urls';
 
@@ -51,16 +51,16 @@ export async function runTestCase(
       }
 
       const data = await sendCommand(command);
-      console.log(`Response from ${command}: ${data}`);
+      logger.info(`Response from ${command}: ${data}`);
 
       if (step.delay) {
         await sleep(step.delay);
       }
     }
-    console.log(`Test case "${name}" completed successfully.`);
+    logger.success(`Test case "${name}" completed successfully.`);
   } catch (error: unknown) {
     const msg = getErrorMessage(error);
-    console.error(`An error occurred during test case "${name}":`, msg);
+    logger.error(`An error occurred during test case "${name}": ${msg}`);
     throw new Error(msg);
   }
 }
@@ -71,7 +71,7 @@ if (require.main === module) {
   const targetUrl = process.argv[4];
 
   if (!testCaseName) {
-    console.error('Please provide a test case name to run.');
+    logger.error('Please provide a test case name to run.');
     console.log(
       'Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name] [target_url]'
     );
@@ -81,7 +81,7 @@ if (require.main === module) {
 
   runTestCase(testCaseName, traceName, targetUrl).catch((err: unknown) => {
     const msg = getErrorMessage(err);
-    console.error(`\n[Error] Execution Blocked: ${msg}\n`);
+    logger.error(`Execution Blocked: ${msg}`);
     process.exit(1);
   });
 }

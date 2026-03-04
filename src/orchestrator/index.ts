@@ -2,7 +2,7 @@ import { spawn, ChildProcess } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { ensureDeviceIsCool } from '../thermal';
-import { sendCommand, getErrorMessage } from '../utils';
+import { sendCommand, getErrorMessage, logger } from '../utils';
 import { OrchestratorConfig } from './config';
 import { urls } from '../urls';
 import { COMMANDS } from '../commands';
@@ -85,7 +85,7 @@ export class Orchestrator {
     return new Promise((resolve, reject) => {
       const npxCmd = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
-      console.log(`🚀 Spawning profile process for: ${caseName}...`);
+      logger.info(`Spawning profile process for: ${caseName}...`);
 
       const profileProcess = spawn(
         npxCmd,
@@ -99,13 +99,13 @@ export class Orchestrator {
 
       if (profileProcess.stdout) {
         profileProcess.stdout.on('data', (data) => {
-          process.stdout.write(`[Profile:${caseName}] ${data}`);
+          logger.stream(`Profile:${caseName}`, data);
         });
       }
 
       if (profileProcess.stderr) {
         profileProcess.stderr.on('data', (data) => {
-          process.stderr.write(`[Profile:${caseName} Err] ${data}`);
+          logger.stream(`Profile:${caseName}`, data, true);
         });
       }
 
@@ -123,7 +123,7 @@ export class Orchestrator {
 
   public async start(): Promise<void> {
     try {
-      console.log('🎻 Orchestrator Starting...');
+      logger.info('🎻 Orchestrator Starting...');
 
       // 1. Connection Pre-Check (Unified Setup)
       // We perform a light-weight setup check before spawning the server.
@@ -139,9 +139,9 @@ export class Orchestrator {
           });
           // Close the pre-check browser connection as we'll spawn the server process next
           await browserPreCheck.disconnect();
-          console.log('✅ Pre-check completed. Spawning Command Server...');
+          logger.success('Pre-check completed. Spawning Command Server...');
         } catch (e: unknown) {
-          console.error(`💥 Pre-check Failed: ${getErrorMessage(e)}`);
+          logger.error(`💥 Pre-check Failed: ${getErrorMessage(e)}`);
           process.exit(1);
         }
       }
@@ -150,8 +150,8 @@ export class Orchestrator {
       await this.startServer();
 
       // 3. Execution Plan
-      console.log(
-        `\n📋 Plan: ${this.config.timeline.length} timeline item(s) to execute.`
+      logger.info(
+        `Plan: ${this.config.timeline.length} timeline item(s) to execute.`
       );
 
       let itemIndex = 1;
@@ -183,20 +183,20 @@ export class Orchestrator {
           const postNavigationDelay = item.postNavigationDelay || 0;
           const postCommandDelay = item.postCommandDelay || 0;
 
-          console.log(
-            `\n--- 🏃 Step ${itemIndex}/${this.config.timeline.length}${
+          logger.info(
+            `--- 🏃 Step ${itemIndex}/${this.config.timeline.length}${
               runs > 1 ? ` (Run ${run}/${runs})` : ''
             } ---`
           );
 
           if (targetUrl) {
-            console.log(
+            logger.info(
               `👉 Target: ${targetUrl}${caseName ? ` | Case: ${caseName}` : ''}${
                 skipNavigation ? ' (Skipping internal navigation)' : ''
               }`
             );
           } else {
-            console.log(
+            logger.info(
               `👉 Action on current page${caseName ? ` | Case: ${caseName}` : ''}`
             );
           }
@@ -208,7 +208,7 @@ export class Orchestrator {
 
           // B. Pre-Navigation Commands
           if (preNavigationCommands && preNavigationCommands.length > 0) {
-            console.log(
+            logger.info(
               `⚙️  [1/6] Executing ${preNavigationCommands.length} pre-navigation commands...`
             );
             for (let preCmd of preNavigationCommands) {
@@ -217,27 +217,27 @@ export class Orchestrator {
                 : preCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                console.log(`   [Command] ${preCmd}: ${response}`);
+                logger.info(`   [Command] ${preCmd}: ${response}`);
                 // If it was a clean command, add a small stabilization pause
                 if (sanitizedCmd.includes('clean-state')) {
-                  console.log(
+                  logger.info(
                     '⏳ Waiting 5s for device to stabilize after clean...'
                   );
                   await sleep(5000);
                 }
               } catch (e: unknown) {
-                console.error(
+                logger.error(
                   `   Pre-navigation command ${preCmd} failed: ${getErrorMessage(e)}`
                 );
               }
             }
           } else {
-            console.log(`⏩ [1/6] No pre-navigation commands.`);
+            logger.info(`⏩ [1/6] No pre-navigation commands.`);
           }
 
           // C. Execute Config Overrides
           if (configOverrides && configOverrides.length > 0) {
-            console.log(
+            logger.info(
               `⚙️  [2/6] Executing ${configOverrides.length} config overrides...`
             );
             for (let overrideCmd of configOverrides) {
@@ -246,52 +246,52 @@ export class Orchestrator {
                 : overrideCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                console.log(`   [Override] ${overrideCmd}: ${response}`);
+                logger.info(`   [Override] ${overrideCmd}: ${response}`);
               } catch (e: unknown) {
-                console.error(
+                logger.error(
                   `   Override command ${overrideCmd} failed: ${getErrorMessage(e)}`
                 );
               }
             }
           } else {
-            console.log(`⏩ [2/6] No config overrides.`);
+            logger.info(`⏩ [2/6] No config overrides.`);
           }
 
           // D. Navigate to target URL (Only if targetUrl is provided)
           if (targetUrl && !skipNavigation) {
-            console.log(
+            logger.info(
               `🌐 [3/6] Navigating to ${targetUrl} (waitUntil: ${waitUntil})...`
             );
             const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
               const response = await sendCommand(navCmd);
-              console.log(`   [Navigation]: ${response}`);
+              logger.info(`   [Navigation]: ${response}`);
             } catch (e: unknown) {
-              console.error(`   Navigation failed: ${getErrorMessage(e)}`);
+              logger.error(`   Navigation failed: ${getErrorMessage(e)}`);
             }
           } else if (targetUrl && skipNavigation) {
-            console.log(
+            logger.info(
               `⏩ [3/6] Navigation skipped by request (skipNavigation: true).`
             );
           } else {
-            console.log(`⏩ [3/6] No target URL. Skipping navigation.`);
+            logger.info(`⏩ [3/6] No target URL. Skipping navigation.`);
           }
 
           // E. Post-Navigation Delay
           if (postNavigationDelay > 0) {
-            console.log(
+            logger.info(
               `⏳ [4/6] Waiting ${postNavigationDelay}ms for ${
                 targetUrl ? 'page stabilization' : 'stabilization'
               }...`
             );
             await sleep(postNavigationDelay);
           } else {
-            console.log(`⏩ [4/6] No stabilization delay.`);
+            logger.info(`⏩ [4/6] No stabilization delay.`);
           }
 
           // F. Execute Setup Commands
           if (setupCommands && setupCommands.length > 0) {
-            console.log(
+            logger.info(
               `⚙️  [5/6] Executing ${setupCommands.length} setup commands...`
             );
             for (let setupCmd of setupCommands) {
@@ -300,9 +300,9 @@ export class Orchestrator {
                 : setupCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                console.log(`   [Command] ${setupCmd}: ${response}`);
+                logger.info(`   [Command] ${setupCmd}: ${response}`);
               } catch (e: unknown) {
-                console.error(
+                logger.error(
                   `   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`
                 );
               }
@@ -310,7 +310,7 @@ export class Orchestrator {
           }
 
           if (postCommandDelay > 0) {
-            console.log(
+            logger.info(
               `⏳ Waiting ${postCommandDelay}ms after setup commands...`
             );
             await sleep(postCommandDelay);
@@ -318,7 +318,7 @@ export class Orchestrator {
 
           // G. Execute actual Profile Test Case
           if (caseName) {
-            console.log(`🧪 [6/6] Executing test case: ${caseName}...`);
+            logger.info(`🧪 [6/6] Executing test case: ${caseName}...`);
 
             // Just resolve the base name. The server will handle the -1, -2 appending.
             const finalTraceName = traceName
@@ -331,14 +331,12 @@ export class Orchestrator {
                 finalTraceName,
                 targetUrl || ''
               );
-              console.log(`✅ Case ${caseName} completed successfully.`);
+              logger.success(`Case ${caseName} completed successfully.`);
             } catch (e: unknown) {
-              console.error(
-                `❌ Case ${caseName} failed: ${getErrorMessage(e)}`
-              );
+              logger.error(`❌ Case ${caseName} failed: ${getErrorMessage(e)}`);
             }
           } else {
-            console.log(
+            logger.info(
               `⏩ [6/6] No test case provided. Skipping profiling step.`
             );
           }
@@ -348,9 +346,9 @@ export class Orchestrator {
         itemIndex++;
       }
 
-      console.log('\n✅ All runs completed.');
+      logger.success('All runs completed.');
     } catch (e: unknown) {
-      console.error(`\n💥 Orchestration Failed: ${getErrorMessage(e)}`);
+      logger.error(`Orchestration Failed: ${getErrorMessage(e)}`);
     } finally {
       this.stopServer();
     }
@@ -358,7 +356,7 @@ export class Orchestrator {
 
   private async startServer(): Promise<void> {
     const puppeteerEnv = this.config.setup.puppeteerEnv;
-    console.log(
+    logger.info(
       `🖥️  Starting Server (npm start) with PUPPETEER_ENV=${puppeteerEnv || 'default'}...`
     );
 
@@ -379,23 +377,23 @@ export class Orchestrator {
     if (this.serverProcess.stdout) {
       this.serverProcess.stdout.on('data', (data) => {
         // Log server output to orchestrator console
-        process.stdout.write(`[Server] ${data}`);
+        logger.stream('Server', data);
       });
     }
 
     if (this.serverProcess.stderr) {
       this.serverProcess.stderr.on('data', (data) => {
-        process.stderr.write(`[Server Err] ${data}`);
+        logger.stream('Server', data, true);
       });
     }
 
     // Wait for the server to be responsive
-    console.log('⏳ Waiting for server to be ready on port 8080...');
+    logger.info('⏳ Waiting for server to be ready on port 8080...');
     const maxRetries = 30;
     for (let i = 0; i < maxRetries; i++) {
       try {
         await sendCommand('device:get-temperature');
-        console.log('✅ Server is ready.');
+        logger.success('Server is ready.');
         return;
       } catch (e) {
         await sleep(1000);
@@ -408,7 +406,7 @@ export class Orchestrator {
 
   private stopServer(): void {
     if (this.serverProcess) {
-      console.log('🛑 Stopping Server...');
+      logger.info('🛑 Stopping Server...');
       if (process.platform === 'win32' && this.serverProcess.pid) {
         try {
           spawn('taskkill', [

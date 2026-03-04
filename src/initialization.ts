@@ -1,7 +1,7 @@
 import { Browser } from 'puppeteer';
 import { initializeBrowser, standardConnection } from './browser';
 import { checkForPuppeteerUpdates } from './version-checker';
-import { validateEnv, getErrorMessage } from './utils';
+import { validateEnv, getErrorMessage, logger } from './utils';
 import { ensureDeviceIsCool } from './thermal';
 
 export interface SetupOptions {
@@ -27,7 +27,7 @@ export async function performApplicationSetup(
     strictVersionCheck = false
   } = options;
 
-  console.log(`🚀 Initializing Profiling Tool in ${mode} mode...`);
+  logger.info(`🚀 Initializing Profiling Tool in ${mode} mode...`);
 
   // 1. Check for Puppeteer updates
   if (checkUpdates) {
@@ -62,7 +62,7 @@ export async function performApplicationSetup(
     try {
       await ensureDeviceIsCool();
     } catch (e: unknown) {
-      console.warn(`Thermal check warning: ${getErrorMessage(e)}`);
+      logger.warn(`Thermal check warning: ${getErrorMessage(e)}`);
     }
   }
 

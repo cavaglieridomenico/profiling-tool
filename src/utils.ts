@@ -7,6 +7,9 @@ import { Page, HTTPRequest, Protocol } from 'puppeteer';
 import { ServerResponse } from 'http';
 import { getAdbPath } from './browser';
 import { urls } from './urls';
+import { Logger } from './logger';
+
+export const logger = new Logger();
 
 const env = process.env.PUPPETEER_ENV;
 const envPath = env
@@ -557,10 +560,20 @@ export function sendResponse(
 ): void {
   res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
   res.end(message + '\n');
-  if (statusCode < 400) {
-    console.log(message);
+  if (statusCode >= 400) {
+    logger.error(message);
+  } else if (
+    message.toLowerCase().includes('started') ||
+    message.toLowerCase().includes('initializing')
+  ) {
+    logger.start(message);
+  } else if (
+    message.toLowerCase().includes('stopped') ||
+    message.toLowerCase().includes('saved to')
+  ) {
+    logger.stop(message);
   } else {
-    console.error(message);
+    logger.success(message);
   }
 }
 
