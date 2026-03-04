@@ -124,14 +124,13 @@ export function handleTap(
   const adbPath = getAdbPath();
   exec(`${adbPath} shell input tap ${x} ${y}`, (error, stdout, stderr) => {
     if (error) {
-      console.error(`exec error: ${error}`);
+      logger.error(`exec error: ${error}`);
       res.writeHead(500, { 'Content-Type': 'text/plain' });
       res.end(`Failed to execute tap command: ${error.message}\n`);
       return;
     }
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`${message}\n`);
-    console.log(message);
   });
 }
 
@@ -149,14 +148,13 @@ export function handleSwipe(
     `${adbPath} shell input swipe ${startX} ${startY} ${endX} ${endY} ${durationMs}`,
     (error, stdout, stderr) => {
       if (error) {
-        console.error(`exec error: ${error}`);
+        logger.error(`exec error: ${error}`);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end(`Failed to execute swipe command: ${error.message}\n`);
         return;
       }
       res.writeHead(200, { 'Content-Type': 'text/plain' });
       res.end(`${message}\n`);
-      console.log(message);
     }
   );
 }
@@ -168,7 +166,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
   if (Object.keys(activeOverrides).length === 0) return;
 
   try {
-    console.log(
+    logger.info(
       `[Sticky Overrides] Re-applying ${
         Object.keys(activeOverrides).length
       } active override(s) to page.`
@@ -200,7 +198,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
                 'Access-Control-Max-Age': '86400'
               }
             });
-            console.log(
+            logger.info(
               `[Override] Handled pre-flight OPTIONS for: ${url.substring(0, 80)}...`
             );
             return;
@@ -239,12 +237,12 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               },
               body: fileBuffer
             });
-            console.log(
+            logger.success(
               `[Override] SUCCESS: ${url.substring(0, 80)}... -> ${filePath}`
             );
             return;
           } catch (err) {
-            console.error(`[Override Error] Failed to respond: ${err}`);
+            logger.error(`[Override Error] Failed to respond: ${err}`);
           }
         }
       }
@@ -254,9 +252,8 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
       } catch (err) {}
     });
   } catch (err) {
-    console.warn(
-      '[Sticky Overrides] Could not apply interception:',
-      getErrorMessage(err)
+    logger.warn(
+      `[Sticky Overrides] Could not apply interception: ${getErrorMessage(err)}`
     );
   }
 }
@@ -282,7 +279,7 @@ export async function handleNavigation(
         username: PUPPETEER_USERNAME,
         password: PUPPETEER_PASSWORD
       });
-      console.log(
+      logger.info(
         'Using authentication credentials from environment variables.'
       );
     }
@@ -290,10 +287,9 @@ export async function handleNavigation(
     await page.goto(resolvedUrl, { waitUntil });
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Navigated to ${resolvedUrl} (waitUntil: ${waitUntil}).\n`);
-    console.log(`Navigated to ${resolvedUrl} (waitUntil: ${waitUntil}).`);
   } catch (err: unknown) {
     const message = getErrorMessage(err);
-    console.error(`Navigation Error: ${message}`);
+    logger.error(`Navigation Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Navigation failed: ${message}\n`);
   }
@@ -331,7 +327,7 @@ export async function handleCleanState(
     let targetPage = page;
 
     if (!pages.includes(page)) {
-      console.warn(
+      logger.warn(
         'Warning: Current page reference is stale or detached. Switching to first available page.'
       );
       if (pages.length > 0) {
@@ -342,7 +338,7 @@ export async function handleCleanState(
       }
     }
 
-    console.log(
+    logger.info(
       `Starting Mobile Device Clean State (${
         storageTypes === 'all' ? 'FULL' : 'PRESERVE COOKIES'
       })...`
@@ -363,7 +359,7 @@ export async function handleCleanState(
       origin: origin,
       storageTypes: storageTypes
     });
-    console.log(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
+    logger.info(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
 
     // Robust tab closing
     let oldTabIds: string[] = [];
@@ -387,10 +383,6 @@ export async function handleCleanState(
     if (mode === 'mobile' && oldTabIds.length > 0) {
       for (const id of oldTabIds) {
         try {
-          // We don't want to close the targetPage we are currently using
-          // But targetPage will be closed later anyway.
-          // However, to be safe, we can try to skip it if we knew its ID.
-          // For now, closing all via HTTP is fine because we spawn a fresh tab at the end.
           await closeTargetViaHttp(id);
           closedCount++;
         } catch (e) {
@@ -400,38 +392,37 @@ export async function handleCleanState(
     }
 
     if (closedCount > 0)
-      console.log(`- Closed ${closedCount} background/legacy tabs.`);
+      logger.info(`- Closed ${closedCount} background/legacy tabs.`);
 
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true
     } as Protocol.Network.SetCacheDisabledRequest);
-    console.log('- Network Cache disabled.');
+    logger.info('- Network Cache disabled.');
 
     await client.detach();
-    console.log('- CDP Session detached from polluted tab.');
+    logger.info('- CDP Session detached from polluted tab.');
 
     await targetPage.close();
-    console.log('- Polluted execution tab destroyed.');
+    logger.info('- Polluted execution tab destroyed.');
 
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
-    console.log('- Spawned fresh tab and navigated to about:blank.');
+    logger.info('- Spawned fresh tab and navigated to about:blank.');
 
     await applyOverridesIfActive(pristinePage);
 
     const pristineClient = await pristinePage.target().createCDPSession();
     await pristineClient.send('HeapProfiler.collectGarbage');
     await pristineClient.detach();
-    console.log('- Garbage Collection forced on fresh tab.');
+    logger.info('- Garbage Collection forced on fresh tab.');
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
       `Mobile Clean State complete for ${origin}: Storage wiped, Tab recreated, Cache disabled, bg tabs closed, GC executed.\n`
     );
-    console.log('Mobile Clean State complete.');
   } catch (err: unknown) {
     const message = getErrorMessage(err);
-    console.error(`Clean State Error: ${message}`);
+    logger.error(`Clean State Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Clean State failed: ${message}\n`);
   }
@@ -452,24 +443,23 @@ export async function handleCloseAllTabs(
     const browser = page.browser();
 
     // 1. Gather all existing tab IDs from HTTP (Mobile only)
-    // We do this BEFORE opening the new tab so we don't accidentally close it.
     let oldTabIds: string[] = [];
     if (mode === 'mobile') {
       const httpTargets = await getTargetsFromHttp();
       oldTabIds = httpTargets.filter((t) => t.type === 'page').map((t) => t.id);
-      console.log(`- Found ${oldTabIds.length} existing tabs via HTTP.`);
+      logger.info(`- Found ${oldTabIds.length} existing tabs via HTTP.`);
     }
 
     // 2. Gather all existing pages via Puppeteer
     const puppeteerPages = await browser.pages();
-    console.log(
+    logger.info(
       `- Found ${puppeteerPages.length} existing tabs via Puppeteer.`
     );
 
     // 3. Open a single fresh tab
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
-    console.log('- Spawned fresh tab and navigated to about:blank.');
+    logger.info('- Spawned fresh tab and navigated to about:blank.');
 
     let closedCount = 0;
 
@@ -487,7 +477,7 @@ export async function handleCloseAllTabs(
 
     // 5. Close via HTTP (Aggressive approach for mobile)
     if (mode === 'mobile' && oldTabIds.length > 0) {
-      console.log(
+      logger.info(
         `- Closing ${oldTabIds.length} tabs via aggressive HTTP API...`
       );
       for (const id of oldTabIds) {
@@ -502,10 +492,10 @@ export async function handleCloseAllTabs(
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Closed all previously open tabs. Fresh tab opened.\n`);
-    console.log(`Successfully finished close-all-tabs operation.`);
+    logger.success(`Successfully finished close-all-tabs operation.`);
   } catch (err: unknown) {
     const message = getErrorMessage(err);
-    console.error(`Close All Tabs Error: ${message}`);
+    logger.error(`Close All Tabs Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Close all tabs failed: ${message}\n`);
   }
@@ -526,9 +516,9 @@ export async function handleConfigOverrides(
         try {
           await lastInterceptedPage.setRequestInterception(false);
           lastInterceptedPage.removeAllListeners('request');
-          console.log('Overrides disabled. Request interception turned off.');
+          logger.info('Overrides disabled. Request interception turned off.');
         } catch (e) {
-          console.warn('Could not disable interception on closed page.');
+          logger.warn('Could not disable interception on closed page.');
         }
       }
       lastInterceptedPage = null;
@@ -538,7 +528,7 @@ export async function handleConfigOverrides(
     }
 
     activeOverrides[targetUrl] = localFilePath;
-    console.log(`Configuring override: ${targetUrl} -> ${localFilePath}`);
+    logger.info(`Configuring override: ${targetUrl} -> ${localFilePath}`);
 
     await applyOverridesIfActive(page);
 
@@ -546,7 +536,7 @@ export async function handleConfigOverrides(
     res.end(`Override active for ${targetUrl}\n`);
   } catch (err: unknown) {
     const message = getErrorMessage(err);
-    console.error(`Config Overrides Error: ${message}`);
+    logger.error(`Config Overrides Error: ${message}`);
     res.writeHead(500, { 'Content-Type': 'text/plain' });
     res.end(`Config Overrides failed: ${message}\n`);
   }
@@ -596,7 +586,7 @@ async function getTargetsFromHttp(): Promise<any[]> {
         });
       })
       .on('error', (err) => {
-        console.warn('Could not fetch targets via HTTP:', err.message);
+        logger.warn(`Could not fetch targets via HTTP: ${err.message}`);
         resolve([]);
       });
   });
@@ -613,7 +603,7 @@ async function closeTargetViaHttp(id: string): Promise<void> {
         res.on('end', () => resolve());
       })
       .on('error', (err) => {
-        console.warn(`Could not close target ${id} via HTTP:`, err.message);
+        logger.warn(`Could not close target ${id} via HTTP: ${err.message}`);
         resolve();
       });
   });

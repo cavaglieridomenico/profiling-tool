@@ -5,21 +5,23 @@ import {
   OrchestratorConfigSchema
 } from '../src/orchestrator/config';
 import { Orchestrator } from '../src/orchestrator/index';
-import { getErrorMessage } from '../src/utils';
+import { getErrorMessage, logger } from '../src/utils';
 
 const INPUTS_DIR = path.resolve(process.cwd(), 'orchestrator-inputs');
 const configName = process.argv[2];
 
 if (!configName) {
-  console.error('❌ Please provide the name of the config file.');
-  console.log('Usage: npm run orchestrate <config_filename>');
+  logger.error('Please provide the name of the config file.');
+  logger.info('Usage: npm run orchestrate <config_filename>');
 
   // Show available configs
   if (fs.existsSync(INPUTS_DIR)) {
     const files = fs
       .readdirSync(INPUTS_DIR)
       .filter((f) => f.endsWith('.jsonc'));
-    console.log('Available configs in orchestrator-inputs/:', files.join(', '));
+    logger.info(
+      `Available configs in orchestrator-inputs/: ${files.join(', ')}`
+    );
   }
   process.exit(1);
 }
@@ -35,8 +37,8 @@ if (!fs.existsSync(absPath)) {
 }
 
 if (!fs.existsSync(absPath)) {
-  console.error(
-    `❌ Config file not found: ${configName} (checked both local path and orchestrator-inputs/)`
+  logger.error(
+    `Config file not found: ${configName} (checked both local path and orchestrator-inputs/)`
   );
   process.exit(1);
 }
@@ -50,15 +52,15 @@ if (!fs.existsSync(absPath)) {
     const configResult = OrchestratorConfigSchema.safeParse(rawConfig);
 
     if (!configResult.success) {
-      console.error('❌ Configuration validation failed:');
+      logger.error('Configuration validation failed:');
       configResult.error.issues.forEach((err) => {
-        console.error(`   - [${err.path.join('.')}] ${err.message}`);
+        logger.error(`   - [${err.path.join('.')}] ${err.message}`);
       });
       process.exit(1);
     }
 
     const config = configResult.data;
-    console.log('✅ Configuration validated successfully.');
+    logger.success('Configuration validated successfully.');
 
     if (config.timeline.length === 0) {
       throw new Error(
@@ -69,7 +71,7 @@ if (!fs.existsSync(absPath)) {
     const orchestrator = new Orchestrator(config);
     await orchestrator.start();
   } catch (error: unknown) {
-    console.error(
+    logger.error(
       `Error loading or executing config: ${getErrorMessage(error)}`
     );
     process.exit(1);

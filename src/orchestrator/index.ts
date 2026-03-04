@@ -217,7 +217,14 @@ export class Orchestrator {
                 : preCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                logger.info(`   [Command] ${preCmd}: ${response}`);
+                if (
+                  response.toLowerCase().includes('failed') ||
+                  response.toLowerCase().includes('error')
+                ) {
+                  logger.error(`   [Command] ${preCmd}: ${response}`);
+                } else {
+                  logger.info(`   [Command] ${preCmd}: ${response}`);
+                }
                 // If it was a clean command, add a small stabilization pause
                 if (sanitizedCmd.includes('clean-state')) {
                   logger.info(
@@ -246,7 +253,14 @@ export class Orchestrator {
                 : overrideCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                logger.info(`   [Override] ${overrideCmd}: ${response}`);
+                if (
+                  response.toLowerCase().includes('failed') ||
+                  response.toLowerCase().includes('error')
+                ) {
+                  logger.error(`   [Override] ${overrideCmd}: ${response}`);
+                } else {
+                  logger.info(`   [Override] ${overrideCmd}: ${response}`);
+                }
               } catch (e: unknown) {
                 logger.error(
                   `   Override command ${overrideCmd} failed: ${getErrorMessage(e)}`
@@ -265,7 +279,14 @@ export class Orchestrator {
             const navCmd = `navigate:url?url=${encodeURIComponent(targetUrl)}&waitUntil=${waitUntil}`;
             try {
               const response = await sendCommand(navCmd);
-              logger.info(`   [Navigation]: ${response}`);
+              if (
+                response.toLowerCase().includes('failed') ||
+                response.toLowerCase().includes('error')
+              ) {
+                logger.error(`   [Navigation]: ${response}`);
+              } else {
+                logger.info(`   [Navigation]: ${response}`);
+              }
             } catch (e: unknown) {
               logger.error(`   Navigation failed: ${getErrorMessage(e)}`);
             }
@@ -300,7 +321,14 @@ export class Orchestrator {
                 : setupCmd;
               try {
                 const response = await sendCommand(sanitizedCmd);
-                logger.info(`   [Command] ${setupCmd}: ${response}`);
+                if (
+                  response.toLowerCase().includes('failed') ||
+                  response.toLowerCase().includes('error')
+                ) {
+                  logger.error(`   [Command] ${setupCmd}: ${response}`);
+                } else {
+                  logger.info(`   [Command] ${setupCmd}: ${response}`);
+                }
               } catch (e: unknown) {
                 logger.error(
                   `   Setup command ${setupCmd} failed: ${getErrorMessage(e)}`

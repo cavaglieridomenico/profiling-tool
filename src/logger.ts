@@ -22,7 +22,7 @@ export class Logger {
   }
 
   private hasEmoji(message: string): boolean {
-    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍]/u.test(
+    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍\-\[]/u.test(
       message.trim()
     );
   }
@@ -63,7 +63,6 @@ export class Logger {
     }
 
     const contextPrefix = this.context ? `[${this.context}] ` : '';
-    const separator = levelIcon || contextPrefix ? ' ' : '';
     return `[${timestamp}] ${levelIcon}${contextPrefix}${message}`;
   }
 

@@ -32,7 +32,7 @@ export async function runTestCase(
     resolvedUrl = (urls as any)[key] || targetUrl;
   }
 
-  console.log(`Running test case: ${name}`);
+  logger.info(`Running test case: ${name}`);
   try {
     for (const step of steps) {
       let { command } = step;
@@ -72,7 +72,7 @@ if (require.main === module) {
 
   if (!testCaseName) {
     logger.error('Please provide a test case name to run.');
-    console.log(
+    logger.info(
       'Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name] [target_url]'
     );
     console.log('Available test cases:', Object.keys(testCases).join(', '));

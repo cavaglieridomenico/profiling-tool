@@ -14,6 +14,7 @@
       "postCommandDelay": 5000
     },
     {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV25_01",
       "postNavigationDelay": 10000,
       "caseName": "testCases.devtools_tc04",

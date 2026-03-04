@@ -1,13 +1,14 @@
 import { execSync } from 'child_process';
 import { getAdbPath } from '../src/browser';
+import { logger } from '../src/utils';
 
 export function emergencyRestore() {
   const adb = getAdbPath();
-  console.log('🚨 STARTING EMERGENCY RESTORE PROCEDURE 🚨');
+  logger.warn('🚨 STARTING EMERGENCY RESTORE PROCEDURE 🚨');
 
   try {
     // 1. Force Kill ADB Server (Desktop side)
-    console.log('[1/4] Killing ADB Server...');
+    logger.info('[1/4] Killing ADB Server...');
     try {
       execSync(`${adb} kill-server`);
     } catch (e) {
@@ -15,26 +16,26 @@ export function emergencyRestore() {
     }
 
     // 2. Restart ADB Server
-    console.log('[2/4] Restarting ADB Server...');
+    logger.info('[2/4] Restarting ADB Server...');
     execSync(`${adb} start-server`);
 
     // 3. Check Device Connectivity
-    console.log('[3/4] Waiting for device...');
+    logger.info('[3/4] Waiting for device...');
     const devices = execSync(`${adb} devices`).toString();
     if (!devices.includes('\tdevice')) {
       throw new Error(
-        '❌ No device found! Please Unplug/Replug USB cable manually.'
+        'No device found! Please Unplug/Replug USB cable manually.'
       );
     }
 
     // 4. Reset Port Forwarding (Crucial for Puppeteer/DevTools)
-    console.log('[4/4] Resetting Port Forwarding...');
+    logger.info('[4/4] Resetting Port Forwarding...');
     execSync(`${adb} forward --remove-all`);
     execSync(`${adb} forward tcp:9222 localabstract:chrome_devtools_remote`);
 
-    console.log('✅ RESTORE COMPLETE. You can now restart your test.');
+    logger.success('RESTORE COMPLETE. You can now restart your test.');
   } catch (error: any) {
-    console.error(`💥 RESTORE FAILED: ${error.message}`);
+    logger.error(`💥 RESTORE FAILED: ${error.message}`);
   }
 }
 

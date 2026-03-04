@@ -1,4 +1,4 @@
-import { runCleanDevice, getErrorMessage } from '../src/utils';
+import { runCleanDevice, getErrorMessage, logger } from '../src/utils';
 
 const urlArg = process.argv.find(
   (arg) =>
@@ -9,12 +9,12 @@ const urlArg = process.argv.find(
 const preserveCookies = process.argv.includes('--preserve-cookies');
 
 if (!urlArg) {
-  console.error('Please provide a URL or a URL alias as an argument.');
-  console.error('Usage: ts-node bin/clean.ts <url> [--preserve-cookies]');
+  logger.error('Please provide a URL or a URL alias as an argument.');
+  logger.error('Usage: ts-node bin/clean.ts <url> [--preserve-cookies]');
   process.exit(1);
 }
 
-console.log(
+logger.info(
   `🧹 Cleaning device state for ${urlArg}${
     preserveCookies ? ' (PRESERVING COOKIES)' : ''
   }...`
@@ -22,9 +22,9 @@ console.log(
 
 runCleanDevice(urlArg, 'mobile', preserveCookies)
   .then((data) => {
-    console.log(`✅ ${data}`);
+    logger.success(data);
   })
   .catch((err: unknown) => {
-    console.error(`❌ Error cleaning state:`, getErrorMessage(err));
+    logger.error(`Error cleaning state: ${getErrorMessage(err)}`);
     process.exit(1);
   });
