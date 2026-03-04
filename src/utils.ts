@@ -361,6 +361,14 @@ export async function handleCleanState(
     });
     logger.info(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
 
+    await client.send('Network.setCacheDisabled', {
+      cacheDisabled: true
+    } as Protocol.Network.SetCacheDisabledRequest);
+    logger.info('- Network Cache disabled.');
+
+    await client.detach();
+    logger.info('- CDP Session detached from polluted tab.');
+
     // Robust tab closing
     let oldTabIds: string[] = [];
     if (mode === 'mobile') {
@@ -394,16 +402,14 @@ export async function handleCleanState(
     if (closedCount > 0)
       logger.info(`- Closed ${closedCount} background/legacy tabs.`);
 
-    await client.send('Network.setCacheDisabled', {
-      cacheDisabled: true
-    } as Protocol.Network.SetCacheDisabledRequest);
-    logger.info('- Network Cache disabled.');
-
-    await client.detach();
-    logger.info('- CDP Session detached from polluted tab.');
-
-    await targetPage.close();
-    logger.info('- Polluted execution tab destroyed.');
+    try {
+      if (!targetPage.isClosed()) {
+        await targetPage.close();
+        logger.info('- Polluted execution tab destroyed.');
+      }
+    } catch (e) {
+      // Already closed by HTTP loop
+    }
 
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
