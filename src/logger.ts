@@ -21,6 +21,12 @@ export class Logger {
     this.context = options.context || null;
   }
 
+  private hasEmoji(message: string): boolean {
+    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍]/u.test(
+      message.trim()
+    );
+  }
+
   private formatMessage(level: LogLevel, message: string): string {
     const timestamp = new Date().toLocaleTimeString('en-GB', {
       hour12: false,
@@ -30,36 +36,34 @@ export class Logger {
     });
 
     let levelIcon = '';
+    const emojiPresent = this.hasEmoji(message);
+
     switch (level) {
       case 'info':
-        // Don't add icon if message already starts with a common emoji/special char used in the project
-        const hasEmojiPrefix =
-          /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋🌐]/u.test(
-            message.trim()
-          );
-        levelIcon = hasEmojiPrefix ? '' : 'ℹ️ ';
+        levelIcon = emojiPresent ? '' : 'ℹ️ ';
         break;
       case 'success':
-        levelIcon = '✅ ';
+        levelIcon = emojiPresent ? '' : '✅ ';
         break;
       case 'warn':
-        levelIcon = '⚠️ ';
+        levelIcon = emojiPresent ? '' : '⚠️ ';
         break;
       case 'error':
-        levelIcon = '❌ ';
+        levelIcon = emojiPresent ? '' : '❌ ';
         break;
       case 'debug':
-        levelIcon = '🔍 ';
+        levelIcon = emojiPresent ? '' : '🔍 ';
         break;
       case 'start':
-        levelIcon = '🛑 ';
+        levelIcon = emojiPresent ? '' : '🛑 ';
         break;
       case 'stop':
-        levelIcon = '⏹️ ';
+        levelIcon = emojiPresent ? '' : '⏹️ ';
         break;
     }
 
     const contextPrefix = this.context ? `[${this.context}] ` : '';
+    const separator = levelIcon || contextPrefix ? ' ' : '';
     return `[${timestamp}] ${levelIcon}${contextPrefix}${message}`;
   }
 
@@ -101,6 +105,8 @@ export class Logger {
     for (const line of lines) {
       const trimmedLine = line.trim();
       if (trimmedLine) {
+        // Child processes already have their own loggers (and thus timestamps/icons)
+        // We just wrap them in the source prefix
         const message = `[${source}] ${trimmedLine}`;
         if (isError) {
           console.error(message);

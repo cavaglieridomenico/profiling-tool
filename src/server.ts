@@ -3,7 +3,13 @@ import dotenv from 'dotenv';
 import http, { IncomingMessage, ServerResponse } from 'http';
 import { URL } from 'url';
 import { Page, Browser } from 'puppeteer';
-import { handleSwipe, handleTap, sendResponse, getErrorMessage } from './utils';
+import {
+  handleSwipe,
+  handleTap,
+  sendResponse,
+  getErrorMessage,
+  logger
+} from './utils';
 import { TAP_CONFIG } from './tapConfig';
 import { routeHandlers } from './routes';
 import { getTargetPage } from './page';
@@ -31,12 +37,12 @@ export function startCommandServer(
 
       // Ensure activePage is valid
       if (activePage.isClosed()) {
-        console.log('Active page is closed. Recovering...');
+        logger.warn('Active page is closed. Recovering...');
         try {
           activePage = await getTargetPage(browser, '');
-          console.log('Recovered with new active page.');
+          logger.success('Recovered with new active page.');
         } catch (error: unknown) {
-          console.error(`Failed to recover page: ${getErrorMessage(error)}`);
+          logger.error(`Failed to recover page: ${getErrorMessage(error)}`);
           sendResponse(res, 500, 'Browser page is closed and recovery failed.');
           return;
         }
@@ -65,16 +71,16 @@ export function startCommandServer(
 
   const PORT = 8080;
   server.listen(PORT, () => {
-    console.log(`Command server listening on http://localhost:${PORT}`);
+    logger.success(`Command server listening on http://localhost:${PORT}`);
     // Log available commands
     Object.keys(routeHandlers).forEach((cmd) =>
-      console.log(`  - Send GET to ${cmd}`)
+      logger.info(`  - Send GET to ${cmd}`)
     );
     Object.keys(TAP_CONFIG).forEach((cmd) =>
-      console.log(`  - Send GET to ${cmd}`)
+      logger.info(`  - Send GET to ${cmd}`)
     );
     Object.keys(SWIPE_CONFIG).forEach((cmd) =>
-      console.log(`  - Send GET to ${cmd}`)
+      logger.info(`  - Send GET to ${cmd}`)
     );
   });
 }
