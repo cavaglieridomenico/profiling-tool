@@ -24,12 +24,12 @@ export class Logger {
 
     const trimmedMsg = message.trim();
     const hasEmoji = this.hasEmojiPrefix(trimmedMsg);
-    const hasDecoration = /^[\-\[]/.test(trimmedMsg);
+    // Suppress info icon for decoration characters: - (list), [ (tags), > (npm/node), --- (steps)
+    const hasDecoration = /^[\-\[\>\-]/.test(trimmedMsg);
 
     let levelIcon = '';
     switch (level) {
       case 'info':
-        // Info icon is suppressed if message starts with emoji OR decoration ([ or -)
         levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️ ';
         break;
       case 'success':
@@ -53,7 +53,27 @@ export class Logger {
     }
 
     const contextPrefix = this.context ? `[${this.context}] ` : '';
-    return `[${timestamp}] ${levelIcon}${contextPrefix}${message}`;
+    // Construct parts and filter out empty strings to avoid double spaces
+    const parts = [
+      `[${timestamp}]`,
+      levelIcon.trim(),
+      contextPrefix.trim(),
+      message
+    ].filter((p) => p !== '');
+
+    // Re-add the space after timestamp if needed
+    let result = parts[0]; // [timestamp]
+    for (let i = 1; i < parts.length; i++) {
+      if (parts[i] === message) {
+        // Final message gets a space separator
+        result += ' ' + parts[i];
+      } else {
+        // Icons and contexts get a space separator
+        result += ' ' + parts[i];
+      }
+    }
+
+    return result;
   }
 
   public info(message: string): void {
@@ -100,14 +120,21 @@ export class Logger {
         if (hasTimestamp) {
           // It's already formatted, just add the source prefix
           const message = `[${source}] ${trimmedLine}`;
-          if (isError) {
+          if (isError || trimmedLine.includes('❌') || trimmedLine.toLowerCase().includes('error')) {
             console.error(message);
           } else {
             console.log(message);
           }
         } else {
-          // It's a raw line (e.g. from a library or a crash), format it properly
-          const level: LogLevel = isError ? 'error' : 'info';
+          // It's a raw line, format it properly
+          // Detect level from content if possible
+          let level: LogLevel = isError ? 'error' : 'info';
+          if (trimmedLine.toLowerCase().includes('error') || trimmedLine.toLowerCase().includes('failed')) {
+            level = 'error';
+          } else if (trimmedLine.toLowerCase().includes('success') || trimmedLine.startsWith('✅')) {
+            level = 'success';
+          }
+
           const formatted = this.formatMessage(level, trimmedLine);
           console.log(`[${source}] ${formatted}`);
         }
