@@ -1,5 +1,6 @@
 import { exec } from 'child_process';
 import { getAdbPath } from './browser';
+import { logger } from './utils';
 
 // Samsung devices usually map the main SoC temp to zone 0 or 1.
 // We divide by 1000 because raw value is in millidegrees (e.g., 42000 = 42°C).
@@ -34,7 +35,7 @@ export function getDeviceTemperature(): Promise<number> {
       // Strategy 2: Fallback to thermal_zone0
       exec(`${adbPath} shell ${THERMAL_ZONE_CMD}`, (err, out) => {
         if (err) {
-          console.warn('[Thermal] Could not read temp, assuming safe (0°C).');
+          logger.warn('[Thermal] Could not read temp, assuming safe (0°C).');
           return resolve(0);
         }
         const raw = parseInt(out.trim(), 10);
@@ -52,22 +53,21 @@ export async function ensureDeviceIsCool(): Promise<void> {
   if (temp === 0) return; // Sensor read failed, proceed blindly
 
   if (temp < MAX_START_TEMP) {
-    console.log(
+    logger.info(
       `[Thermal] Device is cool (${temp.toFixed(1)}°C). Starting test.`
     );
     return;
   }
 
-  console.log(
-    `[Thermal] ⚠️ Device is HOT (${temp.toFixed(1)}°C). Cooling down...`
+  logger.warn(
+    `[Thermal] Device is HOT (${temp.toFixed(1)}°C). Cooling down...`
   );
 
   // Wait loop
   while (temp >= MAX_START_TEMP) {
-    process.stdout.write('.'); // Progress indicator
     await new Promise((r) => setTimeout(r, 5000)); // Wait 5s
     temp = await getDeviceTemperature();
   }
 
-  console.log(`\n[Thermal] Cooldown complete. Now ${temp.toFixed(1)}°C.`);
+  logger.success(`[Thermal] Cooldown complete. Now ${temp.toFixed(1)}°C.`);
 }

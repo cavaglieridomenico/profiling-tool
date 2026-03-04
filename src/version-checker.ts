@@ -1,6 +1,7 @@
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import { logger } from './utils';
 
 export async function checkForPuppeteerUpdates(): Promise<boolean> {
   try {
@@ -19,46 +20,38 @@ export async function checkForPuppeteerUpdates(): Promise<boolean> {
       ''
     );
 
-    console.log(`Checking for the latest ${packageName} version...`);
+    logger.info(`Checking for the latest ${packageName} version...`);
     const latestVersion = await getLatestPuppeteerVersion(packageName);
 
     if (latestVersion) {
       if (isNewer(latestVersion, currentVersion)) {
-        console.log(
+        logger.warn(
           `The latest ${packageName} version available is ${latestVersion}.`
         );
-        console.log(
-          '\x1b[33m%s\x1b[0m',
+        logger.warn(
           '------------------------------------------------------------'
         );
-        console.log(
-          '\x1b[33m%s\x1b[0m',
+        logger.warn(
           `A new version of ${packageName} is available: ${latestVersion}`
         );
-        console.log('\x1b[33m%s\x1b[0m', `Current version: ${currentVersion}`);
-        console.log(
-          '\x1b[33m%s\x1b[0m',
-          `Please visit: https://pptr.dev/CHANGELOG`
-        );
-        console.log(
-          '\x1b[33m%s\x1b[0m',
+        logger.warn(`Current version: ${currentVersion}`);
+        logger.warn(`Please visit: https://pptr.dev/CHANGELOG`);
+        logger.warn(
           'To align with the latest Chrome releases, consider updating:'
         );
-        console.log('\x1b[33m%s\x1b[0m', `npm install ${packageName}@latest`);
-        console.log(
-          '\x1b[33m%s\x1b[0m',
+        logger.warn(`npm install ${packageName}@latest`);
+        logger.warn(
           '------------------------------------------------------------'
         );
         return true;
       } else {
-        console.log(
-          '\x1b[32m%s\x1b[0m',
-          `✅ You are using the latest version of ${packageName} (${currentVersion}).`
+        logger.success(
+          `You are using the latest version of ${packageName} (${currentVersion}).`
         );
         return false;
       }
     } else {
-      console.log(`Could not retrieve the latest ${packageName} version.`);
+      logger.warn(`Could not retrieve the latest ${packageName} version.`);
       return false;
     }
   } catch (error) {
