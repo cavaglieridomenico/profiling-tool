@@ -8,8 +8,8 @@ export class Logger {
     this.context = options.context || null;
   }
 
-  private hasEmoji(message: string): boolean {
-    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍\-\[]/u.test(
+  private hasEmojiPrefix(message: string): boolean {
+    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍]/u.test(
       message.trim()
     );
   }
@@ -22,30 +22,33 @@ export class Logger {
       second: '2-digit'
     });
 
-    let levelIcon = '';
-    const emojiPresent = this.hasEmoji(message);
+    const trimmedMsg = message.trim();
+    const hasEmoji = this.hasEmojiPrefix(trimmedMsg);
+    const hasDecoration = /^[\-\[]/.test(trimmedMsg);
 
+    let levelIcon = '';
     switch (level) {
       case 'info':
-        levelIcon = emojiPresent ? '' : 'ℹ️ ';
+        // Info icon is suppressed if message starts with emoji OR decoration ([ or -)
+        levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️ ';
         break;
       case 'success':
-        levelIcon = emojiPresent ? '' : '✅ ';
+        levelIcon = hasEmoji ? '' : '✅ ';
         break;
       case 'warn':
-        levelIcon = emojiPresent ? '' : '⚠️ ';
+        levelIcon = hasEmoji ? '' : '⚠️ ';
         break;
       case 'error':
-        levelIcon = emojiPresent ? '' : '❌ ';
+        levelIcon = hasEmoji ? '' : '❌ ';
         break;
       case 'debug':
-        levelIcon = emojiPresent ? '' : '🔍 ';
+        levelIcon = hasEmoji ? '' : '🔍 ';
         break;
       case 'start':
-        levelIcon = emojiPresent ? '' : '🛑 ';
+        levelIcon = hasEmoji ? '' : '🛑 ';
         break;
       case 'stop':
-        levelIcon = emojiPresent ? '' : '⏹️ ';
+        levelIcon = hasEmoji ? '' : '⏹️ ';
         break;
     }
 
@@ -91,13 +94,22 @@ export class Logger {
     for (const line of lines) {
       const trimmedLine = line.trim();
       if (trimmedLine) {
-        // Child processes already have their own loggers (and thus timestamps/icons)
-        // We just wrap them in the source prefix
-        const message = `[${source}] ${trimmedLine}`;
-        if (isError) {
-          console.error(message);
+        // Check if the line already has a timestamp (meaning it was logged by our Logger internally)
+        const hasTimestamp = /^\[\d{2}:\d{2}:\d{2}\]/.test(trimmedLine);
+
+        if (hasTimestamp) {
+          // It's already formatted, just add the source prefix
+          const message = `[${source}] ${trimmedLine}`;
+          if (isError) {
+            console.error(message);
+          } else {
+            console.log(message);
+          }
         } else {
-          console.log(message);
+          // It's a raw line (e.g. from a library or a crash), format it properly
+          const level: LogLevel = isError ? 'error' : 'info';
+          const formatted = this.formatMessage(level, trimmedLine);
+          console.log(`[${source}] ${formatted}`);
         }
       }
     }
