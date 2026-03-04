@@ -26,6 +26,9 @@ if (!configName) {
   process.exit(1);
 }
 
+// Enable file logging for orchestrator
+logger.setLogFile(configName);
+
 // Resolve the path: if it's already an absolute or relative path that exists, use it.
 // Otherwise, look in the orchestrator-inputs folder.
 let absPath = path.isAbsolute(configName)
