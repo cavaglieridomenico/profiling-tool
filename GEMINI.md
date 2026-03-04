@@ -65,7 +65,7 @@ Used for automated, multi-step scenarios including cleanup, navigation, and mult
 
 ## Development Conventions
 
-- **Formatting & Commitment Flow:** Before applying any logic changes, run `npm run format` on the target files. If formatting changes occur, they **must be committed alone** (e.g., `style: format [files] with Prettier`) before proceeding. This ensures that logic diffs are not obscured by styling updates.
+- **Formatting & Commitment Flow:** Before applying any logic changes, run `npm run format` on the target files. If formatting changes occur, they **must be committed alone** (e.g., `style: format [files] with Prettier`) before proceeding. This ensures that logic diffs are not obscured by styling updates. **Subsequent logic changes must NOT be committed unless the user explicitly asks for it.**
 - **Environment Variables:** Use `PUPPETEER_ENV` (e.g., `vmcore`, `pdwuat`) to switch target configurations.
 - **Type Safety:** All configurations (especially for the orchestrator) are validated with **Zod**. See `src/orchestrator/config.ts`.
 - **Formatting:** Prettier is enforced. Run `npm run format` before committing.
