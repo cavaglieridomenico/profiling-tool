@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.12.0
+
+### Added
+
+- Centralized logic for logging
+- New Puppeteer version
+- New test case profiles
+
 # 1.11.0
 
 ### Added
