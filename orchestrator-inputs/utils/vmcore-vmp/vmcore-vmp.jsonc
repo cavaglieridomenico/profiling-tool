@@ -1,0 +1,67 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "vmcore",
+    "strictVersionCheck": false
+  },
+  "timeline": [
+    {
+      "targetUrl": "urls.VMCORE_BYPASS",
+      "postNavigationDelay": 5000
+    },
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+    //   "targetUrl": "urls.VMCORE_VMP_TV27_06",
+    //   "configOverrides": [
+    //     "COMMANDS.CONFIG_OVERRIDES?target=https://vmcore-test.luxottica.com/demo/VMP-UI/feature/PICOMMON-4394-avoid-memory-leak-pose-extraction-test/vmp-ui-9578.js&replacement=./overrides/vmp-ui-9578.js"
+    //   ],
+    //   "postNavigationDelay": 30000
+    // },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.VMCORE_VMP_TV27_06",
+      "postNavigationDelay": 30000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMCORE_VMP_PDPLIGHT"],
+      "postCommandDelay": 10000
+    }
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_REC"
+    //   ],
+    //   "postCommandDelay": 30000
+    // },
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_RESTART"
+    //   ],
+    //   "postCommandDelay": 5000
+    // },
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_REC"
+    //   ],
+    //   "postCommandDelay": 30000
+    // },
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_RESTART"
+    //   ],
+    //   "postCommandDelay": 5000
+    // },
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_REC"
+    //   ],
+    //   "postCommandDelay": 30000
+    // },
+    // {
+    //   "setupCommands": [
+    //     "COMMANDS.INPUT_TAP_VMCORE_VMP_RESTART"
+    //   ],
+    //   "postCommandDelay": 5000
+    // }
+  ]
+}
