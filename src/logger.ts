@@ -1,18 +1,5 @@
 import path from 'path';
-
-export type LogLevel =
-  | 'info'
-  | 'warn'
-  | 'error'
-  | 'debug'
-  | 'success'
-  | 'start'
-  | 'stop';
-
-export interface LoggerOptions {
-  context?: string;
-  isErrorStream?: boolean;
-}
+import { LogLevel, LoggerOptions } from './types';
 
 export class Logger {
   private context: string | null;

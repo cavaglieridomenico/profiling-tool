@@ -32,3 +32,17 @@ export type RouteHandler = (
 ) => Promise<void>;
 
 export type RouteHandlers = Partial<Record<CommandValue, RouteHandler>>;
+
+export type LogLevel =
+  | 'info'
+  | 'warn'
+  | 'error'
+  | 'debug'
+  | 'success'
+  | 'start'
+  | 'stop';
+
+export interface LoggerOptions {
+  context?: string;
+  isErrorStream?: boolean;
+}

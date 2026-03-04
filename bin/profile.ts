@@ -75,7 +75,8 @@ if (require.main === module) {
     logger.info(
       'Usage: npx ts-node bin/profile.ts <test_case_name> [trace_name] [target_url]'
     );
-    console.log('Available test cases:', Object.keys(testCases).join(', '));
+    const cases = Object.keys(testCases) as (keyof typeof testCases)[];
+    logger.info(`Available test cases: ${cases.join(', ')}`);
     process.exit(1);
   }
 
