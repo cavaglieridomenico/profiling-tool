@@ -28,7 +28,7 @@
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV25_03",
       "postNavigationDelay": 15000,
-      "caseName": "testCases.devtools_tc04",
+      "caseName": "testCases.devtools_10seconds",
       "traceName": "TV25_03-TC04-TD31_03",
       "runs": 3
     },
@@ -36,7 +36,7 @@
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV25_03",
       "postNavigationDelay": 15000,
-      "caseName": "testCases.perfetto_tc04",
+      "caseName": "testCases.perfetto_10seconds",
       "traceName": "TV25_03-TC04-TD31_03",
       "runs": 3
     },
@@ -57,12 +57,12 @@
       "postCommandDelay": 2000
     },
     {
-      "caseName": "testCases.devtools_tc04",
+      "caseName": "testCases.devtools_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },
     {
-      "caseName": "testCases.perfetto_tc04",
+      "caseName": "testCases.perfetto_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },
@@ -87,12 +87,12 @@
       "postCommandDelay": 2000
     },
     {
-      "caseName": "testCases.devtools_tc04",
+      "caseName": "testCases.devtools_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },
     {
-      "caseName": "testCases.perfetto_tc04",
+      "caseName": "testCases.perfetto_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },
@@ -117,12 +117,12 @@
       "postCommandDelay": 2000
     },
     {
-      "caseName": "testCases.devtools_tc04",
+      "caseName": "testCases.devtools_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },
     {
-      "caseName": "testCases.perfetto_tc04",
+      "caseName": "testCases.perfetto_10seconds",
       "traceName": "TV25_03-TC11-TD31_03",
       "runs": 1
     },

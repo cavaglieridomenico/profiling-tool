@@ -38,7 +38,7 @@
       "postNavigationDelay": 10000,
       "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_TRYON_NU"],
       "postCommandDelay": 10000,
-      "caseName": "testCases.devtools_tc04",
+      "caseName": "testCases.devtools_10seconds",
       "traceName": "TV13_02-TC04-TD31_03",
       "runs": 3
     }

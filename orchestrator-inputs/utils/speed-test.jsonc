@@ -11,7 +11,7 @@
       "targetUrl": "urls.SPEED_TEST",
       "postNavigationDelay": 10000,
       "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_RX"]
-      //"caseName": "testCases.perfetto_tc04"
+      //"caseName": "testCases.perfetto_10seconds"
     }
   ]
 }

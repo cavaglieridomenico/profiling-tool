@@ -1,11 +1,11 @@
 import { TestCaseStep } from './types';
 
 export const testCases: Record<string, TestCaseStep[]> = {
-  perfetto_tc04: [
+  perfetto_10seconds: [
     { command: 'perfetto:start', delay: 10000 },
     { command: 'perfetto:stop', delay: 0 }
   ],
-  devtools_tc04: [
+  devtools_10seconds: [
     { command: 'devtools:start', delay: 10000 },
     { command: 'devtools:stop', delay: 0 }
   ],
@@ -184,11 +184,19 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:stop', delay: 0 }
   ],
   rtrmv_tc01: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
     { command: 'devtools:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 15000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   rtrmv_tc01_01: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
     { command: 'devtools:start', delay: 2000 },
     { command: 'navigate:refresh', delay: 10000 },
     { command: 'input:tap-rtrmv-zoom', delay: 5000 },

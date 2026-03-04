@@ -11,7 +11,7 @@
       "targetUrl": "urls.SPEEDOMETER",
       "postNavigationDelay": 10000,
       "setupCommands": ["COMMANDS.INPUT_TAP_CENTER_CENTER"]
-      //"caseName": "testCases.perfetto_tc04"
+      //"caseName": "testCases.perfetto_10seconds"
     }
   ]
 }

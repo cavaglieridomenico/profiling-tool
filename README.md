@@ -270,7 +270,7 @@ Alternatively, add this line to your `.env` or `.env.<environment>` file:
 STRICT_VERSION_CHECK=true
 ```
 
-- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_tc04`):
+- **`timeline`**: A linear sequence of items to execute. For multiple runs of the same case, simply repeat the item in the timeline. Most fields support **variable references** (e.g., `urls.SPEED_TEST`, `COMMANDS.INPUT_TAP_TOP_CENTER`, `testCases.perfetto_10seconds`):
 - `targetUrl`: (optional) The URL to profile (supports URL aliases defined in `src/urls.ts` or `urls.<KEY>`). If omitted, the orchestrator will perform subsequent actions on the **currently open page**.
 - `preNavigationCommands`: (optional) A list of command endpoints or `COMMANDS.<KEY>` to call BEFORE navigating. This is the recommended place for `COMMANDS.DEVICE_CLEAN_STATE`.
 - `waitUntil`: (optional) Browser event to wait for during navigation: `load` (default), `domcontentloaded`, `networkidle0`, or `networkidle2`. Only applicable if `targetUrl` is provided.
