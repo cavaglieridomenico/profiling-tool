@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "puppeteer": "^24.37.5",
+    "puppeteer": "^24.38.0",
     "zod": "^4.3.6"
   },
   "keywords": [],
