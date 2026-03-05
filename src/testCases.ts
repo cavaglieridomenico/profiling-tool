@@ -50,8 +50,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:stop', delay: 0 }
   ],
   vmmv_tc09: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 20000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   vmmv_tc10: [
@@ -152,8 +156,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:stop', delay: 0 }
   ],
   pdwmv_tc04: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 15000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
+    { command: 'devtools:start', delay: 2000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   pdwmv_tc05: [
@@ -189,7 +198,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000
     },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 15000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 10000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   rtrmv_tc01_01: [
@@ -198,26 +207,26 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000
     },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:refresh', delay: 10000 },
-    { command: 'input:tap-rtrmv-zoom', delay: 5000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 10000 },
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:stop', delay: 0 }
   ],
-  //rtrmv_tc02: RTR must to be in fullscreen:
   rtrmv_tc02: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 5000 },
     { command: 'devtools:stop', delay: 0 }
   ],
-  //rtrmv_tc03: RTR must to be in fullscreen:
   rtrmv_tc03: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
     { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'devtools:stop', delay: 0 }
   ],
-  //rtrmv_tc03_perfetto: RTR must to be in fullscreen:
   rtrmv_tc03_perfetto: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'perfetto:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
     { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
