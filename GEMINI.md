@@ -27,17 +27,26 @@ The system follows a client-server architecture:
 - `bin/`: CLI entry points.
   - `profile.ts`: Run a single test case (`npm run profile:<name>`).
   - `orchestrate.ts`: Run an orchestration plan (`npm run orchestrate <config>`).
-  - `connect.ts`/`restore.ts`: ADB port forwarding management.
-  - `clean.ts`: Device state cleanup (cache, cookies).
+  - `connect.ts` / `restore.ts`: ADB port forwarding management.
+  - `clean.ts`: Device state cleanup (cache, cookies, logs).
+  - `navigate.ts`: CLI for direct navigation.
 - `src/`: Core logic.
-  - `orchestrator/`: Logic for multi-step execution plans.
+  - `orchestrator/`: Logic for multi-step execution plans (`index.ts`, `config.ts`).
   - `testCases.ts`: Definition of automation steps (taps, waits, traces).
   - `tapConfig.ts` / `swipeConfig.ts`: Coordinate-based input configurations.
   - `devtools-trace-manager.ts` / `perfetto-trace-manager.ts`: Profiling session management.
   - `server.ts` / `routes.ts`: HTTP API implementation.
   - `thermal.ts`: Device temperature monitoring and cooldown logic.
-- `orchestrator-inputs/`: JSONC files defining orchestration plans.
+  - `logger.ts`: Custom logging utility with file and emoji support.
+  - `browser.ts` / `page.ts` / `commands.ts`: Puppeteer abstractions and automation logic.
+  - `initialization.ts` / `version-checker.ts`: Setup and sanity checks.
+  - `urls.ts`: URL alias definitions.
+  - `config/`: Global constants and configuration.
+  - `perfetto-configs/`: Protobuf-based trace configurations.
+- `orchestrator-inputs/`: JSONC files defining orchestration plans, organized in `utils/` and `test-performed/`.
 - `traces-output/`: Default destination for generated trace files.
+- `logs-output/`: Destination for session logs.
+- `assets/`: Documentation images and static resources.
 
 ## Core Workflows
 
