@@ -198,7 +198,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000
     },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:url?url=TARGET_URL', delay: 10000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   rtrmv_tc01_01: [
@@ -207,7 +207,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000
     },
     { command: 'devtools:start', delay: 2000 },
-    { command: 'navigate:url?url=TARGET_URL', delay: 10000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:stop', delay: 0 }
   ],
