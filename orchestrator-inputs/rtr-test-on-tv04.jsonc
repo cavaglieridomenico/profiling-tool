@@ -7,6 +7,10 @@
   },
   "timeline": [
     {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
       "targetUrl": "urls.RTRMV_BYPASS",
       "postNavigationDelay": 5000
     },
