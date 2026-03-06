@@ -35,7 +35,7 @@ class DevtoolsTraceManager {
 
     this.traceFileName = finalFileName;
 
-    logger.info(`[DevTools] Initializing trace: ${this.traceFileName}`);
+    logger.start(`[DevTools] Initializing trace: ${this.traceFileName}`);
     await page.tracing.start({
       path: tracePath,
       screenshots: true
@@ -47,7 +47,7 @@ class DevtoolsTraceManager {
   async stopTrace(page: Page): Promise<string> {
     if (!page) throw new Error('No page available for tracing.');
 
-    logger.info('[DevTools] Stopping session...');
+    logger.stop('[DevTools] Stopping session...');
     await page.tracing.stop();
     return path.join(TRACES_OUTPUT_DIR, this.traceFileName);
   }

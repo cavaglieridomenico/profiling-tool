@@ -559,22 +559,34 @@ export function sendResponse(
   res.end(message + '\n');
 
   const lowerMsg = message.toLowerCase();
+  const isTracing =
+    lowerMsg.includes('trace') ||
+    lowerMsg.includes('perfetto') ||
+    lowerMsg.includes('devtools');
+
   if (statusCode >= 400) {
     logger.error(message);
   } else if (
     lowerMsg.includes('started') ||
     lowerMsg.includes('initializing') ||
-    lowerMsg.includes('starting') ||
-    lowerMsg.includes('navigating')
+    lowerMsg.includes('starting')
   ) {
-    logger.info(message);
+    if (isTracing) {
+      logger.start(message);
+    } else {
+      logger.info(message);
+    }
   } else if (
     lowerMsg.includes('stopped') ||
     lowerMsg.includes('saved to') ||
     lowerMsg.includes('complete') ||
     lowerMsg.includes('success')
   ) {
-    logger.success(message);
+    if (isTracing) {
+      logger.stop(message);
+    } else {
+      logger.success(message);
+    }
   } else {
     logger.info(message);
   }

@@ -45,11 +45,11 @@ class PerfettoTraceManager {
     this.traceFileName = finalFileName;
 
     try {
-      logger.info(`Initializing trace: ${this.traceFileName}`);
+      logger.start(`Initializing trace: ${this.traceFileName}`);
       logger.info('Pushing configuration...');
       execSync(`${adbPath} push "${LOCAL_CONFIG}" "${DEVICE_CONFIG_PATH}"`);
 
-      logger.info('Starting detached session...');
+      logger.start('Starting detached session...');
       execSync(
         `${adbPath} shell "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
       );
@@ -63,7 +63,7 @@ class PerfettoTraceManager {
   public stopPerfetto(): string {
     const adbPath = getAdbPath();
     try {
-      logger.info('Stopping session...');
+      logger.stop('Stopping session...');
       execSync(`${adbPath} shell perfetto --attach=cv_session --stop`);
 
       const localPath = path.join(TRACES_OUTPUT_DIR, this.traceFileName);

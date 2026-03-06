@@ -47,7 +47,7 @@ export class Logger {
   }
 
   private hasEmojiPrefix(message: string): boolean {
-    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪📋⏹️🛑ℹ️⚠️❌🔍]/u.test(
+    return /^[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪🔴⏹️🛑ℹ️⚠️❌🔍]/u.test(
       message.trim()
     );
   }
@@ -91,7 +91,7 @@ export class Logger {
         levelIcon = hasEmoji ? '' : '🔍 ';
         break;
       case 'start':
-        levelIcon = hasEmoji ? '' : '🛑 ';
+        levelIcon = hasEmoji ? '' : '🔴 ';
         break;
       case 'stop':
         levelIcon = hasEmoji ? '' : '⏹️ ';
