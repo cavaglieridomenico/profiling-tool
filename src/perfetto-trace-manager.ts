@@ -51,7 +51,7 @@ class PerfettoTraceManager {
 
       logger.info('Starting detached session...');
       execSync(
-        `${adbPath} shell -t "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
+        `${adbPath} shell -tt "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
       );
     } catch (e: unknown) {
       const message = getErrorMessage(e);
@@ -64,7 +64,7 @@ class PerfettoTraceManager {
     const adbPath = getAdbPath();
     try {
       logger.info('Stopping session...');
-      execSync(`${adbPath} shell -t perfetto --attach=cv_session --stop`);
+      execSync(`${adbPath} shell -tt perfetto --attach=cv_session --stop`);
 
       const localPath = path.join(TRACES_OUTPUT_DIR, this.traceFileName);
 
