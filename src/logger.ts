@@ -3,6 +3,11 @@ import path from 'path';
 import { LogLevel, LoggerOptions } from './types';
 import { LOGS_OUTPUT_DIR } from './config/constants';
 
+/**
+ * Persistence-enabled logger with semantic icon mapping and child-process stream multiplexing (via .stream()).
+ * Logs are formatted as `[HH:mm:ss] [LevelIcon] [Context] message` and persisted to unique files via .setLogFile().
+ * Usage: Use semantic methods (info, success, etc.); reserve .start() (🔴) and .stop() (⏹️) for tracing and server lifecycles.
+ */
 export class Logger {
   private context: string | null;
   private logFilePath: string | null = null;
@@ -163,7 +168,11 @@ export class Logger {
   /**
    * Specifically for streaming child process output
    */
-  public stream(source: string, data: any, isError: boolean = false): void {
+  public stream(
+    source: string,
+    data: string | Buffer,
+    isError: boolean = false
+  ): void {
     const lines = String(data).split('\n');
     for (const line of lines) {
       const trimmedLine = line.trim();

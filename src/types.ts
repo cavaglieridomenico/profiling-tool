@@ -44,5 +44,4 @@ export type LogLevel =
 
 export interface LoggerOptions {
   context?: string;
-  isErrorStream?: boolean;
 }
