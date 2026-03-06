@@ -201,6 +201,8 @@ export class Logger {
             lowerLine.includes('written into the output file') ||
             lowerLine.includes('saved to') ||
             lowerLine.includes('file pushed') ||
+            lowerLine.includes('connected to the perfetto traced service') ||
+            lowerLine.includes('starting tracing') ||
             trimmedLine.startsWith('✅');
 
           let level: LogLevel = 'info';
