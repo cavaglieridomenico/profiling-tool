@@ -14,41 +14,41 @@
       "targetUrl": "urls.RTRMV_BYPASS",
       "postNavigationDelay": 5000
     },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "postNavigationDelay": 10000
-    // },
-    // {
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "skipNavigation": true,
-    //   "caseName": "testCases.rtrmv_tc01",
-    //   "traceName": "TV02_01-TC01-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "skipNavigation": true,
-    //   "caseName": "testCases.rtrmv_tc01_01",
-    //   "traceName": "TV02_01-TC01_01-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "postNavigationDelay": 10000,
-    //   "caseName": "testCases.rtrmv_tc02",
-    //   "traceName": "TV02_01-TC02-TD31_03",
-    //   "runs": 3
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "postNavigationDelay": 10000,
-    //   "caseName": "testCases.rtrmv_tc03",
-    //   "traceName": "TV02_01-TC03-TD31_03",
-    //   "runs": 3
-    // },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "postNavigationDelay": 10000
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "skipNavigation": true,
+      "caseName": "testCases.rtrmv_tc01",
+      "traceName": "TV02_01-TC01-TD31_03",
+      "runs": 3
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "skipNavigation": true,
+      "caseName": "testCases.rtrmv_tc01_01",
+      "traceName": "TV02_01-TC01_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc02",
+      "traceName": "TV02_01-TC02-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc03",
+      "traceName": "TV02_01-TC03-TD31_03",
+      "runs": 3
+    },
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.RTRMV_TV02_01",
