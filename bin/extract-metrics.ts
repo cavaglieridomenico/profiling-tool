@@ -1,18 +1,26 @@
 import fs from 'fs';
 import path from 'path';
 import { parseTrace } from '../src/trace-parser';
+import { TRACES_OUTPUT_DIR } from '../src/config/constants';
 
 async function main() {
     const args = process.argv.slice(2);
     if (args.length < 1) {
-        console.error('Usage: ts-node bin/extract-metrics.ts <trace-file-path>');
+        console.error('Usage: npm run extract <trace-file-name>');
         process.exit(1);
     }
 
-    const tracePath = args[0];
+    let tracePath = args[0];
+    
+    // Auto-resolve from TRACES_OUTPUT_DIR if not found
     if (!fs.existsSync(tracePath)) {
-        console.error(`File not found: ${tracePath}`);
-        process.exit(1);
+        const resolvedPath = path.join(TRACES_OUTPUT_DIR, tracePath);
+        if (fs.existsSync(resolvedPath)) {
+            tracePath = resolvedPath;
+        } else {
+            console.error(`File not found: ${tracePath} or ${resolvedPath}`);
+            process.exit(1);
+        }
     }
 
     const metrics = parseTrace(tracePath);

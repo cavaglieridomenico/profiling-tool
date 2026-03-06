@@ -97,6 +97,7 @@
     "profile:rtrmv_tc03_perfetto": "ts-node bin/profile.ts rtrmv_tc03_perfetto",
     "profile:rtrmv_tc04": "ts-node bin/profile.ts rtrmv_tc04",
     "orchestrate": "ts-node bin/orchestrate.ts",
+    "extract": "ts-node bin/extract-metrics.ts",
     "build": "tsc",
     "format": "prettier --write ."
   },
