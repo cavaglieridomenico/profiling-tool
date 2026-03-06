@@ -186,18 +186,23 @@ export class Logger {
           }
         } else {
           // It's a raw line, format it properly
-          let level: LogLevel = isError ? 'error' : 'info';
+          const lowerLine = trimmedLine.toLowerCase();
+          const isSuccessMessage =
+            lowerLine.includes('success') ||
+            lowerLine.includes('written into the output file') ||
+            lowerLine.includes('saved to') ||
+            lowerLine.includes('file pushed') ||
+            trimmedLine.startsWith('✅');
+
+          let level: LogLevel = 'info';
+
           if (
-            trimmedLine.toLowerCase().includes('error') ||
-            trimmedLine.toLowerCase().includes('failed')
+            lowerLine.includes('error') ||
+            lowerLine.includes('failed') ||
+            (isError && !isSuccessMessage)
           ) {
             level = 'error';
-          } else if (
-            trimmedLine.toLowerCase().includes('success') ||
-            trimmedLine.toLowerCase().includes('written into the output file') ||
-            trimmedLine.toLowerCase().includes('saved to') ||
-            trimmedLine.startsWith('✅')
-          ) {
+          } else if (isSuccessMessage) {
             level = 'success';
           }
 
