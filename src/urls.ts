@@ -39,6 +39,7 @@ export const urls: Record<string, string> = {
   RTRMV_TV03: 'https://www.sunglasshut.com/us/ray-ban/rb2132-8056262320594',
   RTRCORE_TV03_01: 'https://www.sunglasshut.com/us',
   RTRMV_TV02_01: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.3/index.html',
+  RTRMV_TV02: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.1/index.html',
   SPEEDOMETER: 'https://browserbench.org/Speedometer3.1/',
   SPEED_TEST:
     'https://www.google.com/search?q=speed+test&oq=speed+&gs_lcrp=EgZjaHJvbWUqBggBEEUYOzIGCAAQRRg5MgYIARBFGDsyBggCEEUYOzIGCAMQRRg80gEINDI1MGowajeoAgCwAgA&sourceid=chrome&ie=UTF-8'
