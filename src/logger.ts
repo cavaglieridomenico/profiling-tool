@@ -78,7 +78,7 @@ export class Logger {
             trimmedMsg
           )
         ) {
-          levelIcon = '⚙️ ';
+          levelIcon = '⚙️  ';
         } else {
           levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️  ';
         }

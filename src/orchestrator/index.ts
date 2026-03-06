@@ -209,7 +209,7 @@ export class Orchestrator {
           // B. Pre-Navigation Commands
           if (preNavigationCommands && preNavigationCommands.length > 0) {
             logger.info(
-              `⚙️  [1/6] Executing ${preNavigationCommands.length} pre-navigation commands...`
+              `⚙️ [1/6] Executing ${preNavigationCommands.length} pre-navigation commands...`
             );
             for (let preCmd of preNavigationCommands) {
               const sanitizedCmd = preCmd.startsWith('/')
@@ -245,7 +245,7 @@ export class Orchestrator {
           // C. Execute Config Overrides
           if (configOverrides && configOverrides.length > 0) {
             logger.info(
-              `⚙️  [2/6] Executing ${configOverrides.length} config overrides...`
+              `⚙️ [2/6] Executing ${configOverrides.length} config overrides...`
             );
             for (let overrideCmd of configOverrides) {
               const sanitizedCmd = overrideCmd.startsWith('/')
@@ -313,7 +313,7 @@ export class Orchestrator {
           // F. Execute Setup Commands
           if (setupCommands && setupCommands.length > 0) {
             logger.info(
-              `⚙️  [5/6] Executing ${setupCommands.length} setup commands...`
+              `⚙️ [5/6] Executing ${setupCommands.length} setup commands...`
             );
             for (let setupCmd of setupCommands) {
               const sanitizedCmd = setupCmd.startsWith('/')
