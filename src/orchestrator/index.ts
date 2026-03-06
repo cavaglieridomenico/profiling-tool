@@ -434,7 +434,7 @@ export class Orchestrator {
 
   private stopServer(): void {
     if (this.serverProcess) {
-      logger.info('🛑 Stopping Server...');
+      logger.info('Stopping Server...');
       if (process.platform === 'win32' && this.serverProcess.pid) {
         try {
           spawn('taskkill', [

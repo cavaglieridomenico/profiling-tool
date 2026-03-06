@@ -63,7 +63,7 @@ if (!fs.existsSync(absPath)) {
     }
 
     const config = configResult.data;
-    logger.success('Configuration validated successfully.');
+    logger.success('Test configuration validated successfully.');
 
     if (config.timeline.length === 0) {
       throw new Error(

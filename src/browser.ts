@@ -93,7 +93,7 @@ export function standardConnection() {
       forwardList.includes(`tcp:${ADB_PORT}`) &&
       forwardList.includes(DEVTOOLS_SOCKET)
     ) {
-      logger.success('🚀 CONNECTION SUCCESSFUL! You are ready to profile.');
+      logger.success('🚀 CONNECTION SUCCESSFUL! Ready to profile.');
     } else {
       throw new Error(
         'Verification Failed: The port forwarding rule does not appear in the active list.'

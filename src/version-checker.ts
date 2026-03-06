@@ -46,7 +46,7 @@ export async function checkForPuppeteerUpdates(): Promise<boolean> {
         return true;
       } else {
         logger.success(
-          `You are using the latest version of ${packageName} (${currentVersion}).`
+          `The latest version of ${packageName} is in use. (${currentVersion}).`
         );
         return false;
       }
