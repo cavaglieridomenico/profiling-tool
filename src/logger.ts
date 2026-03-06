@@ -65,10 +65,18 @@ export class Logger {
     // Suppress info icon for decoration characters: - (list), [ (tags), > (npm/node), --- (steps)
     const hasDecoration = /^[\-\[\>\-]/.test(trimmedMsg);
 
-    let levelIcon = '';
+    let levelIcon = '⌨️ ';
     switch (level) {
       case 'info':
-        levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️ ';
+        if (
+          /^(Initializing|Starting|Stopping|Pulling|Pushing|Connecting|Navigating|Waiting|Checking|Forcing)/i.test(
+            trimmedMsg
+          )
+        ) {
+          levelIcon = '⚙️ ';
+        } else {
+          levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️ ';
+        }
         break;
       case 'success':
         levelIcon = hasEmoji ? '' : '✅ ';
@@ -186,6 +194,8 @@ export class Logger {
             level = 'error';
           } else if (
             trimmedLine.toLowerCase().includes('success') ||
+            trimmedLine.toLowerCase().includes('written into the output file') ||
+            trimmedLine.toLowerCase().includes('saved to') ||
             trimmedLine.startsWith('✅')
           ) {
             level = 'success';
@@ -193,7 +203,11 @@ export class Logger {
 
           const formatted = this.formatMessage(level, trimmedLine);
           finalLogLine = `[${source}] ${formatted}`;
-          console.log(finalLogLine);
+          if (level === 'error') {
+            console.error(finalLogLine);
+          } else {
+            console.log(finalLogLine);
+          }
         }
         this.saveToFile(finalLogLine);
       }

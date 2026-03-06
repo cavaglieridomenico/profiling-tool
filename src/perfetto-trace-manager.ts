@@ -45,17 +45,17 @@ class PerfettoTraceManager {
     this.traceFileName = finalFileName;
 
     try {
-      logger.info(`[Perfetto] Initializing trace: ${this.traceFileName}`);
-      logger.info('[Perfetto] Pushing configuration...');
+      logger.info(`Initializing trace: ${this.traceFileName}`);
+      logger.info('Pushing configuration...');
       execSync(`${adbPath} push "${LOCAL_CONFIG}" "${DEVICE_CONFIG_PATH}"`);
 
-      logger.info('[Perfetto] Starting detached session...');
+      logger.info('Starting detached session...');
       execSync(
         `${adbPath} shell "cat ${DEVICE_CONFIG_PATH} | perfetto --txt -c - --detach=cv_session -o ${DEVICE_TRACE_PATH}"`
       );
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      logger.error(`[Perfetto] Start failed: ${message}`);
+      logger.error(`Start failed: ${message}`);
       throw e;
     }
   }
@@ -63,18 +63,19 @@ class PerfettoTraceManager {
   public stopPerfetto(): string {
     const adbPath = getAdbPath();
     try {
-      logger.info('[Perfetto] Stopping session...');
+      logger.info('Stopping session...');
       execSync(`${adbPath} shell perfetto --attach=cv_session --stop`);
 
       const localPath = path.join(TRACES_OUTPUT_DIR, this.traceFileName);
 
-      logger.info(`[Perfetto] Pulling trace to ${localPath}...`);
+      logger.info(`Pulling trace to: ${localPath}`);
       execSync(`${adbPath} pull "${DEVICE_TRACE_PATH}" "${localPath}"`);
 
+      logger.success(`Perfetto tracing stopped. Saved to: ${localPath}`);
       return localPath;
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      logger.error(`[Perfetto] Stop failed: ${message}`);
+      logger.error(`Stop failed: ${message}`);
       throw e;
     }
   }

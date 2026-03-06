@@ -167,7 +167,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
 
   try {
     logger.info(
-      `[Sticky Overrides] Re-applying ${
+      `Re-applying ${
         Object.keys(activeOverrides).length
       } active override(s) to page.`
     );
@@ -199,7 +199,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               }
             });
             logger.info(
-              `[Override] Handled pre-flight OPTIONS for: ${url.substring(0, 80)}...`
+              `Handled pre-flight OPTIONS for: ${url.substring(0, 80)}...`
             );
             return;
           } catch (err) {}
@@ -238,11 +238,11 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
               body: fileBuffer
             });
             logger.success(
-              `[Override] SUCCESS: ${url.substring(0, 80)}... -> ${filePath}`
+              `SUCCESS: ${url.substring(0, 80)}... -> ${filePath}`
             );
             return;
           } catch (err) {
-            logger.error(`[Override Error] Failed to respond: ${err}`);
+            logger.error(`Failed to respond: ${err}`);
           }
         }
       }
@@ -253,7 +253,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
     });
   } catch (err) {
     logger.warn(
-      `[Sticky Overrides] Could not apply interception: ${getErrorMessage(err)}`
+      `Could not apply interception: ${getErrorMessage(err)}`
     );
   }
 }
@@ -280,10 +280,11 @@ export async function handleNavigation(
         password: PUPPETEER_PASSWORD
       });
       logger.info(
-        'Using authentication credentials from environment variables.'
+        'Connecting using authentication credentials from environment variables.'
       );
     }
 
+    logger.info(`Navigating to ${resolvedUrl} (waitUntil: ${waitUntil})...`);
     await page.goto(resolvedUrl, { waitUntil });
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(`Navigated to ${resolvedUrl} (waitUntil: ${waitUntil}).\n`);
@@ -359,15 +360,15 @@ export async function handleCleanState(
       origin: origin,
       storageTypes: storageTypes
     });
-    logger.info(`- Storage (${storageTypes}) cleared for origin: ${origin}`);
+    logger.info(`Cleaning storage (${storageTypes}) for origin: ${origin}`);
 
     await client.send('Network.setCacheDisabled', {
       cacheDisabled: true
     } as Protocol.Network.SetCacheDisabledRequest);
-    logger.info('- Network Cache disabled.');
+    logger.info('Cleaning Network Cache (disabled).');
 
     await client.detach();
-    logger.info('- CDP Session detached from polluted tab.');
+    logger.info('CDP Session detached from polluted tab.');
 
     // Robust tab closing
     let oldTabIds: string[] = [];
@@ -400,12 +401,12 @@ export async function handleCleanState(
     }
 
     if (closedCount > 0)
-      logger.info(`- Closed ${closedCount} background/legacy tabs.`);
+      logger.info(`Closed ${closedCount} background/legacy tabs.`);
 
     try {
       if (!targetPage.isClosed()) {
         await targetPage.close();
-        logger.info('- Polluted execution tab destroyed.');
+        logger.info('Polluted execution tab destroyed.');
       }
     } catch (e) {
       // Already closed by HTTP loop
@@ -413,14 +414,14 @@ export async function handleCleanState(
 
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
-    logger.info('- Spawned fresh tab and navigated to about:blank.');
+    logger.info('Spawned fresh tab and navigated to about:blank.');
 
     await applyOverridesIfActive(pristinePage);
 
     const pristineClient = await pristinePage.target().createCDPSession();
     await pristineClient.send('HeapProfiler.collectGarbage');
     await pristineClient.detach();
-    logger.info('- Garbage Collection forced on fresh tab.');
+    logger.info('Forcing Garbage Collection on fresh tab.');
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
@@ -453,19 +454,19 @@ export async function handleCloseAllTabs(
     if (mode === 'mobile') {
       const httpTargets = await getTargetsFromHttp();
       oldTabIds = httpTargets.filter((t) => t.type === 'page').map((t) => t.id);
-      logger.info(`- Found ${oldTabIds.length} existing tabs via HTTP.`);
+      logger.info(`Checking ${oldTabIds.length} existing tabs via HTTP.`);
     }
 
     // 2. Gather all existing pages via Puppeteer
     const puppeteerPages = await browser.pages();
     logger.info(
-      `- Found ${puppeteerPages.length} existing tabs via Puppeteer.`
+      `Checking ${puppeteerPages.length} existing tabs via Puppeteer.`
     );
 
     // 3. Open a single fresh tab
     const pristinePage = await browser.newPage();
     await pristinePage.goto('about:blank');
-    logger.info('- Spawned fresh tab and navigated to about:blank.');
+    logger.info('Spawned fresh tab and navigated to about:blank.');
 
     let closedCount = 0;
 
@@ -484,7 +485,7 @@ export async function handleCloseAllTabs(
     // 5. Close via HTTP (Aggressive approach for mobile)
     if (mode === 'mobile' && oldTabIds.length > 0) {
       logger.info(
-        `- Closing ${oldTabIds.length} tabs via aggressive HTTP API...`
+        `Closing ${oldTabIds.length} tabs via aggressive HTTP API...`
       );
       for (const id of oldTabIds) {
         try {
@@ -522,7 +523,7 @@ export async function handleConfigOverrides(
         try {
           await lastInterceptedPage.setRequestInterception(false);
           lastInterceptedPage.removeAllListeners('request');
-          logger.info('Overrides disabled. Request interception turned off.');
+          logger.info('Stopping overrides. Request interception turned off.');
         } catch (e) {
           logger.warn('Could not disable interception on closed page.');
         }
@@ -556,20 +557,26 @@ export function sendResponse(
 ): void {
   res.writeHead(statusCode, { 'Content-Type': 'text/plain' });
   res.end(message + '\n');
+
+  const lowerMsg = message.toLowerCase();
   if (statusCode >= 400) {
     logger.error(message);
   } else if (
-    message.toLowerCase().includes('started') ||
-    message.toLowerCase().includes('initializing')
+    lowerMsg.includes('started') ||
+    lowerMsg.includes('initializing') ||
+    lowerMsg.includes('starting') ||
+    lowerMsg.includes('navigating')
   ) {
-    logger.start(message);
+    logger.info(message);
   } else if (
-    message.toLowerCase().includes('stopped') ||
-    message.toLowerCase().includes('saved to')
+    lowerMsg.includes('stopped') ||
+    lowerMsg.includes('saved to') ||
+    lowerMsg.includes('complete') ||
+    lowerMsg.includes('success')
   ) {
-    logger.stop(message);
-  } else {
     logger.success(message);
+  } else {
+    logger.info(message);
   }
 }
 
