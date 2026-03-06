@@ -201,17 +201,19 @@ export class Logger {
             lowerLine.includes('written into the output file') ||
             lowerLine.includes('saved to') ||
             lowerLine.includes('file pushed') ||
+            lowerLine.includes('file pulled') ||
             lowerLine.includes('connected to the perfetto traced service') ||
             lowerLine.includes('starting tracing') ||
+            lowerLine.includes('no pty') ||
             trimmedLine.startsWith('✅');
 
           let level: LogLevel = 'info';
 
-          if (
-            lowerLine.includes('error') ||
-            lowerLine.includes('failed') ||
-            (isError && !isSuccessMessage)
-          ) {
+          if (lowerLine.includes('error') || lowerLine.includes('failed')) {
+            level = 'error';
+          } else if (lowerLine.includes('warning')) {
+            level = 'warn';
+          } else if (isError && !isSuccessMessage) {
             level = 'error';
           } else if (isSuccessMessage) {
             level = 'success';
