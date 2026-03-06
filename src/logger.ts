@@ -70,7 +70,7 @@ export class Logger {
     // Suppress info icon for decoration characters: - (list), [ (tags), > (npm/node), --- (steps)
     const hasDecoration = /^[\-\[\>\-]/.test(trimmedMsg);
 
-    let levelIcon = '⌨️ ';
+    let levelIcon = '⌨️  ';
     switch (level) {
       case 'info':
         if (
@@ -78,44 +78,58 @@ export class Logger {
             trimmedMsg
           )
         ) {
-          levelIcon = '⚙️ ';
+          levelIcon = '⚙️  ';
         } else {
-          levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️ ';
+          levelIcon = hasEmoji || hasDecoration ? '' : 'ℹ️  ';
         }
         break;
       case 'success':
         levelIcon = hasEmoji ? '' : '✅ ';
         break;
       case 'warn':
-        levelIcon = hasEmoji ? '' : '⚠️ ';
+        levelIcon = hasEmoji ? '' : '⚠️  ';
         break;
       case 'error':
-        levelIcon = hasEmoji ? '' : '❌ ';
+        levelIcon = hasEmoji ? '' : '❌  ';
         break;
       case 'debug':
-        levelIcon = hasEmoji ? '' : '🔍 ';
+        levelIcon = hasEmoji ? '' : '🔍  ';
         break;
       case 'start':
-        levelIcon = hasEmoji ? '' : '🔴 ';
+        levelIcon = hasEmoji ? '' : '🔴  ';
         break;
       case 'stop':
-        levelIcon = hasEmoji ? '' : '⏹️ ';
+        levelIcon = hasEmoji ? '' : '⏹️  ';
         break;
     }
 
     const contextPrefix = this.context ? `[${this.context}] ` : '';
-    // Construct parts and filter out empty strings to avoid double spaces
-    const parts = [
-      `[${timestamp}]`,
-      levelIcon.trim(),
-      contextPrefix.trim(),
-      message
-    ].filter((p) => p !== '');
 
-    // Re-add the space after timestamp if needed
-    let result = parts[0]; // [timestamp]
-    for (let i = 1; i < parts.length; i++) {
-      result += ' ' + parts[i];
+    // If the message starts with an emoji and we suppressed the level icon,
+    // ensure the message itself has a double space after its leading emoji.
+    let finalMessage = message;
+    if (hasEmoji && levelIcon === '') {
+      const emojiMatch = message.match(
+        /^([\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}🚀✅🎻🔌🖥️⏳👉⚙️🌐🧪🔴⏹️🛑ℹ️⚠️❌🔍])\s*(.*)/u
+      );
+      if (emojiMatch) {
+        finalMessage = `${emojiMatch[1]}  ${emojiMatch[2]}`;
+      }
+    }
+
+    const timestampPart = `[${timestamp}]`;
+    const iconPart = levelIcon !== '' ? levelIcon : '';
+    const ctxPart = contextPrefix.trim() !== '' ? `[${this.context}]  ` : '';
+
+    // Filter out empty parts and join them
+    // We avoid .trim() on levelIcon because it contains our desired spacing
+    let result = timestampPart;
+    if (iconPart) result += ` ${iconPart}`;
+    if (ctxPart) result += ` ${ctxPart}`;
+    if (result.endsWith(' ')) {
+      result += finalMessage;
+    } else {
+      result += ` ${finalMessage}`;
     }
 
     return result;
