@@ -7,10 +7,6 @@
   },
   "timeline": [
     {
-      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
-      "postCommandDelay": 5000
-    },
-    {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.SPEEDOMETER",
       "postNavigationDelay": 10000,
