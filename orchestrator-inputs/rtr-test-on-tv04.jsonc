@@ -1,0 +1,57 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "rtrmv", // Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "targetUrl": "urls.RTRMV_BYPASS",
+      "postNavigationDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 10000
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "skipNavigation": true,
+      "caseName": "testCases.rtrmv_tc01",
+      "traceName": "TV04-TC01-TD31_03",
+      "runs": 3
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV04",
+      "skipNavigation": true,
+      "caseName": "testCases.rtrmv_tc01_01",
+      "traceName": "TV04-TC01_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc02",
+      "traceName": "TV04-TC02-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc03",
+      "traceName": "TV04-TC03-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV04",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc03_perfetto",
+      "traceName": "TV04-TC03-TD31_03",
+      "runs": 3
+    }
+  ]
+}
