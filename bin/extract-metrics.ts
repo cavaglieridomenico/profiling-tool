@@ -79,8 +79,19 @@ async function main() {
       csvLines.push(values.join(',,,'));
     }
 
-    const outputFileName = path.basename(tracePath, '.json') + '.csv';
-    const outputPath = path.join(path.dirname(tracePath), outputFileName);
+    const baseDir = path.dirname(tracePath);
+    const baseName = path.basename(tracePath, '.json');
+    
+    let outputPath = path.join(baseDir, `${baseName}.csv`);
+    
+    // Numbering logic for existing CSV files
+    if (fs.existsSync(outputPath)) {
+      let counter = 1;
+      while (fs.existsSync(path.join(baseDir, `${baseName}-${counter}.csv`))) {
+        counter++;
+      }
+      outputPath = path.join(baseDir, `${baseName}-${counter}.csv`);
+    }
 
     fs.writeFileSync(outputPath, csvLines.join('\n'));
     logger.success(`Metrics extracted and saved to: ${outputPath}`);
