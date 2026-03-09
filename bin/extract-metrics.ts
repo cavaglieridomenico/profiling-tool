@@ -38,12 +38,13 @@ const METRIC_ROWS = [
   'Network MB resources',
   'INP',
   'CLS',
+  'FPS (estimate)',
   'FPS (total)',
   'Longest frame (ms)',
-  'Complete Frames',
-  'Partially-presented Frames',
-  'Idle Frames',
-  'Dropped Frames',
+  'Complete Frames (%)',
+  'Partial Presented Frames (%)',
+  'Idle Frames (%)',
+  'Dropped Frames (%)',
   'DevTools issues'
 ];
 
@@ -113,8 +114,8 @@ function populateRunColumns(
         worksheet.getRow(15).getCell(colIndex).value = metrics.cls;
         worksheet.getRow(15).getCell(colIndex).numFmt = '0.0000';
         
-        // DevTools Issues (Row 22)
-        worksheet.getRow(22).getCell(colIndex).value = metrics.devToolsIssues;
+        // DevTools Issues (Row 23)
+        worksheet.getRow(23).getCell(colIndex).value = metrics.devToolsIssues;
     }
   };
 
@@ -164,7 +165,7 @@ async function main() {
 
     // Column A (1): Metric Labels
     const firstColHeader = worksheet.getRow(1).getCell(1);
-    firstColHeader.value = 'Metric';
+    firstColHeader.value = '';
     firstColHeader.font = { bold: true };
     firstColHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9D9D9' } };
 
@@ -176,18 +177,24 @@ async function main() {
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F2' } };
     });
 
-    // Column B (2): Average Column
+    // Column B (2): Aggregated (Average) Column
     const avgHeader = worksheet.getRow(1).getCell(2);
-    avgHeader.value = 'AVERAGE';
+    avgHeader.value = group.scenarioName;
     avgHeader.font = { bold: true };
     avgHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
 
-    for (let r = 2; r <= 22; r++) {
+    for (let r = 2; r <= 23; r++) {
         const cell = worksheet.getRow(r).getCell(2);
         
         if (r === 4) { // Scripting (%)
-            // Ratio formula based on B3 (Scripting) and B2 (Rendering)
             cell.value = { formula: `IFERROR(B3 / B2, "N/A")` };
+            cell.numFmt = '0.00%';
+        } else if (r === 16) { // FPS (estimate) is Row 16. Uses Average of Complete Frames (now Row 19).
+            cell.value = { formula: `IFERROR(AVERAGE(C19:Q19), "N/A")` };
+            cell.numFmt = '0.00';
+        } else if (r >= 19 && r <= 22) { // Frame % metrics (Complete, Partial, Idle, Dropped)
+            // Ratio of average count divided by average FPS (Total Frames) in B17
+            cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}) / B17, "N/A")` };
             cell.numFmt = '0.00%';
         } else {
             let range = `C${r}:Q${r}`;
@@ -222,7 +229,7 @@ async function main() {
         worksheet.eachRow({ includeEmpty: true }, (row) => {
             const cellValue = row.getCell(i + 1).value;
             if (cellValue) {
-                const text = typeof cellValue === 'object' ? 'Average Formula' : cellValue.toString();
+                const text = typeof cellValue === 'object' ? 'Formula Placeholder' : cellValue.toString();
                 if (text.length > maxColumnLength) maxColumnLength = text.length;
             }
         });
