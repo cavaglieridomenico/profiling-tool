@@ -45,3 +45,30 @@ export type LogLevel =
 export interface LoggerOptions {
   context?: string;
 }
+
+export interface TraceEvent {
+  cat: string;
+  name: string;
+  ph: string;
+  pid: number;
+  tid: number;
+  ts: number;
+  dur?: number;
+  args?: any;
+}
+
+export interface ThreadMetrics {
+  name: string;
+  longTasks100: number;
+  longTasks500: number;
+  longestTask: number;
+  jsHeapMin: number;
+  jsHeapMax: number;
+}
+
+export interface TraceMetrics {
+  threads: Record<string, ThreadMetrics>;
+  cls: number;
+  inp: number;
+  devToolsIssues: number;
+}
