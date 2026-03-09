@@ -4,30 +4,10 @@ import { parseTrace } from '../src/trace-parser';
 import { TRACES_OUTPUT_DIR } from '../src/config/constants';
 import { logger, getErrorMessage } from '../src/utils';
 
-async function main() {
-  const args = process.argv.slice(2);
-  if (args.length < 1) {
-    logger.error('Please provide a trace file name to extract metrics from.');
-    logger.info('Usage: npm run extract "<trace-file-name>"');
-    process.exit(1);
-  }
-
-  // Handle filenames with spaces by joining arguments
-  let tracePath = args.join(' ');
-
-  // Auto-resolve from TRACES_OUTPUT_DIR if not found
-  if (!fs.existsSync(tracePath)) {
-    const resolvedPath = path.join(TRACES_OUTPUT_DIR, tracePath);
-    if (fs.existsSync(resolvedPath)) {
-      tracePath = resolvedPath;
-    } else {
-      logger.error(`File not found: "${tracePath}"`);
-      logger.info(`Checked local path and: ${resolvedPath}`);
-      process.exit(1);
-    }
-  }
-
-  logger.start(`Extracting metrics from: ${path.basename(tracePath)}`);
+/**
+ * Extracts metrics from a single trace file and saves them to a CSV.
+ */
+function extractFromFile(tracePath: string) {
   try {
     const metrics = parseTrace(tracePath);
     const csvLines: string[] = [];
@@ -94,12 +74,57 @@ async function main() {
     }
 
     fs.writeFileSync(outputPath, csvLines.join('\n'));
-    logger.success(`Metrics extracted and saved to: ${outputPath}`);
+    logger.success(`Extracted: ${path.basename(outputPath)}`);
   } catch (error: unknown) {
     const msg = getErrorMessage(error);
-    logger.error(`Failed to extract metrics: ${msg}`);
-    process.exit(1);
+    logger.error(`Failed to extract from ${path.basename(tracePath)}: ${msg}`);
   }
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+
+  // BATCH MODE: No arguments provided
+  if (args.length === 0) {
+    logger.info(`No file specified. Scanning ${TRACES_OUTPUT_DIR} for traces...`);
+    
+    if (!fs.existsSync(TRACES_OUTPUT_DIR)) {
+      logger.error(`Traces directory not found: ${TRACES_OUTPUT_DIR}`);
+      process.exit(1);
+    }
+
+    const files = fs.readdirSync(TRACES_OUTPUT_DIR).filter(f => f.endsWith('.json'));
+
+    if (files.length === 0) {
+      logger.warn('No .json trace files found in the output directory.');
+      process.exit(0);
+    }
+
+    logger.start(`Processing ${files.length} trace files...`);
+    for (const file of files) {
+      const fullPath = path.join(TRACES_OUTPUT_DIR, file);
+      extractFromFile(fullPath);
+    }
+    logger.success('Batch extraction complete.');
+    process.exit(0);
+  }
+
+  // SINGLE MODE: File specified in arguments
+  let tracePath = args.join(' ');
+
+  // Auto-resolve from TRACES_OUTPUT_DIR if not found locally
+  if (!fs.existsSync(tracePath)) {
+    const resolvedPath = path.join(TRACES_OUTPUT_DIR, tracePath);
+    if (fs.existsSync(resolvedPath)) {
+      tracePath = resolvedPath;
+    } else {
+      logger.error(`File not found: "${tracePath}"`);
+      process.exit(1);
+    }
+  }
+
+  logger.start(`Extracting metrics from: ${path.basename(tracePath)}`);
+  extractFromFile(tracePath);
 }
 
 if (require.main === module) {
