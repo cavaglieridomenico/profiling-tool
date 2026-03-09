@@ -185,9 +185,8 @@ async function main() {
         // Formula: IFERROR(AVERAGE(C:Q), "N/A")
         cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}), "N/A")` };
         cell.font = { bold: true };
-        // Apply number format based on row
-        if (r === 7 || r === 8 || r === 9 || r === 14) cell.numFmt = '0.00';
-        if (r === 15) cell.numFmt = '0.0000';
+        // Apply number format: 2 decimals
+        cell.numFmt = '0.00';
     }
 
     // 3. Columns C-Q (3-17): The 3 Run Blocks
