@@ -182,8 +182,8 @@ async function main() {
     // Set Average Formulas for Rows 2 to 22 (averaging Cols C to Q)
     for (let r = 2; r <= 22; r++) {
         const cell = worksheet.getRow(r).getCell(2);
-        // Formula: AVERAGE of Columns C (3) to Q (17)
-        cell.value = { formula: `AVERAGE(C${r}:Q${r})` };
+        // Formula: IFERROR(AVERAGE(C:Q), "N/A")
+        cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}), "N/A")` };
         cell.font = { bold: true };
         // Apply number format based on row
         if (r === 7 || r === 8 || r === 9 || r === 14) cell.numFmt = '0.00';
