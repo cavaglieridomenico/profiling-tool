@@ -23,27 +23,40 @@ function getScenarioName(fileName: string): string {
   return base;
 }
 
+const METRIC_ROWS = [
+  'Rendering time (s)',
+  'Scripting (s)',
+  'Scripting (%)',
+  'Long tasks > 100 ms',
+  'Long tasks > 500 ms',
+  'Longest task (ms)',
+  'JS heap min (MB)',
+  'JS heap max (MB)',
+  'Network blocking resources',
+  'Network Requests',
+  'Network MB transferred',
+  'Network MB resources',
+  'INP',
+  'CLS',
+  'FPS (total)',
+  'Longest frame (ms)',
+  'Complete Frames',
+  'Partially-presented Frames',
+  'Idle Frames',
+  'Dropped Frames',
+  'DevTools issues'
+];
+
 /**
- * Populates a fixed 5-row block for a specific run.
- * Columns are now continuous (no empty gaps).
+ * Populates a 5-column block for a specific run.
+ * Now starts from Col 3, 8, or 13 because Col 2 is Average.
  */
-function populateRunBlock(
+function populateRunColumns(
   worksheet: ExcelJS.Worksheet,
   runName: string,
   metrics: TraceMetrics,
-  startRow: number
+  startCol: number
 ): void {
-  // 1. Run Title Row
-  const titleRow = worksheet.getRow(startRow);
-  titleRow.getCell(1).value = runName;
-  titleRow.getCell(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-  titleRow.getCell(1).fill = {
-    type: 'pattern',
-    pattern: 'solid',
-    fgColor: { argb: 'FF4472C4' } // Dark Blue
-  };
-  titleRow.commit();
-
   const threadEntries = Object.entries(metrics.threads).sort((a, b) => {
     if (a[1].name === 'Main thread') return -1;
     if (b[1].name === 'Main thread') return 1;
@@ -53,56 +66,58 @@ function populateRunBlock(
   const mainThread = threadEntries.find(t => t[1].name === 'Main thread');
   const workers = threadEntries.filter(t => t[1].name !== 'Main thread');
 
-  const writeThreadRow = (rowNum: number, label: string, tMetrics?: ThreadMetrics, isMain: boolean = false) => {
-    const row = worksheet.getRow(rowNum);
-    
-    // Continuous mapping (No gaps)
-    const rowValues = [
-      label,                             // 1: Category
-      null,                              // 2: Rendering time (s)
-      null,                              // 3: Scripting (s)
-      null,                              // 4: Scripting (%)
-      tMetrics ? tMetrics.longTasks100 : null, // 5: Long tasks > 100 ms
-      tMetrics ? tMetrics.longTasks500 : null, // 6: Long tasks > 500 ms
-      tMetrics ? tMetrics.longestTask : null,  // 7: Longest task (ms)
-      tMetrics ? tMetrics.jsHeapMin : null,    // 8: JS heap min (MB)
-      tMetrics ? tMetrics.jsHeapMax : null,    // 9: JS heap max (MB)
-      null,                              // 10: Network blocking resources
-      null,                              // 11: Network Requests
-      null,                              // 12: Network MB transferred
-      null,                              // 13: Network MB resources
-      isMain ? metrics.inp : null,       // 14: INP
-      isMain ? metrics.cls : null,       // 15: CLS
-      null,                              // 16: FPS (total)
-      null,                              // 17: Longest frame (ms)
-      null,                              // 18: Complete Frames
-      null,                              // 19: Partially-presented Frames
-      null,                              // 20: Idle Frames
-      null,                              // 21: Dropped Frames
-      isMain ? metrics.devToolsIssues : null // 22: DevTools issues
-    ];
-    
-    row.values = rowValues;
-    
-    // Number Formatting
+  const headers = [
+    runName,
+    'Main thread',
+    'Web Worker #1',
+    'Web Worker #2',
+    'Web Worker #3'
+  ];
+
+  headers.forEach((label, i) => {
+    const cell = worksheet.getRow(1).getCell(startCol + i);
+    cell.value = label;
+    cell.font = { bold: true };
+    if (i === 0) {
+        cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF4472C4' }
+        };
+        cell.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+    }
+  });
+
+  const setThreadValues = (colIndex: number, tMetrics?: ThreadMetrics, isMain: boolean = false) => {
+    if (!tMetrics && !isMain) return;
+
     if (tMetrics) {
-        row.getCell(7).numFmt = '0.00'; // Longest task
-        row.getCell(8).numFmt = '0.00'; // Heap Min
-        row.getCell(9).numFmt = '0.00'; // Heap Max
+        worksheet.getRow(5).getCell(colIndex).value = tMetrics.longTasks100;
+        worksheet.getRow(6).getCell(colIndex).value = tMetrics.longTasks500;
+        worksheet.getRow(7).getCell(colIndex).value = tMetrics.longestTask;
+        worksheet.getRow(7).getCell(colIndex).numFmt = '0.00';
+        
+        worksheet.getRow(8).getCell(colIndex).value = tMetrics.jsHeapMin;
+        worksheet.getRow(8).getCell(colIndex).numFmt = '0.00';
+        
+        worksheet.getRow(9).getCell(colIndex).value = tMetrics.jsHeapMax;
+        worksheet.getRow(9).getCell(colIndex).numFmt = '0.00';
     }
+
     if (isMain) {
-        row.getCell(14).numFmt = '0.00'; // INP
-        row.getCell(15).numFmt = '0.0000'; // CLS
+        worksheet.getRow(14).getCell(colIndex).value = metrics.inp;
+        worksheet.getRow(14).getCell(colIndex).numFmt = '0.00';
+        
+        worksheet.getRow(15).getCell(colIndex).value = metrics.cls;
+        worksheet.getRow(15).getCell(colIndex).numFmt = '0.0000';
+        
+        worksheet.getRow(22).getCell(colIndex).value = metrics.devToolsIssues;
     }
-    row.commit();
   };
 
-  writeThreadRow(startRow + 1, 'Main thread', mainThread?.[1], true);
-
+  setThreadValues(startCol + 1, mainThread?.[1], true);
   for (let i = 0; i < 3; i++) {
-    const worker = workers[i];
-    const label = worker ? `Web Worker #${i + 1}` : `Web Worker #${i + 1} (N/A)`;
-    writeThreadRow(startRow + 2 + i, label, worker?.[1], false);
+    setThreadValues(startCol + 2 + i, workers[i]?.[1], false);
   }
 }
 
@@ -121,6 +136,8 @@ async function main() {
     process.exit(0);
   }
 
+  logger.start(`Processing ${files.length} trace files into transposed grid with Averages...`);
+  
   const groups: Record<string, GroupedMetrics> = {};
   for (const file of files) {
     const fullPath = path.join(TRACES_OUTPUT_DIR, file);
@@ -142,71 +159,64 @@ async function main() {
     const tabName = group.scenarioName.substring(0, 31).replace(/[\[\]\*\?\/\\]/g, '_');
     const worksheet = workbook.addWorksheet(tabName);
 
-    // Continuous Header Structure
-    const headers = [
-      'Category',
-      'Rendering time (s)',
-      'Scripting (s)',
-      'Scripting (%)',
-      'Long tasks > 100 ms',
-      'Long tasks > 500 ms',
-      'Longest task (ms)',
-      'JS heap min (MB)',
-      'JS heap max (MB)',
-      'Network blocking resources',
-      'Network Requests',
-      'Network MB transferred',
-      'Network MB resources',
-      'INP',
-      'CLS',
-      'FPS (total)',
-      'Longest frame (ms)',
-      'Complete Frames',
-      'Partially-presented Frames',
-      'Idle Frames',
-      'Dropped Frames',
-      'DevTools issues'
-    ];
-    
-    const headerRow = worksheet.getRow(1);
-    headerRow.values = headers;
-    headerRow.font = { bold: true };
-    headerRow.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFD9D9D9' }
-    };
-    headerRow.commit();
+    // 1. Column A (1): Metric Labels
+    const firstColHeader = worksheet.getRow(1).getCell(1);
+    firstColHeader.value = 'Metric';
+    firstColHeader.font = { bold: true };
+    firstColHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9D9D9' } };
 
+    METRIC_ROWS.forEach((metricName, index) => {
+        const row = worksheet.getRow(index + 2);
+        const cell = row.getCell(1);
+        cell.value = metricName;
+        cell.font = { bold: true };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F2' } };
+    });
+
+    // 2. Column B (2): Average Column
+    const avgHeader = worksheet.getRow(1).getCell(2);
+    avgHeader.value = 'AVERAGE';
+    avgHeader.font = { bold: true };
+    avgHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
+
+    // Set Average Formulas for Rows 2 to 22 (averaging Cols C to Q)
+    for (let r = 2; r <= 22; r++) {
+        const cell = worksheet.getRow(r).getCell(2);
+        // Formula: AVERAGE of Columns C (3) to Q (17)
+        cell.value = { formula: `AVERAGE(C${r}:Q${r})` };
+        cell.font = { bold: true };
+        // Apply number format based on row
+        if (r === 7 || r === 8 || r === 9 || r === 14) cell.numFmt = '0.00';
+        if (r === 15) cell.numFmt = '0.0000';
+    }
+
+    // 3. Columns C-Q (3-17): The 3 Run Blocks
     group.runs.sort((a, b) => a.fileName.localeCompare(b.fileName, undefined, { numeric: true }));
     const topRuns = group.runs.slice(0, 3);
 
     for (let i = 0; i < 3; i++) {
         const run = topRuns[i];
-        const startRow = 2 + (i * 5);
+        const startCol = 3 + (i * 5); // Run 1 starts at Col 3 (C)
         if (run) {
-            populateRunBlock(worksheet, run.fileName, run.metrics, startRow);
+            populateRunColumns(worksheet, run.fileName, run.metrics, startCol);
         } else {
-            const emptyRow = worksheet.getRow(startRow);
-            emptyRow.getCell(1).value = `Run #${i + 1} (Missing)`;
-            emptyRow.getCell(1).font = { italic: true };
-            emptyRow.commit();
+            const cell = worksheet.getRow(1).getCell(startCol);
+            cell.value = `Run #${i + 1} (Missing)`;
+            cell.font = { italic: true };
         }
     }
 
-    // Auto-fit Column Widths based on content
+    // Auto-fit Column Widths
     worksheet.columns.forEach((column, i) => {
-        let maxColumnLength = headers[i].length;
+        let maxColumnLength = 10;
         worksheet.eachRow({ includeEmpty: true }, (row) => {
             const cellValue = row.getCell(i + 1).value;
             if (cellValue) {
-                const cellLength = cellValue.toString().length;
-                if (cellLength > maxColumnLength) {
-                    maxColumnLength = cellLength;
-                }
+                const text = typeof cellValue === 'object' ? 'Average Formula' : cellValue.toString();
+                if (text.length > maxColumnLength) maxColumnLength = text.length;
             }
         });
-        column.width = maxColumnLength < 12 ? 12 : maxColumnLength + 2;
+        column.width = maxColumnLength < 15 ? 15 : maxColumnLength + 2;
     });
   }
 
@@ -216,7 +226,7 @@ async function main() {
   const outputPath = path.join(TRACES_OUTPUT_DIR, outputFileName);
 
   await workbook.xlsx.writeFile(outputPath);
-  logger.success(`Aggregated report saved to: ${outputPath}`);
+  logger.success(`Aggregated report with Averages saved to: ${outputPath}`);
 }
 
 if (require.main === module) {
