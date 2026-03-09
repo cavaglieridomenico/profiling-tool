@@ -177,6 +177,21 @@ For example, to run `vmmv_tc01` and save the traces as `my-custom-trace-1.json` 
 npx ts-node bin/profile.ts vmmv_tc01 my-custom-trace
 ```
 
+### 4. Extracting Metrics from Traces
+
+Once you have captured a DevTools trace (JSON format), you can extract key performance metrics (Long Tasks, JS Heap, INP, CLS) into a CSV report.
+
+```bash
+npm run extract <trace_file_name>
+```
+
+The script will look for the file in the `traces-output/` directory by default. The resulting CSV will be saved in the same location as the trace file.
+
+**Example:**
+```bash
+npm run extract TV02-TC01.json
+```
+
 ### Template Pattern for Dynamic URLs
 
 To reuse profiling sequences across different environments without modifying code, use the `TARGET_URL` placeholder inside `src/testCases.ts`.

@@ -10,6 +10,7 @@ The system follows a client-server architecture:
 2.  **CLI Runners:**
     - `bin/profile.ts`: Executes specific test cases defined in `src/testCases.ts`.
     - `bin/orchestrate.ts`: Executes complex, multi-step profiling scenarios defined in JSONC configuration files.
+    - `bin/extract-metrics.ts`: Extracts performance metrics from JSON traces into CSV reports.
 
 ## Key Technologies
 
@@ -27,10 +28,13 @@ The system follows a client-server architecture:
 - `bin/`: CLI entry points.
   - `profile.ts`: Run a single test case (`npm run profile:<name>`).
   - `orchestrate.ts`: Run an orchestration plan (`npm run orchestrate <config>`).
+  - `extract-metrics.ts`: Extract metrics from a trace (`npm run extract <trace>`).
   - `connect.ts` / `restore.ts`: ADB port forwarding management.
   - `clean.ts`: Device state cleanup (cache, cookies, logs).
   - `navigate.ts`: CLI for direct navigation.
 - `src/`: Core logic.
+  - `trace-parser/`: Logic for parsing DevTools traces and calculating metrics.
+    - `diagnostics/`: Focused scripts for investigating specific trace events (Memory, Tasks, etc.). Use these as templates for new metrics.
   - `orchestrator/`: Logic for multi-step execution plans (`index.ts`, `config.ts`).
   - `testCases.ts`: Definition of automation steps (taps, waits, traces).
   - `tapConfig.ts` / `swipeConfig.ts`: Coordinate-based input configurations.
@@ -65,14 +69,31 @@ Used for automated, multi-step scenarios including cleanup, navigation, and mult
 2. Run: `npm run orchestrate <config_name_in_orchestrator-inputs>`
    _Example:_ `npm run orchestrate vm-test-on-TV04_01.jsonc`
 
-### 3. Adding New Interactions
+### 3. Metric Extraction
+
+Used to process DevTools JSON traces and generate CSV reports with performance metrics (Long Tasks, JS Heap, INP, CLS).
+
+1. Ensure the trace file is in `traces-output/`.
+2. Run: `npm run extract <trace_file_name>`
+   _Example:_ `npm run extract TV02-TC01.json`
+
+### 4. Extending Trace Metrics
+
+To add new metrics to the extraction process:
+
+1.  **Investigate:** Use scripts in `src/trace-parser/diagnostics/` to identify the specific trace events and fields needed.
+2.  **Define:** Add any necessary interfaces to `src/types.ts` and constants to `src/config/constants.ts`.
+3.  **Implement:** Update the parsing logic in `src/trace-parser/index.ts` to capture the new data.
+4.  **Report:** Update `bin/extract-metrics.ts` to include the new metric in the CSV output.
+
+### 5. Adding New Interactions
 
 - **New Tap:** Add coordinates to `src/tapConfig.ts`.
 - **New Swipe:** Add coordinates/duration to `src/swipeConfig.ts`.
 - **New Test Case:** Define the sequence of actions in `src/testCases.ts`.
 - **New URL Alias:** Add to `src/urls.ts`.
 
-### 4. Logging
+### 6. Logging
 
 The project uses a custom `Logger` class (`src/logger.ts`) for consistent console output and file logging.
 
