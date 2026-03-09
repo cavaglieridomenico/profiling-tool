@@ -177,20 +177,24 @@ For example, to run `vmmv_tc01` and save the traces as `my-custom-trace-1.json` 
 npx ts-node bin/profile.ts vmmv_tc01 my-custom-trace
 ```
 
-### 4. Extracting Metrics from Traces
+### 4. Extracting Metrics (Trace Extractor)
 
-Once you have captured a DevTools trace (JSON format), you can extract key performance metrics (Long Tasks, JS Heap, INP, CLS) into a CSV report.
+The Trace Extractor processes DevTools JSON traces to generate structured performance reports. It supports both single-file extraction and batch processing with automated Excel aggregation.
 
-```bash
-npm run extract <trace_file_name>
-```
+- **Batch Mode (Recommended):** Scans the `traces-output/` folder, groups traces by scenario, and generates a multi-tab Excel report.
+  ```bash
+  npm run extract
+  ```
+- **Single File Mode:** Processes a specific trace file into a report.
+  ```bash
+  npm run extract <trace_file_name>
+  ```
 
-The script will look for the file in the `traces-output/` directory by default. The resulting CSV will be saved in the same location as the trace file.
-
-**Example:**
-```bash
-npm run extract TV02-TC01.json
-```
+**Key Features:**
+- **Excel Aggregation:** Automatically groups multiple runs of the same scenario into dedicated worksheets (tabs).
+- **Smart Grouping:** Uses the `Test Version-Test Case-Test Device` prefix (e.g., `TV25_03-TC01-TD31_03`) to aggregate related traces, even if they contain sub-range data in the filename.
+- **Conflict Prevention:** Detects existing reports and appends a counter (e.g., `-1`, `-2`) to ensure data is never overwritten.
+- **Advanced Metrics:** Captures Long Tasks (100ms/500ms), Longest Task duration, JS Heap (Min/Max), INP, CLS, and DevTools issues.
 
 ### Template Pattern for Dynamic URLs
 
