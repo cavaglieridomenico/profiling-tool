@@ -49,7 +49,7 @@ const METRIC_ROWS = [
 
 /**
  * Populates a 5-column block for a specific run.
- * Now starts from Col 3, 8, or 13 because Col 2 is Average.
+ * Populates only currently defined data.
  */
 function populateRunColumns(
   worksheet: ExcelJS.Worksheet,
@@ -92,25 +92,28 @@ function populateRunColumns(
     if (!tMetrics && !isMain) return;
 
     if (tMetrics) {
+        // Long Tasks (Rows 5, 6, 7)
         worksheet.getRow(5).getCell(colIndex).value = tMetrics.longTasks100;
         worksheet.getRow(6).getCell(colIndex).value = tMetrics.longTasks500;
         worksheet.getRow(7).getCell(colIndex).value = tMetrics.longestTask;
         worksheet.getRow(7).getCell(colIndex).numFmt = '0.00';
         
+        // Heap (Rows 8, 9)
         worksheet.getRow(8).getCell(colIndex).value = tMetrics.jsHeapMin;
         worksheet.getRow(8).getCell(colIndex).numFmt = '0.00';
-        
         worksheet.getRow(9).getCell(colIndex).value = tMetrics.jsHeapMax;
         worksheet.getRow(9).getCell(colIndex).numFmt = '0.00';
     }
 
     if (isMain) {
+        // INP (Row 14), CLS (Row 15)
         worksheet.getRow(14).getCell(colIndex).value = metrics.inp;
         worksheet.getRow(14).getCell(colIndex).numFmt = '0.00';
         
         worksheet.getRow(15).getCell(colIndex).value = metrics.cls;
         worksheet.getRow(15).getCell(colIndex).numFmt = '0.0000';
         
+        // DevTools Issues (Row 22)
         worksheet.getRow(22).getCell(colIndex).value = metrics.devToolsIssues;
     }
   };
@@ -136,7 +139,7 @@ async function main() {
     process.exit(0);
   }
 
-  logger.start(`Processing ${files.length} trace files into transposed grid with Averages...`);
+  logger.start(`Processing ${files.length} trace files into transposed grid...`);
   
   const groups: Record<string, GroupedMetrics> = {};
   for (const file of files) {
@@ -159,7 +162,7 @@ async function main() {
     const tabName = group.scenarioName.substring(0, 31).replace(/[\[\]\*\?\/\\]/g, '_');
     const worksheet = workbook.addWorksheet(tabName);
 
-    // 1. Column A (1): Metric Labels
+    // Column A (1): Metric Labels
     const firstColHeader = worksheet.getRow(1).getCell(1);
     firstColHeader.value = 'Metric';
     firstColHeader.font = { bold: true };
@@ -173,29 +176,37 @@ async function main() {
         cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F2F2' } };
     });
 
-    // 2. Column B (2): Average Column
+    // Column B (2): Average Column
     const avgHeader = worksheet.getRow(1).getCell(2);
     avgHeader.value = 'AVERAGE';
     avgHeader.font = { bold: true };
     avgHeader.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFBFBFBF' } };
 
-    // Set Average Formulas for Rows 2 to 22 (averaging Cols C to Q)
     for (let r = 2; r <= 22; r++) {
         const cell = worksheet.getRow(r).getCell(2);
-        // Formula: IFERROR(AVERAGE(C:Q), "N/A")
-        cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}), "N/A")` };
+        
+        if (r === 4) { // Scripting (%)
+            // Ratio formula based on B3 (Scripting) and B2 (Rendering)
+            cell.value = { formula: `IFERROR(B3 / B2, "N/A")` };
+            cell.numFmt = '0.00%';
+        } else {
+            let range = `C${r}:Q${r}`;
+            if (r === 5 || r === 6 || r === 7) {
+                range = `D${r},I${r},N${r}`;
+            }
+            cell.value = { formula: `IFERROR(AVERAGE(${range}), "N/A")` };
+            cell.numFmt = '0.00';
+        }
         cell.font = { bold: true };
-        // Apply number format: 2 decimals
-        cell.numFmt = '0.00';
     }
 
-    // 3. Columns C-Q (3-17): The 3 Run Blocks
+    // Columns C-Q (3-17): The 3 Run Blocks
     group.runs.sort((a, b) => a.fileName.localeCompare(b.fileName, undefined, { numeric: true }));
     const topRuns = group.runs.slice(0, 3);
 
     for (let i = 0; i < 3; i++) {
         const run = topRuns[i];
-        const startCol = 3 + (i * 5); // Run 1 starts at Col 3 (C)
+        const startCol = 3 + (i * 5);
         if (run) {
             populateRunColumns(worksheet, run.fileName, run.metrics, startCol);
         } else {
@@ -225,7 +236,7 @@ async function main() {
   const outputPath = path.join(TRACES_OUTPUT_DIR, outputFileName);
 
   await workbook.xlsx.writeFile(outputPath);
-  logger.success(`Aggregated report with Averages saved to: ${outputPath}`);
+  logger.success(`Aggregated report saved to: ${outputPath}`);
 }
 
 if (require.main === module) {
