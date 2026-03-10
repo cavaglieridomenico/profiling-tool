@@ -25,7 +25,7 @@ function getScenarioName(fileName: string): string {
 
 const METRIC_ROWS = [
   'Rendering time (s)',
-  'Scripting (%)',
+  'Scripting (%)', // Row 2 in label list, Row 3 in Excel
   'Long tasks > 100 ms',
   'Long tasks > 500 ms',
   'Longest task (ms)',
@@ -93,11 +93,11 @@ function populateRunColumns(
   ) => {
     if (!tMetrics && !isMain) return;
 
-    // Row 3: Scripting (%)
+    // Row 3: Scripting (%) for this specific thread/column
+    // Formula only, NO percentage formatting for run columns
     worksheet.getRow(3).getCell(colIndex).value = {
       formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")`
     };
-    worksheet.getRow(3).getCell(colIndex).numFmt = '0.00%';
 
     if (tMetrics) {
       // Long Tasks (Rows 4, 5, 6)
@@ -210,7 +210,7 @@ async function main() {
       const cell = worksheet.getRow(r).getCell(2);
 
       if (r === 3) {
-        // Scripting (%)
+        // Scripting (%) - Format ONLY Column B as percentage
         cell.value = { formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")` };
         cell.numFmt = '0.00%';
       } else if (r === 9) {
@@ -218,17 +218,17 @@ async function main() {
         cell.value = { formula: `IFERROR(B8 - B7, "N/A")` };
         cell.numFmt = '0.00';
       } else if (r === 16) {
-        // FPS (estimate) is Row 16. Uses Average of Complete Frames (Row 19).
+        // FPS (estimate)
         cell.value = { formula: `IFERROR(AVERAGE(C19:Q19), "N/A")` };
         cell.numFmt = '0.00';
       } else if (r >= 19 && r <= 22) {
-        // Frame % metrics: Ratio of average count divided by average FPS Total in B17
+        // Frame % metrics - Format ONLY Column B as percentage
         cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}) / B17, "N/A")` };
         cell.numFmt = '0.00%';
       } else {
         let range = `C${r}:Q${r}`;
         if (r >= 4 && r <= 6) {
-          // Long Tasks (Rows 4, 5, 6)
+          // Long Tasks (New Rows 4, 5, 6)
           range = `D${r},I${r},N${r}`;
         }
         cell.value = { formula: `IFERROR(AVERAGE(${range}), "N/A")` };
