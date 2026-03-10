@@ -27,21 +27,6 @@
       "runs": 3
     },
     {
-      "targetUrl": "urls.RTRMV_TV02",
-      "skipNavigation": true,
-      "caseName": "testCases.rtrmv_tc01_01",
-      "traceName": "TV02-TC01_01-TD31_03",
-      "runs": 3
-    },
-    {
-      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-      "targetUrl": "urls.RTRMV_TV02",
-      "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc02",
-      "traceName": "TV02-TC02-TD31_03",
-      "runs": 3
-    },
-    {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.RTRMV_TV02",
       "postNavigationDelay": 10000,
@@ -55,6 +40,38 @@
       "postNavigationDelay": 10000,
       "caseName": "testCases.rtrmv_tc03_perfetto",
       "traceName": "TV02-TC03-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05",
+      "traceName": "TV02_01-TC05-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_01",
+      "traceName": "TV02_01-TC05_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_01_perfetto",
+      "traceName": "TV02_01-TC05_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.RTRMV_TV02",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_02",
+      "traceName": "TV02_01-TC05_02-TD31_03",
       "runs": 3
     }
   ]
