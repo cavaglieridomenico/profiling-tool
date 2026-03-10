@@ -237,5 +237,36 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-rtrmv-start-sgh', delay: 15000 },
     { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05_01: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05_01_perfetto: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'perfetto:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'perfetto:stop', delay: 0 }
+  ],
+  rtrmv_tc05_02: [
+    { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 }
   ]
 };
