@@ -25,12 +25,13 @@ function getScenarioName(fileName: string): string {
 
 const METRIC_ROWS = [
   'Rendering time (s)',
-  'Scripting (%)', // Row 2 in label list, Row 3 in Excel
+  'Scripting (%)',
   'Long tasks > 100 ms',
   'Long tasks > 500 ms',
   'Longest task (ms)',
   'JS heap min (MB)',
   'JS heap max (MB)',
+  'JS heap min/max Δ (MB)', // Row 8 in label list, Row 9 in Excel
   'Network blocking resources',
   'Network Requests',
   'Network MB transferred',
@@ -38,7 +39,7 @@ const METRIC_ROWS = [
   'INP',
   'CLS',
   'FPS (estimate)',
-  'FPS (total)', // Row 15 in label list, Row 16 in Excel
+  'FPS (total)', // Row 16 in label list, Row 17 in Excel
   'Longest frame (ms)',
   'Complete Frames (%)',
   'Partial Presented Frames (%)',
@@ -92,7 +93,7 @@ function populateRunColumns(
   ) => {
     if (!tMetrics && !isMain) return;
 
-    // Row 3: Scripting (%) for this specific thread/column
+    // Row 3: Scripting (%)
     worksheet.getRow(3).getCell(colIndex).value = {
       formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")`
     };
@@ -110,14 +111,21 @@ function populateRunColumns(
       worksheet.getRow(7).getCell(colIndex).numFmt = '0.00';
       worksheet.getRow(8).getCell(colIndex).value = tMetrics.jsHeapMax;
       worksheet.getRow(8).getCell(colIndex).numFmt = '0.00';
+
+      // Row 9: JS heap min/max Δ (MB) - Formula for this specific column
+      const colLetter = worksheet.getRow(9).getCell(colIndex).address.replace(/\d+/, '');
+      worksheet.getRow(9).getCell(colIndex).value = {
+          formula: `IFERROR(${colLetter}8 - ${colLetter}7, "N/A")`
+      };
+      worksheet.getRow(9).getCell(colIndex).numFmt = '0.00';
     }
 
     if (isMain) {
-      // INP (Row 13), CLS (Row 14)
-      worksheet.getRow(13).getCell(colIndex).value = metrics.inp;
-      worksheet.getRow(13).getCell(colIndex).numFmt = '0.00';
-      worksheet.getRow(14).getCell(colIndex).value = metrics.cls;
-      worksheet.getRow(14).getCell(colIndex).numFmt = '0.0000';
+      // INP (Row 14), CLS (Row 15)
+      worksheet.getRow(14).getCell(colIndex).value = metrics.inp;
+      worksheet.getRow(14).getCell(colIndex).numFmt = '0.00';
+      worksheet.getRow(15).getCell(colIndex).value = metrics.cls;
+      worksheet.getRow(15).getCell(colIndex).numFmt = '0.0000';
     }
   };
 
@@ -198,16 +206,20 @@ async function main() {
       fgColor: { argb: 'FFBFBFBF' }
     };
 
-    for (let r = 2; r <= 21; r++) {
+    for (let r = 2; r <= 22; r++) {
       const cell = worksheet.getRow(r).getCell(2);
 
       if (r === 3) {
         // Scripting (%)
         cell.value = { formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")` };
         cell.numFmt = '0.00%';
-      } else if (r >= 18 && r <= 21) {
-        // Frame % metrics: Ratio of average count divided by average FPS Total in B16
-        cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}) / B16, "N/A")` };
+      } else if (r === 9) {
+        // JS heap min/max Δ (MB) in column B
+        cell.value = { formula: `IFERROR(B8 - B7, "N/A")` };
+        cell.numFmt = '0.00';
+      } else if (r >= 19 && r <= 22) {
+        // Frame % metrics
+        cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}) / B17, "N/A")` };
         cell.numFmt = '0.00%';
       } else {
         let range = `C${r}:Q${r}`;
