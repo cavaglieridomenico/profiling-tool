@@ -6,19 +6,19 @@
     "strictVersionCheck": true
   },
   "timeline": [
-    // {
-    //   "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
-    //   "postCommandDelay": 5000
-    // },
-    // {
-    //   "targetUrl": "urls.RTRMV_BYPASS",
-    //   "postNavigationDelay": 5000
-    // },
-    // {
-    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
-    //   "targetUrl": "urls.RTRMV_TV02_01",
-    //   "postNavigationDelay": 10000
-    // },
+    {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.RTRMV_BYPASS",
+      "postNavigationDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.RTRMV_TV02_01",
+      "postNavigationDelay": 10000
+    }
     // {
     //   "targetUrl": "urls.RTRMV_TV02_01",
     //   "skipNavigation": true,
@@ -49,13 +49,13 @@
     //   "traceName": "TV02_01-TC03-TD31_03",
     //   "runs": 3
     // },
-    {
-      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-      "targetUrl": "urls.RTRMV_TV02_01",
-      "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc03_perfetto",
-      "traceName": "TV02_01-TC03-TD31_03",
-      "runs": 2
-    }
+    // {
+    //   "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+    //   "targetUrl": "urls.RTRMV_TV02_01",
+    //   "postNavigationDelay": 10000,
+    //   "caseName": "testCases.rtrmv_tc03_perfetto",
+    //   "traceName": "TV02_01-TC03-TD31_03",
+    //   "runs": 3
+    // }
   ]
 }
