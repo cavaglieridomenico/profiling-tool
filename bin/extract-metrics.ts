@@ -163,6 +163,11 @@ async function main() {
     const tabName = group.scenarioName.substring(0, 31).replace(/[\[\]\*\?\/\\]/g, '_');
     const worksheet = workbook.addWorksheet(tabName);
 
+    // Freeze Column A and Row 1
+    worksheet.views = [
+        { state: 'frozen', xSplit: 1, ySplit: 1 }
+    ];
+
     // Column A (1): Metric Labels
     const firstColHeader = worksheet.getRow(1).getCell(1);
     firstColHeader.value = '';
