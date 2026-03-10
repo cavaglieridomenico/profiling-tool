@@ -53,6 +53,7 @@ export const COMMANDS = {
   INPUT_TAP_PDWMV_BUTTONS_SGH: '/input:tap-pdwmv-buttons-sgh',
   INPUT_TAP_RTRMV_ZOOM: '/input:tap-rtrmv-zoom',
   INPUT_TAP_RTRMV_START_SGH: '/input:tap-rtrmv-start-sgh',
+  INPUT_TAP_RTRMV_EXPLOSION: '/input:tap-rtrmv-explosion',
 
   // Swipe Action
   INPUT_SWIPE_RTRMV_CX_RX: '/input:swipe-rtrmv-cx-rx',

@@ -166,5 +166,10 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     x: 620,
     y: 1530,
     msg: 'Tapped on rtr-start-sgh.'
+  },
+  [COMMANDS.INPUT_TAP_RTRMV_EXPLOSION]: {
+    x: 130,
+    y: 1580,
+    msg: 'Tapped on rtr-explosion.'
   }
 };

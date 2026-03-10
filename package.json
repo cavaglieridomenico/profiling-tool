@@ -58,6 +58,7 @@
     "input:tap-pdwmv-buttons-sgh": "curl http://localhost:8080/input:tap-pdwmv-buttons-sgh",
     "input:tap-rtrmv-zoom": "curl http://localhost:8080/input:tap-rtrmv-zoom",
     "input:tap-rtrmv-start-sgh": "curl http://localhost:8080/input:tap-rtrmv-start-sgh",
+    "input:tap-rtrmv-explosion": "curl http://localhost:8080/input:tap-rtrmv-explosion",
     "input:swipe-rtrmv-cx-rx": "curl http://localhost:8080/input:swipe-rtrmv-cx-rx",
     "input:swipe-rtrmv-rx-lx": "curl http://localhost:8080/input:swipe-rtrmv-rx-lx",
     "input:swipe-rtrmv-lx-rx": "curl http://localhost:8080/input:swipe-rtrmv-lx-rx",
