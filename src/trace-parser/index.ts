@@ -28,7 +28,6 @@ export function parseTrace(filePath: string): TraceMetrics {
 
   let totalCls = 0;
   const interactions: number[] = [];
-  let devToolsIssues = 0;
 
   // Process trace events
   for (const event of events) {
@@ -86,18 +85,12 @@ export function parseTrace(filePath: string): TraceMetrics {
     ) {
       interactions.push(event.args.data.duration);
     }
-
-    // Error/Console events
-    if (event.cat === 'v8.console' || event.args?.data?.level === 'error') {
-      devToolsIssues++;
-    }
   }
 
   const metrics: TraceMetrics = {
     threads: {},
     cls: totalCls,
-    inp: interactions.length > 0 ? Math.max(...interactions) : 0,
-    devToolsIssues
+    inp: interactions.length > 0 ? Math.max(...interactions) : 0
   };
 
   // Identify Renderer processes

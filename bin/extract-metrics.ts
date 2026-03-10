@@ -43,8 +43,7 @@ const METRIC_ROWS = [
   'Complete Frames (%)',
   'Partial Presented Frames (%)',
   'Idle Frames (%)',
-  'Dropped Frames (%)',
-  'DevTools issues'
+  'Dropped Frames (%)'
 ];
 
 /**
@@ -94,7 +93,6 @@ function populateRunColumns(
     if (!tMetrics && !isMain) return;
 
     // Row 3: Scripting (%) for this specific thread/column
-    // Formula: =IFERROR(AVERAGE(C3:Q3) / B2, "N/A")
     worksheet.getRow(3).getCell(colIndex).value = {
       formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")`
     };
@@ -120,9 +118,6 @@ function populateRunColumns(
       worksheet.getRow(13).getCell(colIndex).numFmt = '0.00';
       worksheet.getRow(14).getCell(colIndex).value = metrics.cls;
       worksheet.getRow(14).getCell(colIndex).numFmt = '0.0000';
-
-      // DevTools Issues (Row 22)
-      worksheet.getRow(22).getCell(colIndex).value = metrics.devToolsIssues;
     }
   };
 
@@ -203,7 +198,7 @@ async function main() {
       fgColor: { argb: 'FFBFBFBF' }
     };
 
-    for (let r = 2; r <= 22; r++) {
+    for (let r = 2; r <= 21; r++) {
       const cell = worksheet.getRow(r).getCell(2);
 
       if (r === 3) {
@@ -217,7 +212,7 @@ async function main() {
       } else {
         let range = `C${r}:Q${r}`;
         if (r >= 4 && r <= 6) {
-          // Long Tasks (New Rows 4, 5, 6)
+          // Long Tasks (Rows 4, 5, 6)
           range = `D${r},I${r},N${r}`;
         }
         cell.value = { formula: `IFERROR(AVERAGE(${range}), "N/A")` };

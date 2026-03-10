@@ -70,5 +70,4 @@ export interface TraceMetrics {
   threads: Record<string, ThreadMetrics>;
   cls: number;
   inp: number;
-  devToolsIssues: number;
 }
