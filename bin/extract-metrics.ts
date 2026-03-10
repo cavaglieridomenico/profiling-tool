@@ -38,10 +38,10 @@ const METRIC_ROWS = [
   'Network MB resources',
   'INP',
   'CLS',
-  'FPS (estimate)',
+  'FPS (estimate)', // Row 15 in label list, Row 16 in Excel
   'FPS (total)', // Row 16 in label list, Row 17 in Excel
   'Longest frame (ms)',
-  'Complete Frames (%)',
+  'Complete Frames (%)', // Row 18 in label list, Row 19 in Excel
   'Partial Presented Frames (%)',
   'Idle Frames (%)',
   'Dropped Frames (%)'
@@ -112,7 +112,7 @@ function populateRunColumns(
       worksheet.getRow(8).getCell(colIndex).value = tMetrics.jsHeapMax;
       worksheet.getRow(8).getCell(colIndex).numFmt = '0.00';
 
-      // Row 9: JS heap min/max Δ (MB) - Formula for this specific column
+      // Row 9: JS heap min/max Δ (MB)
       const colLetter = worksheet.getRow(9).getCell(colIndex).address.replace(/\d+/, '');
       worksheet.getRow(9).getCell(colIndex).value = {
           formula: `IFERROR(${colLetter}8 - ${colLetter}7, "N/A")`
@@ -214,11 +214,15 @@ async function main() {
         cell.value = { formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")` };
         cell.numFmt = '0.00%';
       } else if (r === 9) {
-        // JS heap min/max Δ (MB) in column B
+        // JS heap min/max Δ (MB)
         cell.value = { formula: `IFERROR(B8 - B7, "N/A")` };
         cell.numFmt = '0.00';
+      } else if (r === 16) {
+        // FPS (estimate) is Row 16. Uses Average of Complete Frames (Row 19).
+        cell.value = { formula: `IFERROR(AVERAGE(C19:Q19), "N/A")` };
+        cell.numFmt = '0.00';
       } else if (r >= 19 && r <= 22) {
-        // Frame % metrics
+        // Frame % metrics: Ratio of average count divided by average FPS Total in B17
         cell.value = { formula: `IFERROR(AVERAGE(C${r}:Q${r}) / B17, "N/A")` };
         cell.numFmt = '0.00%';
       } else {
