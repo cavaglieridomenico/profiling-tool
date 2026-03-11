@@ -194,13 +194,14 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   rtrmv_tc01: [
     {
-      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      command: 'device:clean-state-preserve-cookies-and-session?url=TARGET_URL',
       delay: 5000
     },
     { command: 'devtools:start', delay: 2000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'devtools:stop', delay: 0 }
   ],
+  /** Deprecated test case:
   rtrmv_tc01_01: [
     {
       command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
@@ -210,13 +211,14 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:stop', delay: 0 }
-  ],
-  rtrmv_tc02: [
+  ], **/
+  /** Deprecated test case:
+   rtrmv_tc02: [
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:swipe-rtrmv-cx-rx', delay: 5000 },
     { command: 'devtools:stop', delay: 0 }
-  ],
+  ], **/
   rtrmv_tc03: [
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:start', delay: 3000 },
@@ -233,6 +235,22 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'perfetto:stop', delay: 0 }
   ],
+  rtrmv_tc03_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc03_perfetto_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
+    { command: 'perfetto:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'perfetto:stop', delay: 0 }
+  ],
   rtrmv_tc04: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-rtrmv-start-sgh', delay: 15000 },
@@ -240,6 +258,12 @@ export const testCases: Record<string, TestCaseStep[]> = {
   ],
   rtrmv_tc05: [
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-rtrmv-explosion', delay: 5000 },
     { command: 'devtools:stop', delay: 0 }
@@ -262,8 +286,33 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
     { command: 'perfetto:stop', delay: 0 }
   ],
+  rtrmv_tc05_01_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05_01_perfetto_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'perfetto:start', delay: 3000 },
+    { command: 'input:swipe-rtrmv-cx-rx', delay: 800 },
+    { command: 'input:swipe-rtrmv-rx-lx', delay: 800 },
+    { command: 'input:swipe-rtrmv-lx-rx', delay: 1000 },
+    { command: 'perfetto:stop', delay: 0 }
+  ],
   rtrmv_tc05_02: [
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 3000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-rtrmv-explosion', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  rtrmv_tc05_02_sgh: [
+    { command: 'input:tap-rtrmv-start-sgh', delay: 12000 },
     { command: 'input:tap-rtrmv-explosion', delay: 3000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-rtrmv-explosion', delay: 5000 },
