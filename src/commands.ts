@@ -28,6 +28,7 @@ export const COMMANDS = {
   INPUT_TAP_CENTER_CENTER: '/input:tap-center-center',
   INPUT_TAP_BOTTOM_CENTER: '/input:tap-bottom-center',
   INPUT_TAP_BOTTOM_RX: '/input:tap-bottom-rx',
+  INPUT_TAP_RUN_SPEED_TEST: '/input:tap-run-speed-test',
   INPUT_TAP_COOKIES_SGH: '/input:tap-cookies-sgh',
   INPUT_TAP_COOKIES_NU: '/input:tap-cookies-nu',
   INPUT_TAP_VMMV_VIDEO: '/input:tap-vmmv-video',

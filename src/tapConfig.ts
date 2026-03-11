@@ -32,6 +32,11 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 2020,
     msg: 'Tapped on bottom-rx.'
   },
+  [COMMANDS.INPUT_TAP_RUN_SPEED_TEST]: {
+    x: 820,
+    y: 1600,
+    msg: 'Tapped on bottom-rx.'
+  },
   [COMMANDS.INPUT_TAP_COOKIES_SGH]: {
     x: 530,
     y: 1900,

@@ -31,6 +31,7 @@
     "input:tap-top-rx": "curl http://localhost:8080/input:tap-top-rx",
     "input:tap-center-center": "curl http://localhost:8080/input:tap-center-center",
     "input:tap-bottom-rx": "curl http://localhost:8080/input:tap-bottom-rx",
+    "input:tap-run-speed-test": "curl http://localhost:8080/input:tap-run-speed-test",
     "input:tap-bottom-center": "curl http://localhost:8080/input:tap-bottom-center",
     "input:tap-cookies-sgh": "curl http://localhost:8080/input:tap-cookies-sgh",
     "input:tap-cookies-nu": "curl http://localhost:8080/input:tap-cookies-nu",
