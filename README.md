@@ -191,14 +191,15 @@ The Trace Extractor processes DevTools JSON traces to generate structured perfor
   ```
 
 **Key Features:**
+
 - **Excel Aggregation:** Automatically groups multiple runs of the same scenario into dedicated worksheets (tabs).
 - **Smart Grouping:** Uses the `Test Version-Test Case-Test Device` prefix (e.g., `TV25_03-TC01-TD31_03`) to aggregate related traces, even if they contain sub-range data in the filename.
 - **Conflict Prevention:** Detects existing reports and appends a counter (e.g., `-1`, `-2`) to ensure data is never overwritten.
 - **Advanced Metrics:** Captures Long Tasks (100ms/500ms), Longest Task duration, JS Heap (Min/Max), INP, CLS, and DevTools issues.
 
-### Template Pattern for Dynamic URLs
+### Test cases that profile page loading
 
-To reuse profiling sequences across different environments without modifying code, use the `TARGET_URL` placeholder inside `src/testCases.ts`.
+Template Pattern for Dynamic URLs: to reuse profiling sequences across different environments without modifying code, use the `TARGET_URL` placeholder inside `src/testCases.ts`.
 
 **Example:**
 
