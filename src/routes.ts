@@ -114,6 +114,23 @@ export const routeHandlers: RouteHandlers = {
       sendResponse(res, 400, 'Mode is required for clean state.');
     }
   },
+  [COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION]: async (
+    req,
+    res,
+    page,
+    url,
+    mode
+  ) => {
+    if (mode) {
+      const targetUrl = url.searchParams.get('url');
+      // All except 'cookies' and 'local_storage' (which often includes sessionStorage in CDP context)
+      const types =
+        'appcache,file_systems,indexeddb,shader_cache,websql,service_workers,cache_storage,interest_groups,shared_storage,other';
+      await handleCleanState(page, res, mode, targetUrl, types, true);
+    } else {
+      sendResponse(res, 400, 'Mode is required for clean state.');
+    }
+  },
   [COMMANDS.DEVICE_CLOSE_ALL_TABS]: async (req, res, page, url, mode) => {
     await handleCloseAllTabs(page, res, mode);
   },

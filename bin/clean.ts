@@ -7,20 +7,25 @@ const urlArg = process.argv.find(
     !arg.endsWith('clean.ts')
 );
 const preserveCookies = process.argv.includes('--preserve-cookies');
+const preserveSession = process.argv.includes('--preserve-session');
 
 if (!urlArg) {
   logger.error('Please provide a URL or a URL alias as an argument.');
-  logger.error('Usage: ts-node bin/clean.ts <url> [--preserve-cookies]');
+  logger.error('Usage: ts-node bin/clean.ts <url> [--preserve-cookies] [--preserve-session]');
   process.exit(1);
 }
 
 logger.info(
   `🧹 Cleaning device state for ${urlArg}${
-    preserveCookies ? ' (PRESERVING COOKIES)' : ''
+    preserveSession
+      ? ' (PRESERVING COOKIES AND SESSION)'
+      : preserveCookies
+        ? ' (PRESERVING COOKIES)'
+        : ''
   }...`
 );
 
-runCleanDevice(urlArg, 'mobile', preserveCookies)
+runCleanDevice(urlArg, 'mobile', preserveCookies, preserveSession)
   .then((data) => {
     logger.success(data);
   })

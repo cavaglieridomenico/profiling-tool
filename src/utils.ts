@@ -72,13 +72,20 @@ export function sendCommand(command: string): Promise<string> {
 export async function runCleanDevice(
   targetUrl: string,
   mode: string = 'mobile',
-  preserveCookies: boolean = false
+  preserveCookies: boolean = false,
+  preserveCookiesAndSession: boolean = false
 ): Promise<string> {
-  const cleanCmd = preserveCookies
-    ? `device:clean-state-preserve-cookies?url=${encodeURIComponent(
-        targetUrl
-      )}&mode=${mode}`
-    : `device:clean-state?url=${encodeURIComponent(targetUrl)}&mode=${mode}`;
+  let endpoint = 'device:clean-state';
+
+  if (preserveCookiesAndSession) {
+    endpoint = 'device:clean-state-preserve-cookies-and-session';
+  } else if (preserveCookies) {
+    endpoint = 'device:clean-state-preserve-cookies';
+  }
+
+  const cleanCmd = `${endpoint}?url=${encodeURIComponent(
+    targetUrl
+  )}&mode=${mode}`;
   return await sendCommand(cleanCmd);
 }
 
@@ -301,7 +308,8 @@ export async function handleCleanState(
   res: ServerResponse,
   mode: string,
   targetUrl: string | null,
-  storageTypes: string = 'all'
+  storageTypes: string = 'all',
+  skipTabRecreation: boolean = false
 ): Promise<void> {
   if (mode !== 'mobile') {
     res.writeHead(400, { 'Content-Type': 'text/plain' });
@@ -341,7 +349,11 @@ export async function handleCleanState(
 
     logger.info(
       `Starting Mobile Device Clean State (${
-        storageTypes === 'all' ? 'FULL' : 'PRESERVE COOKIES'
+        storageTypes === 'all'
+          ? 'FULL'
+          : skipTabRecreation
+            ? 'PRESERVE COOKIES & SESSION'
+            : 'PRESERVE COOKIES'
       })...`
     );
 
@@ -372,9 +384,13 @@ export async function handleCleanState(
 
     // Robust tab closing
     let oldTabIds: string[] = [];
+    let currentTabId: string | null = null;
     if (mode === 'mobile') {
       const httpTargets = await getTargetsFromHttp();
-      oldTabIds = httpTargets.filter((t) => t.type === 'page').map((t) => t.id);
+      currentTabId = (targetPage.target() as any)._targetId;
+      oldTabIds = httpTargets
+        .filter((t) => t.type === 'page' && t.id !== currentTabId)
+        .map((t) => t.id);
     }
 
     let closedCount = 0;
@@ -403,29 +419,37 @@ export async function handleCleanState(
     if (closedCount > 0)
       logger.info(`Closed ${closedCount} background/legacy tabs.`);
 
-    try {
-      if (!targetPage.isClosed()) {
-        await targetPage.close();
-        logger.info('Polluted execution tab destroyed.');
+    if (skipTabRecreation) {
+      logger.info(
+        'Skipping tab recreation to preserve session/local storage state.'
+      );
+    } else {
+      try {
+        if (!targetPage.isClosed()) {
+          await targetPage.close();
+          logger.info('Polluted execution tab destroyed.');
+        }
+      } catch (e) {
+        // Already closed by HTTP loop
       }
-    } catch (e) {
-      // Already closed by HTTP loop
+
+      const pristinePage = await browser.newPage();
+      await pristinePage.goto('about:blank');
+      logger.info('Spawned fresh tab and navigated to about:blank.');
+
+      await applyOverridesIfActive(pristinePage);
+
+      const pristineClient = await pristinePage.target().createCDPSession();
+      await pristineClient.send('HeapProfiler.collectGarbage');
+      await pristineClient.detach();
+      logger.info('Forcing Garbage Collection on fresh tab.');
     }
-
-    const pristinePage = await browser.newPage();
-    await pristinePage.goto('about:blank');
-    logger.info('Spawned fresh tab and navigated to about:blank.');
-
-    await applyOverridesIfActive(pristinePage);
-
-    const pristineClient = await pristinePage.target().createCDPSession();
-    await pristineClient.send('HeapProfiler.collectGarbage');
-    await pristineClient.detach();
-    logger.info('Forcing Garbage Collection on fresh tab.');
 
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end(
-      `Mobile Clean State complete for ${origin}: Storage wiped, Tab recreated, Cache disabled, bg tabs closed, GC executed.\n`
+      `Mobile Clean State complete for ${origin}: Storage wiped, ${
+        skipTabRecreation ? 'Tab preserved' : 'Tab recreated'
+      }, Cache disabled, bg tabs closed, GC executed.\n`
     );
   } catch (err: unknown) {
     const message = getErrorMessage(err);

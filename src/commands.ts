@@ -12,6 +12,8 @@ export const COMMANDS = {
   DEVICE_COOLDOWN: '/device:cooldown',
   DEVICE_CLEAN_STATE: '/device:clean-state',
   DEVICE_CLEAN_STATE_PRESERVE_COOKIES: '/device:clean-state-preserve-cookies',
+  DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION:
+    '/device:clean-state-preserve-cookies-and-session',
   DEVICE_CLOSE_ALL_TABS: '/device:close-all-tabs',
   CONFIG_OVERRIDES: '/config:overrides',
 

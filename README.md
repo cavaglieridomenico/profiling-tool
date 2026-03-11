@@ -133,9 +133,19 @@ Execution Sequence:
 
 #### Device Clean Process (Preserve Cookies)
 
-Same as `Device Clean Process`, but **preserves browser cookies**. This is useful during profiling runs where you want to clear the application's heavy state (IndexedDB, Cache, etc.) but avoid re-triggering cookie consent banners or login flows that were handled in a previous setup step.
+Same as `Device Clean Process`, but **preserves browser cookies**. Like the standard clean process, the **active tab is destroyed and recreated** to ensure a fresh V8 execution environment. This is useful during profiling runs where you want to clear the application's heavy state (IndexedDB, Cache, etc.) but avoid re-triggering cookie consent banners or login flows.
 
 **Command:** `COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES`
+
+<br/>
+
+#### Device Clean Process (Preserve Cookies & Session)
+
+Same as `Device Clean Process`, but **preserves browser cookies AND session/local storage**. 
+
+**Note:** This is the only cleanup mode where the **active tab is KEPT OPEN** instead of being destroyed. This is mandatory because `sessionStorage` is strictly tied to the lifetime of the browser tab. Use this mode when you need to preserve login states that rely on both cookies and persistent identifiers in localStorage/sessionStorage.
+
+**Command:** `COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION`
 
 <br/>
 
