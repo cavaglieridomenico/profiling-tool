@@ -31,6 +31,7 @@
     "input:tap-center-center": "curl http://localhost:8080/input:tap-center-center",
     "input:tap-bottom-rx": "curl http://localhost:8080/input:tap-bottom-rx",
     "input:tap-bottom-center": "curl http://localhost:8080/input:tap-bottom-center",
+    "input:tap-cookies-sgh": "curl http://localhost:8080/input:tap-cookies-sgh",
     "input:tap-cookies-nu": "curl http://localhost:8080/input:tap-cookies-nu",
     "input:tap-vmmv-video": "curl http://localhost:8080/input:tap-vmmv-video",
     "input:tap-vmmv-video-v4": "curl http://localhost:8080/input:tap-vmmv-video-v4",

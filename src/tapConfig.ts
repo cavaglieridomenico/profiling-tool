@@ -32,6 +32,11 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 2020,
     msg: 'Tapped on bottom-rx.'
   },
+  [COMMANDS.INPUT_TAP_COOKIES_SGH]: {
+    x: 530,
+    y: 1900,
+    msg: 'Tapped on cookies-sgh.'
+  },
   [COMMANDS.INPUT_TAP_COOKIES_NU]: {
     x: 500,
     y: 1700,
