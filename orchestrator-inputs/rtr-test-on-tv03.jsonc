@@ -1,0 +1,90 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "", // Matches PUPPETEER_ENV: e.g. vmvore for .env.vmcore
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000
+      // "setupCommands": ["COMMANDS.INPUT_TAP_COOKIES_SGH"],
+      // "postCommandDelay": 5000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_USA_SGH"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV03",
+      "skipNavigation": true,
+      "caseName": "testCases.rtrmv_tc01",
+      "traceName": "TV03-TC01_03-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_USA_SGH"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.rtrmv_tc04",
+      "traceName": "TV03-TC04-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc03_sgh",
+      "traceName": "TV03-TC03-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc03_perfetto_sgh",
+      "traceName": "TV03-TC03-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_sgh",
+      "traceName": "TV03_01-TC05-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_01_sgh",
+      "traceName": "TV03_01-TC05_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_01_perfetto_sgh",
+      "traceName": "TV03_01-TC05_01-TD31_03",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"],
+      "targetUrl": "urls.RTRMV_TV03",
+      "postNavigationDelay": 10000,
+      "caseName": "testCases.rtrmv_tc05_02_sgh",
+      "traceName": "TV03_01-TC05_02-TD31_03",
+      "runs": 3
+    }
+  ]
+}
