@@ -59,7 +59,7 @@
       "targetUrl": "urls.RTRMV_TV03",
       "postNavigationDelay": 10000,
       "caseName": "testCases.rtrmv_tc05_sgh",
-      "traceName": "TV03_01-TC05-TD31_03",
+      "traceName": "TV03-TC05-TD31_03",
       "runs": 3
     },
     {
@@ -67,7 +67,7 @@
       "targetUrl": "urls.RTRMV_TV03",
       "postNavigationDelay": 10000,
       "caseName": "testCases.rtrmv_tc05_01_sgh",
-      "traceName": "TV03_01-TC05_01-TD31_03",
+      "traceName": "TV03-TC05_01-TD31_03",
       "runs": 3
     },
     {
@@ -75,7 +75,7 @@
       "targetUrl": "urls.RTRMV_TV03",
       "postNavigationDelay": 10000,
       "caseName": "testCases.rtrmv_tc05_01_perfetto_sgh",
-      "traceName": "TV03_01-TC05_01-TD31_03",
+      "traceName": "TV03-TC05_01-TD31_03",
       "runs": 3
     },
     {
@@ -83,7 +83,7 @@
       "targetUrl": "urls.RTRMV_TV03",
       "postNavigationDelay": 10000,
       "caseName": "testCases.rtrmv_tc05_02_sgh",
-      "traceName": "TV03_01-TC05_02-TD31_03",
+      "traceName": "TV03-TC05_02-TD31_03",
       "runs": 3
     }
   ]
