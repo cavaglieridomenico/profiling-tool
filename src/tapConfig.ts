@@ -122,12 +122,12 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 710,
     msg: 'Tapped on vmmv-tryonbutton-oo.'
   },
-  [COMMANDS.INPUT_TAP_VMMV_USA_SGH]: {
+  [COMMANDS.INPUT_TAP_USA_SGH]: {
     x: 530,
     y: 1530,
     msg: 'Tapped on vmmv-usabutton-sgh.'
   },
-  [COMMANDS.INPUT_TAP_VMMV_USA_RB]: {
+  [COMMANDS.INPUT_TAP_USA_RB]: {
     x: 330,
     y: 1730,
     msg: 'Tapped on vmmv-usabutton-rb.'
@@ -172,14 +172,29 @@ export const TAP_CONFIG: Record<string, TapConfigItem> = {
     y: 500,
     msg: 'Tapped on rtr-zoom.'
   },
+  [COMMANDS.INPUT_TAP_RTRMV_ZOOM_RB]: {
+    x: 950,
+    y: 1650,
+    msg: 'Tapped on rtr-zoom-rb.'
+  },
   [COMMANDS.INPUT_TAP_RTRMV_START_SGH]: {
     x: 620,
     y: 1530,
     msg: 'Tapped on rtr-start-sgh.'
   },
+  [COMMANDS.INPUT_TAP_RTRMV_START_RB]: {
+    x: 980,
+    y: 780,
+    msg: 'Tapped on rtr-start-rb.'
+  },
   [COMMANDS.INPUT_TAP_RTRMV_EXPLOSION]: {
     x: 130,
     y: 1580,
     msg: 'Tapped on rtr-explosion.'
+  },
+  [COMMANDS.INPUT_TAP_RTRMV_EXPLOSION_RB]: {
+    x: 130,
+    y: 1880,
+    msg: 'Tapped on rtr-explosion-rb.'
   }
 };
