@@ -227,6 +227,12 @@ async function main() {
         // Scripting (%) - Format ONLY Column B as percentage
         cell.value = { formula: `IFERROR(AVERAGE(C3:Q3) / B2, "N/A")` };
         cell.numFmt = '0.00%';
+      } else if (r === 7 || r === 8) {
+        // JS heap min (7) and max (8)
+        cell.value = {
+          formula: `IFERROR(AVERAGE((D${r}+E${r}+F${r}+G${r}),(I${r}+J${r}+K${r}+L${r}),(N${r}+O${r}+P${r}+Q${r})), "N/A")`
+        };
+        cell.numFmt = '0.00';
       } else if (r === 9) {
         // JS heap min/max Δ (MB)
         cell.value = { formula: `IFERROR(B8 - B7, "N/A")` };
