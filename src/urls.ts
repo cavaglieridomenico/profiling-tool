@@ -37,6 +37,8 @@ export const urls: Record<string, string> = {
   RTRMV_BYPASS: 'https://rtrmv.essilorluxottica.com/luxotticabypass',
   RTRMV_TV04: 'https://rtrmv.essilorluxottica.com/ui/v/4.1.1/index.html',
   RTRMV_TV03: 'https://www.sunglasshut.com/us/ray-ban/rb2132-8056262320594',
+  RTRMV_TV03_02:
+    'https://www.ray-ban.com/usa/customize/rb-3025-aviator-large-metal-sunglasses?mostSoldSize=RBCP%2058',
   RTRCORE_TV03_01: 'https://www.sunglasshut.com/us',
   RTRMV_TV02_01: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.3/index.html',
   RTRMV_TV02: 'https://rtrmv.essilorluxottica.com/ui/v/3.1.1/index.html',
