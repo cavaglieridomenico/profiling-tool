@@ -12,90 +12,90 @@
     },
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
-      "targetUrl": "urls.RTRMV_TV03",
-      "postNavigationDelay": 10000
-      // "setupCommands": ["COMMANDS.INPUT_TAP_COOKIES_SGH"],
-      // "postCommandDelay": 5000
-    },
-    {
-      "setupCommands": ["COMMANDS.INPUT_TAP_USA_SGH"],
+      "targetUrl": "urls.RTRMV_TV03_02",
+      "postNavigationDelay": 10000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_COOKIES_SGH"],
       "postCommandDelay": 5000
     },
     {
-      "targetUrl": "urls.RTRMV_TV03",
+      "setupCommands": ["COMMANDS.INPUT_TAP_USA_RB"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.RTRMV_TV03_02",
       "skipNavigation": true,
       "caseName": "testCases.rtrmv_tc01",
-      "traceName": "TV03-TC01_02-TD31_03",
+      "traceName": "TV03_02-TC01_02-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "setupCommands": ["COMMANDS.INPUT_TAP_USA_SGH"],
+      "setupCommands": ["COMMANDS.INPUT_TAP_USA_RB"],
       "postCommandDelay": 5000,
-      "caseName": "testCases.rtrmv_tc04_sgh",
-      "traceName": "TV03-TC04-TD31_03",
+      "caseName": "testCases.rtrmv_tc04_rb",
+      "traceName": "TV03_02-TC04-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc03_sgh",
-      "traceName": "TV03-TC03-TD31_03",
+      "caseName": "testCases.rtrmv_tc03_rb",
+      "traceName": "TV03_02-TC03-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc03_perfetto_sgh",
-      "traceName": "TV03-TC03-TD31_03",
+      "caseName": "testCases.rtrmv_tc03_perfetto_rb",
+      "traceName": "TV03_02-TC03-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc05_sgh",
-      "traceName": "TV03-TC05-TD31_03",
+      "caseName": "testCases.rtrmv_tc05_rb",
+      "traceName": "TV03_02-TC05-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc05_01_sgh",
-      "traceName": "TV03-TC05_01-TD31_03",
+      "caseName": "testCases.rtrmv_tc05_01_rb",
+      "traceName": "TV03_02-TC05_01-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc05_01_perfetto_sgh",
-      "traceName": "TV03-TC05_01-TD31_03",
+      "caseName": "testCases.rtrmv_tc05_01_perfetto_rb",
+      "traceName": "TV03_02-TC05_01-TD31_03",
       "runs": 3
     },
     {
       "preNavigationCommands": [
         "COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES_AND_SESSION"
       ],
-      "targetUrl": "urls.RTRMV_TV03",
+      "targetUrl": "urls.RTRMV_TV03_02",
       "postNavigationDelay": 10000,
-      "caseName": "testCases.rtrmv_tc05_02_sgh",
-      "traceName": "TV03-TC05_02-TD31_03",
+      "caseName": "testCases.rtrmv_tc05_02_rb",
+      "traceName": "TV03_02-TC05_02-TD31_03",
       "runs": 3
     }
   ]

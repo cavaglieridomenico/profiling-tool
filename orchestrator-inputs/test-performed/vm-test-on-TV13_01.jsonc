@@ -10,7 +10,7 @@
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
       "targetUrl": "urls.VMMV_TV13_01",
       "postNavigationDelay": 10000,
-      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_USA_SGH"],
+      "setupCommands": ["COMMANDS.INPUT_TAP_USA_SGH"],
       "postCommandDelay": 5000
     },
     {
