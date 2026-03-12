@@ -57,9 +57,20 @@ function populateRunColumns(
   startCol: number
 ): void {
   const threadEntries = Object.entries(metrics.threads).sort((a, b) => {
-    if (a[1].name === 'Main thread') return -1;
-    if (b[1].name === 'Main thread') return 1;
-    return a[1].name.localeCompare(b[1].name);
+    const aMain = a[1].name === 'Main thread';
+    const bMain = b[1].name === 'Main thread';
+
+    // 1. Group by type: Main thread first
+    if (aMain && !bMain) return -1;
+    if (!aMain && bMain) return 1;
+
+    // 2. Within same type, sort by max heap (primary activity indicator)
+    if (b[1].jsHeapMax !== a[1].jsHeapMax) {
+      return b[1].jsHeapMax - a[1].jsHeapMax;
+    }
+
+    // 3. Then by long tasks
+    return b[1].longTasks100 - a[1].longTasks100;
   });
 
   const mainThread = threadEntries.find((t) => t[1].name === 'Main thread');
@@ -113,9 +124,12 @@ function populateRunColumns(
       worksheet.getRow(8).getCell(colIndex).numFmt = '0.00';
 
       // Row 9: JS heap min/max Δ (MB)
-      const colLetter = worksheet.getRow(9).getCell(colIndex).address.replace(/\d+/, '');
+      const colLetter = worksheet
+        .getRow(9)
+        .getCell(colIndex)
+        .address.replace(/\d+/, '');
       worksheet.getRow(9).getCell(colIndex).value = {
-          formula: `IFERROR(${colLetter}8 - ${colLetter}7, "N/A")`
+        formula: `IFERROR(${colLetter}8 - ${colLetter}7, "N/A")`
       };
       worksheet.getRow(9).getCell(colIndex).numFmt = '0.00';
     }

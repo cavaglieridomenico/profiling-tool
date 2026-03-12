@@ -1,9 +1,5 @@
 import fs from 'fs';
-import {
-  TraceEvent,
-  ThreadMetrics,
-  TraceMetrics
-} from '../types';
+import { TraceEvent, ThreadMetrics, TraceMetrics } from '../types';
 import {
   LONG_TASK_THRESHOLD_MS,
   VERY_LONG_TASK_THRESHOLD_MS,
@@ -95,11 +91,14 @@ export function parseTrace(filePath: string): TraceMetrics {
 
   // Identify Renderer processes
   const rendererPids = Object.entries(processNames)
-    .filter(([, name]) => name === 'Renderer')
+    .filter(([, name]) => name.toLowerCase() === 'renderer')
     .map(([pid]) => parseInt(pid));
 
+  // Get all unique thread keys from both tasks and heap
+  const allKeys = new Set([...Object.keys(threadTasks), ...Object.keys(threadHeap)]);
+
   // Process individual thread metrics
-  for (const [key, tasks] of Object.entries(threadTasks)) {
+  for (const key of allKeys) {
     const [pidStr, tidStr] = key.split('-');
     const pid = parseInt(pidStr);
     const tid = parseInt(tidStr);
@@ -114,6 +113,7 @@ export function parseTrace(filePath: string): TraceMetrics {
       tName === DEDICATED_WORKER_THREAD_NAME || tName === SERVICE_WORKER_THREAD_NAME;
 
     if (isMainThread || isWorkerThread) {
+      const tasks = threadTasks[key] || [];
       const taskDurations = tasks.map((t) => t.dur);
       const longTasks100 = taskDurations.filter((d) => d > LONG_TASK_THRESHOLD_MS).length;
       const longTasks500 = taskDurations.filter((d) => d > VERY_LONG_TASK_THRESHOLD_MS).length;
