@@ -259,9 +259,7 @@ async function applyOverridesIfActive(page: Page): Promise<void> {
       } catch (err) {}
     });
   } catch (err) {
-    logger.warn(
-      `Could not apply interception: ${getErrorMessage(err)}`
-    );
+    logger.warn(`Could not apply interception: ${getErrorMessage(err)}`);
   }
 }
 

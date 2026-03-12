@@ -11,7 +11,9 @@ const preserveSession = process.argv.includes('--preserve-session');
 
 if (!urlArg) {
   logger.error('Please provide a URL or a URL alias as an argument.');
-  logger.error('Usage: ts-node bin/clean.ts <url> [--preserve-cookies] [--preserve-session]');
+  logger.error(
+    'Usage: ts-node bin/clean.ts <url> [--preserve-cookies] [--preserve-session]'
+  );
   process.exit(1);
 }
 

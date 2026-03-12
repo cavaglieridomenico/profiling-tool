@@ -141,7 +141,7 @@ Same as `Device Clean Process`, but **preserves browser cookies**. Like the stan
 
 #### Device Clean Process (Preserve Cookies & Session)
 
-Same as `Device Clean Process`, but **preserves browser cookies AND session/local storage**. 
+Same as `Device Clean Process`, but **preserves browser cookies AND session/local storage**.
 
 **Note:** This is the only cleanup mode where the **active tab is KEPT OPEN** instead of being destroyed. This is mandatory because `sessionStorage` is strictly tied to the lifetime of the browser tab. Use this mode when you need to preserve login states that rely on both cookies and persistent identifiers in localStorage/sessionStorage.
 
