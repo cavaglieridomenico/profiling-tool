@@ -190,7 +190,7 @@ async function main() {
       .substring(0, 31)
       .replace(/[\[\]\*\?\/\\]/g, '_');
     const worksheet = workbook.addWorksheet(tabName);
-    worksheet.views = [{ state: 'frozen', xSplit: 1, ySplit: 1 }];
+    worksheet.views = [{ state: 'frozen', xSplit: 2, ySplit: 1 }];
 
     // Column A: Metric Labels
     worksheet.getRow(1).getCell(1).fill = {
