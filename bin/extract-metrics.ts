@@ -224,8 +224,9 @@ async function main() {
       const cell = worksheet.getRow(r).getCell(2);
 
       if (r === 2) {
-        // Rendering time (s) - Leave empty
-        cell.value = null;
+        // Rendering time (s)
+        cell.value = { formula: `IFERROR(AVERAGE(C2:Q2), "N/A")` };
+        cell.numFmt = '0.00';
       } else if (r === 3) {
         // Scripting (%) - Format ONLY Column B as percentage
         cell.value = { formula: `IFERROR(AVERAGE(D3,I3,N3) / B2, "N/A")` };
