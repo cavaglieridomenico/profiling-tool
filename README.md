@@ -206,6 +206,7 @@ The Trace Extractor processes DevTools JSON traces to generate structured perfor
 - **Smart Grouping:** Uses the `Test Version-Test Case-Test Device` prefix (e.g., `TV25_03-TC01-TD31_03`) to aggregate related traces, even if they contain sub-range data in the filename.
 - **Conflict Prevention:** Detects existing reports and appends a counter (e.g., `-1`, `-2`) to ensure data is never overwritten.
 - **Advanced Metrics:** Captures Long Tasks (100ms/500ms), Longest Task duration, JS Heap (Min/Max), INP, CLS, and DevTools issues.
+- **Dynamic Profiling Offset:** By default, the tool skips the first 1.5 seconds of the trace to avoid startup overhead. You can specify a custom offset by including `OFFSET=X` (where X is seconds) in the trace filename (e.g., `my-trace-OFFSET=5.json`).
 
 ### Test cases that profile page loading
 

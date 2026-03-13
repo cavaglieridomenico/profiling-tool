@@ -79,6 +79,8 @@ Used to process DevTools JSON traces and generate structured Excel reports. It a
 
 **Grouping Logic:** Aggregates by the `Test Version-Test Case-Test Device` prefix (e.g., `TV25_03-TC01-TD31_03`).
 
+**Dynamic Profiling Offset:** To avoid counting startup overhead, the Trace Extractor skips the first 1.5 seconds of each trace by default. You can override this globally in `src/config/constants.ts` or per-trace by including `OFFSET=X` (e.g., `my-trace-OFFSET=5.json`) in the filename to specify the offset in seconds.
+
 ### 4. Extending Trace Metrics
 
 To add new metrics to the extraction process:

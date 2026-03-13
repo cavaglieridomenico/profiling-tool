@@ -91,7 +91,14 @@ export function parseTrace(filePath: string): TraceMetrics {
     }
   }
 
-  const offsetUs = PROFILING_OFFSET_MS * 1000;
+  // Determine the offset: use OFFSET=X from filename if present (in seconds), otherwise use default
+  let currentOffsetMs = PROFILING_OFFSET_MS;
+  const offsetMatch = filePath.match(/OFFSET=(\d+)/);
+  if (offsetMatch) {
+    currentOffsetMs = parseInt(offsetMatch[1]) * 1000;
+  }
+
+  const offsetUs = currentOffsetMs * 1000;
   const effectiveMinTs = baselineTs + offsetUs;
 
   console.log(`Analyzing ${filePath}`);
