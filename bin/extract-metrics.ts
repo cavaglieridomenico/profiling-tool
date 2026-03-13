@@ -223,7 +223,10 @@ async function main() {
     for (let r = 2; r <= 22; r++) {
       const cell = worksheet.getRow(r).getCell(2);
 
-      if (r === 3) {
+      if (r === 2) {
+        // Rendering time (s) - Leave empty
+        cell.value = null;
+      } else if (r === 3) {
         // Scripting (%) - Format ONLY Column B as percentage
         cell.value = { formula: `IFERROR(AVERAGE(D3,I3,N3) / B2, "N/A")` };
         cell.numFmt = '0.00%';

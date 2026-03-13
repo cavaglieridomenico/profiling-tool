@@ -12,3 +12,6 @@ export const VERY_LONG_TASK_THRESHOLD_MS = 500;
 export const MAIN_THREAD_NAME = 'CrRendererMain';
 export const DEDICATED_WORKER_THREAD_NAME = 'DedicatedWorker thread';
 export const SERVICE_WORKER_THREAD_NAME = 'ServiceWorker thread';
+
+// Profiling offset to avoid counting startup overhead
+export const PROFILING_OFFSET_MS = 1500;
