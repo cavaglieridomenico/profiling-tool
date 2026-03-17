@@ -29,8 +29,16 @@
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV25_02",
       "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc05_01",
+      "traceName": "TV25_02-TC07-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV25_02",
+      "postNavigationDelay": 15000,
       "caseName": "testCases.vmmv_tc06",
-      "traceName": "TV25_02-TC06-TD31_04",
+      "traceName": "TV25_02-TC06-TD31_04-OFFSET=4",
       "runs": 3
     },
     {
@@ -39,14 +47,6 @@
       "postNavigationDelay": 15000,
       "caseName": "testCases.vmmv_tc06_perfetto",
       "traceName": "TV25_02-TC06-TD31_04",
-      "runs": 3
-    },
-    {
-      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
-      "targetUrl": "urls.VMMV_TV25_02",
-      "postNavigationDelay": 15000,
-      "caseName": "testCases.vmmv_tc07",
-      "traceName": "TV25_02-TC07-TD31_04",
       "runs": 3
     }
   ]
