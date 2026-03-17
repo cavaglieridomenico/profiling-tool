@@ -14,14 +14,29 @@ export const testCases: Record<string, TestCaseStep[]> = {
       command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
       delay: 5000
     },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   vmmv_tc05: [
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-vmmv-multivm', delay: 10000 },
-    { command: 'input:tap-vmmv-multivm', delay: 5000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  vmmv_tc06: [
+    { command: 'input:tap-vmmv-multivm', delay: 8000 },
+    { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  vmmv_tc06_perfetto: [
+    { command: 'input:tap-vmmv-multivm', delay: 8000 },
+    { command: 'devtools:start', delay: 10000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  vmmv_tc07: [
+    { command: 'input:tap-vmmv-multivm', delay: 8000 },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'input:tap-vmmv-multivm', delay: 10000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   vmmv_tc08: [
@@ -54,7 +69,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
       delay: 5000
     },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
     { command: 'devtools:stop', delay: 0 }
   ],
@@ -76,8 +91,10 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-top-center', delay: 2000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
+    { command: 'input:tap-center-center', delay: 3000 },
     { command: 'input:tap-vmmv-vmp-continue', delay: 15000 },
-    { command: 'devtools:stop', delay: 0 }
+    { command: 'devtools:stop', delay: 5000 },
+    { command: 'input:tap-vmcore-vmp-restart', delay: 5000 }
   ],
   vmmv_tc13_v4: [
     { command: 'input:tap-top-lx', delay: 3000 },
@@ -160,9 +177,9 @@ export const testCases: Record<string, TestCaseStep[]> = {
       command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
       delay: 5000
     },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   pdwmv_tc05: [
@@ -197,7 +214,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       command: 'device:clean-state-preserve-cookies-and-session?url=TARGET_URL',
       delay: 5000
     },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'devtools:stop', delay: 0 }
   ],
@@ -207,7 +224,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
       delay: 5000
     },
-    { command: 'devtools:start', delay: 2000 },
+    { command: 'devtools:start', delay: 3000 },
     { command: 'navigate:url?url=TARGET_URL', delay: 12000 },
     { command: 'input:tap-rtrmv-zoom', delay: 6000 },
     { command: 'devtools:stop', delay: 0 }
