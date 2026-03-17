@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 1.13.0
+
+### Added
+
+- Logic for extracting values ​​from profiling traces
+- New Puppeteer version
+- New test case profiles
+
 # 1.12.0
 
 ### Added
