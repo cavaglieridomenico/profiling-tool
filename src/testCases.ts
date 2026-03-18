@@ -140,13 +140,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-bottom-center', delay: 25000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-bottom-center', delay: 35000 },
-    { command: 'devtools:stop', delay: 0 }
+    { command: 'devtools:stop', delay: 20000 }
   ],
   pdwmv_tc01_end: [
     { command: 'input:tap-bottom-center', delay: 25000 },
-    { command: 'input:tap-bottom-center', delay: 20000 },
+    { command: 'input:tap-bottom-center', delay: 18000 },
     { command: 'devtools:start', delay: 10000 },
-    { command: 'devtools:stop', delay: 0 }
+    { command: 'devtools:stop', delay: 20000 }
   ],
   //Chrome address bar must to be visible:
   pdwmv_tc01_sgh: [
@@ -164,7 +164,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
   pdwmv_tc02: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-bottom-center', delay: 5000 },
-    { command: 'devtools:stop', delay: 0 }
+    { command: 'devtools:stop', delay: 10000 }
   ],
   //Chrome address bar must to be visible:
   pdwmv_tc02_sgh: [
@@ -178,8 +178,7 @@ export const testCases: Record<string, TestCaseStep[]> = {
       delay: 5000
     },
     { command: 'devtools:start', delay: 3000 },
-    { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
-    { command: 'devtools:start', delay: 3000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 15000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   pdwmv_tc05: [
