@@ -30,7 +30,7 @@
       "targetUrl": "urls.VMMV_TV25_02",
       "postNavigationDelay": 15000,
       "caseName": "testCases.vmmv_tc05_01",
-      "traceName": "TV25_02-TC07-TD31_04",
+      "traceName": "TV25_02-TC05_01-TD31_04",
       "runs": 3
     },
     {

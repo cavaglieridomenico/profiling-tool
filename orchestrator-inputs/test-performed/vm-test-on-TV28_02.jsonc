@@ -1,0 +1,53 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.VMMV_TV28_02",
+      "postNavigationDelay": 8000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
+      "postCommandDelay": 15000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_02",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc05",
+      "traceName": "TV28_02-TC05-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_02",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc05_01",
+      "traceName": "TV28_02-TC05_01-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_02",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc06",
+      "traceName": "TV28_02-TC06-TD31_04-OFFSET=4",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_02",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc06_perfetto",
+      "traceName": "TV28_02-TC06-TD31_04",
+      "runs": 3
+    }
+  ]
+}
