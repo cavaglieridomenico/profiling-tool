@@ -1,0 +1,93 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "pdwuat",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.PDW_BYPASS",
+      "postNavigationDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 8000
+    },
+    {
+      "targetUrl": "urls.PDWMV_TV22",
+      "skipNavigation": true,
+      "caseName": "testCases.pdwmv_tc04",
+      "traceName": "TV22-TC04-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc05",
+      "traceName": "TV22-TC05-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc05_end",
+      "traceName": "TV22-TC05-TD31_04_end",
+      "runs": 1
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc01",
+      "traceName": "TV22-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.pdwmv_tc02",
+      "traceName": "TV22-TC02-TD31_04",
+      "runs": 1
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc01",
+      "traceName": "TV22-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.pdwmv_tc02",
+      "traceName": "TV22-TC02-TD31_04",
+      "runs": 1
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc01",
+      "traceName": "TV22-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.pdwmv_tc02",
+      "traceName": "TV22-TC02-TD31_04",
+      "runs": 1
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.PDWMV_TV22",
+      "postNavigationDelay": 15000,
+      "caseName": "testCases.pdwmv_tc01_end",
+      "traceName": "TV22-TC01-TD31_04_end",
+      "runs": 1
+    }
+  ]
+}
