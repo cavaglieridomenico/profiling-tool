@@ -208,6 +208,47 @@ The Trace Extractor processes DevTools JSON traces to generate structured perfor
 - **Advanced Metrics:** Captures Long Tasks (100ms/500ms), Longest Task duration, JS Heap (Min/Max), INP, CLS.
 - **Dynamic Profiling Offset:** By default, the tool skips the first 1.5 seconds of the trace to avoid startup overhead. You can specify a custom offset by including `OFFSET=X` (where X is seconds) in the trace filename (e.g., `my-trace-OFFSET=4.json`).
 
+### 5. Runtime Web Performance Analyzer
+
+The Analyzer is an active, agentic tool that performs a suite of performance audits on a live web page. Unlike the Trace Extractor (which parses static files), the Analyzer interacts with the page in real-time to identify bottlenecks.
+
+**Command:**
+
+```bash
+npm run analyze <url> [mode]
+```
+
+- **`<url>`**: The full URL to analyze (e.g., `https://www.google.com`).
+- **`[mode]`**: (Optional) `desktop` (default) or `mobile`.
+
+**Execution Sequence:**
+
+1.  **Browser Connection:**
+    - **Desktop:** Launches a fresh local Chrome instance.
+    - **Mobile:** Uses ADB to forward port 9222 and connects to the Chrome instance already running on your Android device.
+2.  **Primary Navigation:** Puppeteer opens a new tab and navigates to the target URL.
+3.  **Real-Time Audits (Engine):** The `AnalyzerEngine` executes the following audits sequentially on the live page:
+    - **Core Web Vitals:** Injects a `PerformanceObserver` script directly into the page context (`src/analyzer/audits/vitals.ts`). It waits for 2 seconds to capture buffered events like LCP, CLS, and FID.
+    - **Network Waterfall:** Uses the browser's performance buffer to analyze the assets loaded during the initial navigation.
+    - **Image Optimization:** Scans the live DOM to verify if images are oversized (file dimensions vs. display dimensions) or missing accessibility attributes.
+4.  **Lighthouse Audit:** The script invokes the `lighthouse` package, connecting it to the same browser instance via the DevTools port. 
+    - **Mode & Device Awareness:**
+        - **Mobile (Real Device):** Lighthouse detects the ADB connection and **disables internal screen emulation**. It uses the device's actual performance with "provided" throttling for high-accuracy results.
+        - **Desktop:** Explicitly uses the official `desktop-config` to ensure no mobile emulation occurs.
+    - **Controlled Navigation:** Lighthouse performs its own controlled navigation and may briefly open/close temporary tabs or reload the page to measure performance under throttled conditions.
+5.  **Reporting & Cleanup:**
+    - Results are printed to the **Console**.
+    - Detailed reports are saved to **`analysis-output/`** in both `.json` (raw data) and `.txt` (formatted summary) formats.
+    - The browser (if desktop) is automatically closed to ensure a clean exit.
+
+**Key Features:**
+
+- **Core Web Vitals:** Real-time monitoring of LCP, CLS, and FID/INP using browser Performance Observers.
+- **Network Waterfall:** Identifies largest resources, total request count, and potential blocking assets during the page session.
+- **Image Optimization:** Detects oversized images and missing `alt` tags.
+- **Lighthouse Integration:** Runs full industry-standard audits for Performance, Accessibility, Best Practices, and SEO.
+- **Active Observations:** Generates a human-readable summary of issues (e.g., "LCP is slow", "Large resource found") directly in the console.
+
 ### Test cases that profile page loading
 
 Template Pattern for Dynamic URLs: to reuse profiling sequences across different environments without modifying code, use the `TARGET_URL` placeholder inside `src/testCases.ts`.

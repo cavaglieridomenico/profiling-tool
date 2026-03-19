@@ -108,6 +108,7 @@ The project uses a custom `Logger` class (`src/logger.ts`) for consistent consol
 
 ## Development Conventions
 
+- **CRITICAL MANDATE: IMMUTABILITY OF CORE LOGIC:** The existing profiling (`bin/profile.ts`, `bin/orchestrate.ts`) and extraction (`src/trace-parser/`, `bin/extract-metrics.ts`) logic is considered **STABLE and IMMUTABLE**. It must remain read-only for any new analysis features. Any new "Agentic" or "Advanced Analysis" flows must consume the existing output structures (e.g., `TraceMetrics`) without modifying the underlying extraction mechanisms. This ensures consistency with historical test results.
 - **Formatting & Commitment Flow:** Before applying any logic changes, run `npm run format` on the target files. If formatting changes occur, they **must be committed alone** (e.g., `style: format [files] with Prettier`) before proceeding. **You must ask the user to perform this commit.** This ensures that logic diffs are not obscured by styling updates. **Subsequent logic changes must NOT be committed unless the user explicitly asks for it.**
 - **Environment Variables:** Use `PUPPETEER_ENV` (e.g., `vmcore`, `pdwuat`) to switch target configurations.
 - **Type Safety:** All configurations (especially for the orchestrator) are validated with **Zod**. See `src/orchestrator/config.ts`.
