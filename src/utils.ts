@@ -31,6 +31,23 @@ export function getErrorMessage(error: unknown): string {
 }
 
 /**
+ * Returns a formatted timestamp in CET/CEST (Europe/Rome).
+ * Format: DD-MM-YYYY HH:mm:ss
+ */
+export function getTimestampCET(): string {
+  return new Date().toLocaleString('en-GB', {
+    timeZone: 'Europe/Rome',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+}
+
+/**
  * Validates required environment variables.
  */
 export function validateEnv(requiredKeys: string[]): void {

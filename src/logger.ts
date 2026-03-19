@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { LogLevel, LoggerOptions } from './types';
 import { LOGS_OUTPUT_DIR } from './config/constants';
+import { getTimestampCET } from './utils';
 
 /**
  * Persistence-enabled logger with semantic icon mapping and child-process stream multiplexing (via .stream()).
@@ -58,12 +59,11 @@ export class Logger {
   }
 
   private formatMessage(level: LogLevel, message: string): string {
-    const timestamp = new Date().toLocaleTimeString('en-GB', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
+    const fullTimestamp = getTimestampCET();
+    // getTimestampCET returns "19/03/2026, 10:15:43"
+    const timestamp = fullTimestamp.includes(', ')
+      ? fullTimestamp.split(', ')[1]
+      : fullTimestamp;
 
     const trimmedMsg = message.trim();
     const hasEmoji = this.hasEmojiPrefix(trimmedMsg);
