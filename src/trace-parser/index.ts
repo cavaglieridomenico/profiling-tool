@@ -69,11 +69,12 @@ export function parseTrace(filePath: string): TraceMetrics {
     if (event.ts > 0) {
       if (minTs === 0 || event.ts < minTs) minTs = event.ts;
       if (event.ts > absoluteMaxTs) absoluteMaxTs = event.ts;
-      
-      const isTask = event.name === 'RunTask' || 
-                     event.name === 'ThreadPool_RunTask' || 
-                     event.name === 'ThreadControllerImpl::RunTask';
-      
+
+      const isTask =
+        event.name === 'RunTask' ||
+        event.name === 'ThreadPool_RunTask' ||
+        event.name === 'ThreadControllerImpl::RunTask';
+
       if (isTask && rendererPids.includes(event.pid)) {
         if (baselineTs === 0 || event.ts < baselineTs) {
           baselineTs = event.ts;
@@ -102,7 +103,9 @@ export function parseTrace(filePath: string): TraceMetrics {
   const effectiveMinTs = baselineTs + offsetUs;
 
   console.log(`Analyzing ${filePath}`);
-  console.log(`Baseline identified (First Renderer Task at +${((baselineTs - minTs) / 1000000).toFixed(2)}s)`);
+  console.log(
+    `Baseline identified (First Renderer Task at +${((baselineTs - minTs) / 1000000).toFixed(2)}s)`
+  );
   console.log(
     `Applying offset of ${(offsetUs / 1000000).toFixed(2)}s (relative range: 0.00s to ${(
       offsetUs / 1000000
@@ -185,7 +188,10 @@ export function parseTrace(filePath: string): TraceMetrics {
   };
 
   // Get all unique thread keys from both tasks and heap
-  const allKeys = new Set([...Object.keys(threadTasks), ...Object.keys(threadHeap)]);
+  const allKeys = new Set([
+    ...Object.keys(threadTasks),
+    ...Object.keys(threadHeap)
+  ]);
 
   // 4. Process individual thread metrics
   for (const key of allKeys) {
@@ -200,13 +206,18 @@ export function parseTrace(filePath: string): TraceMetrics {
 
     const isMainThread = tName === MAIN_THREAD_NAME;
     const isWorkerThread =
-      tName === DEDICATED_WORKER_THREAD_NAME || tName === SERVICE_WORKER_THREAD_NAME;
+      tName === DEDICATED_WORKER_THREAD_NAME ||
+      tName === SERVICE_WORKER_THREAD_NAME;
 
     if (isMainThread || isWorkerThread) {
       const tasks = threadTasks[key] || [];
       const taskDurations = tasks.map((t) => t.dur);
-      const longTasks100 = taskDurations.filter((d) => d > LONG_TASK_THRESHOLD_MS).length;
-      const longTasks500 = taskDurations.filter((d) => d > VERY_LONG_TASK_THRESHOLD_MS).length;
+      const longTasks100 = taskDurations.filter(
+        (d) => d > LONG_TASK_THRESHOLD_MS
+      ).length;
+      const longTasks500 = taskDurations.filter(
+        (d) => d > VERY_LONG_TASK_THRESHOLD_MS
+      ).length;
       const longestTask = getMax(taskDurations);
 
       const heap = threadHeap[key] || [];
