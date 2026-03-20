@@ -1,5 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+
+/**
+ * Extracts a date string from a filename (expects YYYY-MM-DD format).
+ */
+export function extractDateFromFilename(filename: string): string | null {
+  const match = filename.match(/(\d{4}-\d{2}-\d{2})/);
+  return match ? match[1] : null;
+}
+
 /**
  * Generates a consistent base filename for reports and configs.
  * Format: [Title]_[YYYY-MM-DD]
@@ -12,7 +21,6 @@ export function generateReportBaseName(title: string): string {
 
 /**
  * Finds a non-conflicting filename by appending a progressive number.
-...
  * Example: report-config.jsonc -> report-config-1.jsonc -> report-config-2.jsonc
  */
 export function getNonConflictingFilename(basePath: string): string {

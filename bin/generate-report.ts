@@ -6,7 +6,8 @@ import { ReportConfigSchema, MetricData } from '../src/report-generator/types';
 import { getMetricsFromExcel } from '../src/report-generator/excel-reader';
 import {
   getNonConflictingFilename,
-  generateReportBaseName
+  generateReportBaseName,
+  extractDateFromFilename
 } from '../src/report-generator/utils';
 
 function parseNumericValue(value: any): number {
@@ -197,7 +198,20 @@ async function main() {
     }
   }
 
-  md += `Last measurement: ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}\n\n`;
+  const excelDate = extractDateFromFilename(path.basename(currentExcel));
+  const displayDate = excelDate
+    ? new Date(excelDate).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    : new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      });
+
+  md += `_Last measurement_: ${displayDate}\n\n`;
   md += `---\n\n`;
 
   md += `## List of tested combinations\n\n`;
