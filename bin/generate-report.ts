@@ -185,11 +185,9 @@ async function main() {
   md += `Analysis compared **${config.current.name}** with the baseline **${config.baseline.name}**.\n\n`;
 
   if (config.insights && config.insights.length > 0) {
-    md += `### Insights:\n\n`;
     for (const insight of config.insights) {
-      md += `- ${insight}\n`;
+      md += `${insight}\n\n`;
     }
-    md += `\n`;
   }
 
   md += `Last measurement: ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}\n\n`;
