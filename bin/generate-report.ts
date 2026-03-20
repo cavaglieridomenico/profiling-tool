@@ -173,7 +173,8 @@ async function main() {
 
   md += `### Status of tested combinations:\n\n`;
   for (const res of testCaseResults) {
-    md += `- **${res.name}**\n`;
+    const slug = res.name.toLowerCase().replace(/\s+/g, '-');
+    md += `- [**${res.name}**](#${slug})\n`;
     md += `  - ${res.device || 'Mid-end mobile device'}: ${res.passed ? 'Passed' : 'Failed'}\n`;
   }
   md += `\n---\n\n`;
