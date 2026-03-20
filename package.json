@@ -107,7 +107,7 @@
     "extract": "ts-node bin/extract-metrics.ts",
     "report": "ts-node bin/generate-report.ts",
     "refine-config": "ts-node bin/refine-config.ts",
-    "generate-config": "ts-node bin/generate-report-config.ts",
+    "generate-report-config": "ts-node bin/generate-report-config.ts",
     "analyze": "ts-node bin/analyze.ts",
     "build": "tsc",
     "format": "prettier --write ."
