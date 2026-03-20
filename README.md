@@ -405,6 +405,14 @@ Open the generated `.jsonc` file in the `reports/` directory. You should:
 2. Add high-level `summary` and `insights` paragraphs.
 3. Replace "TODO" descriptions in `testCases` with specific KPI analysis.
 
+#### 💡 AI-Powered Refinement (Optional)
+You can use the built-in AI refiner to automatically analyze the metrics and fill in the "TODO" sections with professional observations. This uses the Google Gemini API.
+
+**Command:**
+```bash
+npm run refine-config "<baseline_excel>" "<current_excel>" "<config_jsonc>"
+```
+
 ### 3. Generate Markdown Report
 
 Processes the finalized configuration and the Excel files to produce the `.md` report.

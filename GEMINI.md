@@ -104,6 +104,7 @@ The reporting tool generates Confluence-compatible Markdown reports by comparing
 **Workflow:**
 1. **Draft Config:** Run `npm run generate-config "<baseline_excel>" "<current_excel>"`. This creates a `.jsonc` file in the `reports/` directory with identified scenarios and TODO placeholders.
 2. **Review:** Open the `.jsonc` file, fill in the SharePoint data URLs, and add high-level analysis to the `summary`, `insights`, and test case `description` fields.
+   - **Optional AI Refinement:** Run `npm run refine-config "<baseline_excel>" "<current_excel>" "<config_jsonc>"` to use the Gemini LLM to automatically generate performance analysis for any "TODO" placeholders in the config.
 3. **Generate Report:** Run `npm run report "<baseline_excel>" "<current_excel>" "<config_jsonc>"`. This produces the final `.md` report in the `reports/` folder.
 
 **Mapping Architecture:**
@@ -111,7 +112,15 @@ The reporting tool generates Confluence-compatible Markdown reports by comparing
 - **Version Map:** `src/report-generator/report-version-map.ts` stores descriptive names and metadata for each test version (e.g., TV28_01 -> VMMV 5.6).
 - **Device Map:** `src/report-generator/report-device-map.ts` stores descriptive names for hardware IDs.
 
-### 7. Logging
+### 7. LLM Integration
+
+The tool includes a modular Gemini service for automating various tasks like performance analysis.
+
+- **Gemini Service:** `src/llm/gemini-service.ts` provides an interface to the Google Generative AI API using Node.js's native `fetch`.
+- **Environment:** Requires a `GEMINI_API_KEY` in the `.env` file.
+- **Usage:** Currently used by `bin/refine-config.ts` to automate the transition from draft configuration to professional performance analysis.
+
+### 8. Logging
 
 The project uses a custom `Logger` class (`src/logger.ts`) for consistent console output and file logging.
 
