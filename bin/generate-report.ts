@@ -167,7 +167,7 @@ async function main() {
   }
 
   // Generate Markdown
-  let md = `# Test on ${config.current.name}\n\n`;
+  let md = `# ${config.title}\n\n`;
   md += `## Test results\n\n`;
   md += `**Status: ${overallPassed ? 'PASSED' : 'FAILED'}**\n\n`;
 
