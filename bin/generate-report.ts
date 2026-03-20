@@ -174,7 +174,7 @@ async function main() {
   md += `### Status of tested combinations:\n\n`;
   for (const res of testCaseResults) {
     const slug = res.name.toLowerCase().replace(/\s+/g, '-');
-    md += `- [**${res.name}**](#${slug})\n`;
+    md += `- [${res.name}](#${slug})\n`;
     md += `  - ${res.device || 'Mid-end mobile device'}: ${res.passed ? 'Passed' : 'Failed'}\n`;
   }
   md += `\n---\n\n`;
@@ -198,8 +198,8 @@ async function main() {
 
   for (const res of testCaseResults) {
     md += `### ${res.name}\n\n`;
-    md += `Mid-end mobile device\n\n`;
-    md += `- **Status**: ${res.passed ? 'Passed' : 'Failed'}\n`;
+    md += `${res.device || 'Mid-end mobile device'}\n\n`;
+
     const baselineVer =
       res.baselineVersion === config.baseline.version
         ? config.baseline.name
@@ -215,8 +215,9 @@ async function main() {
       ? `[${res.deviceId}](${res.deviceURL})`
       : res.deviceId || '';
 
-    md += `- **Tested combination**:\n`;
-    md += `  - ${baselineVer} vs ${config.current.name} (${vLink} - ${tLink} - ${dLink})\n`;
+    md += `- **Status**: ${res.passed ? 'Passed' : 'Failed'}\n`;
+    md += `- **${config.productName || ''}**\n`;
+    md += `  ${baselineVer} vs ${config.current.name} ( ${vLink} - ${tLink} - ${dLink} )\n`;
 
     md += `\n#### Report\n\n`;
     if (res.description) {
