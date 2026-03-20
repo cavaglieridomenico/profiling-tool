@@ -40,7 +40,7 @@ function calculateDelta(
 
 function formatValue(value: any, label: string): string {
   if (value === 'N/A') return 'N/A';
-  
+
   const val = parseNumericValue(value);
   if (isNaN(val)) return '-';
 
@@ -224,6 +224,12 @@ async function main() {
     md += `- **Status**: ${res.passed ? 'Passed' : 'Failed'}\n`;
     md += `- **Tested combination**:\n`;
     md += `  ${baselineVer} vs ${config.current.name} ( ${vLink} - ${tLink} - ${dLink} )\n`;
+    if (config.baselineDataURL) {
+      md += `- **${config.baseline.name} data**: [Complete test data](${config.baselineDataURL})\n`;
+    }
+    if (config.currentDataURL) {
+      md += `- **${config.current.name} data**: [Complete test data](${config.currentDataURL})\n`;
+    }
 
     md += `\n#### Report\n\n`;
     if (res.description) {

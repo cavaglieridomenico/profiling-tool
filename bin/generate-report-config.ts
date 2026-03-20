@@ -147,6 +147,8 @@ async function main() {
     const config: ReportConfig = {
       title: `Test on ${currentName}`,
       productName: productName,
+      baselineDataURL: 'TODO: Add baseline profiling data URL',
+      currentDataURL: 'TODO: Add current profiling data URL',
       baseline: {
         name: baselineName,
         version: baselineId

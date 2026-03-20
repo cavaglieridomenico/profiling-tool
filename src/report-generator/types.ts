@@ -23,6 +23,8 @@ export const ReportTestCaseSchema = z.object({
 export const ReportConfigSchema = z.object({
   title: z.string(),
   productName: z.string().optional(),
+  baselineDataURL: z.string().optional(),
+  currentDataURL: z.string().optional(),
   baseline: z.object({
     name: z.string(),
     version: z.string()
