@@ -9,12 +9,18 @@ import {
   generateReportBaseName
 } from '../src/report-generator/utils';
 
+function parseNumericValue(value: any): number {
+  if (value === '' || value === null || value === undefined) return 0;
+  const parsed = parseFloat(value);
+  return isNaN(parsed) ? NaN : parsed;
+}
+
 function calculateDelta(
   baseline: any,
   current: any
 ): { delta: number | string; percentage: string } {
-  const b = parseFloat(baseline);
-  const c = parseFloat(current);
+  const b = parseNumericValue(baseline);
+  const c = parseNumericValue(current);
 
   if (isNaN(b) || isNaN(c)) {
     return { delta: '-', percentage: 'N/A' };
@@ -23,24 +29,24 @@ function calculateDelta(
   const delta = c - b;
   const percentage = b !== 0 ? (delta / Math.abs(b)) * 100 : 0;
 
-  const formattedPercentage =
-    percentage > 0 ? `+${percentage.toFixed(0)}%` : `${percentage.toFixed(0)}%`;
+  let formattedPercentage = `${percentage.toFixed(0)}%`;
+  if (percentage > 0) formattedPercentage = `+${formattedPercentage}`;
 
   return {
     delta: delta,
-    percentage: b !== 0 ? formattedPercentage : '0%'
+    percentage: b !== 0 || delta === 0 ? formattedPercentage : 'N/A'
   };
 }
 
 function formatValue(value: any, label: string): string {
-  const val = parseFloat(value);
-  if (isNaN(val)) return value?.toString() || '-';
+  if (value === 'N/A') return 'N/A';
+  
+  const val = parseNumericValue(value);
+  if (isNaN(val)) return '-';
 
-  if (
-    label.includes('(%)') ||
-    label.includes('Percentage') ||
-    label.includes('Frames (%)')
-  ) {
+  const lowerLabel = label.toLowerCase();
+
+  if (lowerLabel.includes('%') || lowerLabel.includes('percentage')) {
     if (val <= 1.1 && val >= -0.1) {
       return `${(val * 100).toFixed(0)}%`;
     }
@@ -48,9 +54,9 @@ function formatValue(value: any, label: string): string {
   }
 
   if (
-    label.includes('(s)') ||
-    label.includes('(ms)') ||
-    label.includes('(MB)') ||
+    lowerLabel.includes('(s)') ||
+    lowerLabel.includes('(ms)') ||
+    lowerLabel.includes('mb') ||
     label.includes('Δ')
   ) {
     return val.toFixed(2);
