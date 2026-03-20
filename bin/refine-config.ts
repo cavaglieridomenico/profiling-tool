@@ -53,18 +53,6 @@ async function main() {
       Current: ${config.current.name} (${config.current.version})
     `;
 
-    if (config.summary?.includes('TODO')) {
-      logger.info('Refining overall summary...');
-      const summaryPrompt = `
-        You are a senior performance engineer. Based on this context: ${overallContext}, 
-        write a 2-sentence executive summary for a performance report. 
-        ${STYLE_GUIDE_PROMPT}
-        Return ONLY the summary text.
-      `;
-      config.summary = await gemini.generateText(summaryPrompt);
-      await sleep(12000);
-    }
-
     if (config.insights && config.insights.some((i) => i.includes('TODO'))) {
       logger.info('Refining insights...');
       const insightsPrompt = `

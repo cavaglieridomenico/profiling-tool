@@ -172,9 +172,6 @@ async function main() {
   md += `\n---\n\n`;
 
   md += `## Report\n\n`;
-  if (config.summary) {
-    md += `${config.summary}\n\n`;
-  }
 
   if (config.insights && config.insights.length > 0) {
     for (const insight of config.insights) {

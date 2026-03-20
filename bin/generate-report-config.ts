@@ -162,7 +162,6 @@ async function main() {
         name: currentName,
         version: currentId
       },
-      summary: '',
       insights: [
         `Performance tests on ${currentName} passed.`,
         `Analysis compared ${currentName} with the baseline ${baselineName}.`,
@@ -189,7 +188,7 @@ async function main() {
  * REPORT CONFIGURATION - Quick Setup:
  * 1. Fill "baselineDataURL" and "currentDataURL" (once for all cases).
  * 2. Update "title" if needed.
- * 3. Add "summary" and "insights" paragraphs.
+ * 3. Add "insights" paragraphs.
  * 4. Replace "TODO" descriptions in "testCases" with specific KPI analysis.
  */
 ${jsonContent}`;

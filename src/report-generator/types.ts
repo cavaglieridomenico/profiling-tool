@@ -35,7 +35,6 @@ export const ReportConfigSchema = z.object({
     name: z.string(),
     version: z.string()
   }),
-  summary: z.string().optional(),
   insights: z.array(z.string()).optional(),
   testCases: z.array(ReportTestCaseSchema)
 });
