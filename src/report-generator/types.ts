@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const ReportTestCaseSchema = z.object({
   name: z.string(),
   scenarioId: z.string(), // The tab name in Excel (or prefix)
+  status: z.string().optional(), // Manual status (e.g. Passed, Failed)
   device: z.string().optional(), // Descriptive device name
   description: z.string().optional(),
   versionId: z.string().optional(),
@@ -22,6 +23,7 @@ export const ReportTestCaseSchema = z.object({
 
 export const ReportConfigSchema = z.object({
   title: z.string(),
+  status: z.string().optional(), // Overall manual status
   productName: z.string().optional(),
   baselineDataURL: z.string().optional(),
   currentDataURL: z.string().optional(),

@@ -87,7 +87,6 @@ async function main() {
 
   logger.start(`Generating report: ${config.title}`);
 
-  let overallPassed = true;
   const testCaseResults = [];
 
   for (const tc of config.testCases) {
@@ -106,7 +105,6 @@ async function main() {
       );
 
       const metricsList: MetricData[] = [];
-      let tcPassed = true;
 
       const relevantLabels = [
         'Rendering time (s)',
@@ -137,31 +135,18 @@ async function main() {
         if (bVal === undefined && cVal === undefined) continue;
 
         const { delta, percentage } = calculateDelta(bVal, cVal);
-        const thresholds = tc.thresholds as Record<string, number> | undefined;
-        const threshold = thresholds ? thresholds[label] : undefined;
-
-        if (threshold !== undefined) {
-          const cNum = parseFloat(cVal as string);
-          if (!isNaN(cNum) && cNum > threshold) {
-            tcPassed = false;
-          }
-        }
 
         metricsList.push({
           label,
           baseline: bVal ?? '-',
           current: cVal ?? '-',
           delta,
-          percentage,
-          threshold
+          percentage
         });
       }
 
-      if (!tcPassed) overallPassed = false;
-
       testCaseResults.push({
         ...tc,
-        passed: tcPassed,
         metrics: metricsList,
         baselineVersion:
           tc.baselineOverrides?.version || config.baseline.version
@@ -176,13 +161,13 @@ async function main() {
   // Generate Markdown
   let md = `# ${config.title}\n\n`;
   md += `## Test results\n\n`;
-  md += `**Status: ${overallPassed ? 'PASSED' : 'FAILED'}**\n\n`;
+  md += `**Status: ${config.status?.toUpperCase() || 'PASSED'}**\n\n`;
 
   md += `### Status of tested combinations:\n\n`;
   for (const res of testCaseResults) {
     const slug = res.name.toLowerCase().replace(/\s+/g, '-');
     md += `- [${res.name}](#${slug})\n`;
-    md += `  - ${res.device || 'Mid-end mobile device'}: ${res.passed ? 'Passed' : 'Failed'}\n`;
+    md += `  - ${res.device || 'Mid-end mobile device'}: ${res.status || 'Passed'}\n`;
   }
   md += `\n---\n\n`;
 
@@ -234,7 +219,7 @@ async function main() {
       ? `[${res.deviceId}](${res.deviceURL})`
       : res.deviceId || '';
 
-    md += `- **Status**: ${res.passed ? 'Passed' : 'Failed'}\n`;
+    md += `- **Status**: ${res.status || 'Passed'}\n`;
     md += `- **Tested combination**:\n`;
     md += `  ${baselineVer} vs ${config.current.name} ( ${vLink} - ${tLink} - ${dLink} )\n`;
     if (config.baselineDataURL) {

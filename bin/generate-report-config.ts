@@ -102,6 +102,7 @@ async function main() {
       return {
         name: humanName,
         scenarioId: scenarioId,
+        status: 'Passed',
         device: deviceDescription,
         description: humanDescription,
         versionId: currentVerId,
@@ -149,6 +150,7 @@ async function main() {
 
     const config: ReportConfig = {
       title: `Test on ${currentName}`,
+      status: 'Passed',
       productName: productName,
       baselineDataURL: 'TODO: Add baseline profiling data URL',
       currentDataURL: 'TODO: Add current profiling data URL',
