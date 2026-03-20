@@ -216,7 +216,7 @@ async function main() {
       : res.deviceId || '';
 
     md += `- **Status**: ${res.passed ? 'Passed' : 'Failed'}\n`;
-    md += `- **${config.productName || ''}**\n`;
+    md += `- **Tested combination**:\n`;
     md += `  ${baselineVer} vs ${config.current.name} ( ${vLink} - ${tLink} - ${dLink} )\n`;
 
     md += `\n#### Report\n\n`;
