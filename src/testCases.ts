@@ -18,6 +18,24 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'navigate:url?url=TARGET_URL', delay: 20000 },
     { command: 'devtools:stop', delay: 0 }
   ],
+  vmmv_tc01_gr: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
+    { command: 'devtools:start', delay: 3000 },
+    { command: 'navigate:url?url=TARGET_URL', delay: 50000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  vmmv_tc01_end: [
+    {
+      command: 'device:clean-state-preserve-cookies?url=TARGET_URL',
+      delay: 5000
+    },
+    { command: 'navigate:url?url=TARGET_URL', delay: 10000 },
+    { command: 'devtools:start', delay: 30000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
   vmmv_tc05: [
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-vmmv-multivm', delay: 10000 },
@@ -78,6 +96,13 @@ export const testCases: Record<string, TestCaseStep[]> = {
     { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
     { command: 'devtools:start', delay: 3000 },
     { command: 'input:tap-vmmv-vmp-rec', delay: 50000 },
+    { command: 'devtools:stop', delay: 0 }
+  ],
+  vmmv_tc10_end: [
+    { command: 'input:tap-vmmv-video', delay: 2000 },
+    { command: 'input:tap-vmmv-vmp-continue', delay: 5000 },
+    { command: 'input:tap-vmmv-vmp-rec', delay: 12000 },
+    { command: 'devtools:start', delay: 15000 },
     { command: 'devtools:stop', delay: 0 }
   ],
   vmmv_tc10_v4: [
