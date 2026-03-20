@@ -99,6 +99,9 @@ async function main() {
         baselineMatch = baselineScenarios.find((b) => extractTestCaseId(b) === tcId);
       }
 
+      const baselineId = baselineMatch ? baselineMatch.split('-')[0] : '';
+      const baselineVerDef = verList.find((v) => v.version === baselineId);
+
       return {
         name: humanName,
         scenarioId: scenarioId,
@@ -107,6 +110,7 @@ async function main() {
         report: humanDescription,
         versionId: currentVerId,
         versionURL: currentVerDef?.versionURL || '',
+        baselineVersionURL: baselineVerDef?.versionURL || '',
         testCaseId: tcId || '',
         testCaseURL: tcDefinition?.testCaseURL || '',
         deviceId: deviceId || '',

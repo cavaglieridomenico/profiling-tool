@@ -8,6 +8,7 @@ export const ReportTestCaseSchema = z.object({
   report: z.string().optional(),
   versionId: z.string().optional(),
   versionURL: z.string().optional(),
+  baselineVersionURL: z.string().optional(),
   testCaseId: z.string().optional(),
   testCaseURL: z.string().optional(),
   deviceId: z.string().optional(),

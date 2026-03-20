@@ -206,7 +206,11 @@ async function main() {
         ? config.baseline.name
         : res.baselineVersion;
 
-    const vLink = res.versionURL
+    const baselineVersionId = res.baselineVersion;
+    const baselineVLink = res.baselineVersionURL
+      ? `[${baselineVersionId}](${res.baselineVersionURL})`
+      : baselineVersionId || '';
+    const currentVLink = res.versionURL
       ? `[${res.versionId}](${res.versionURL})`
       : res.versionId || '';
     const tLink = res.testCaseURL
@@ -218,7 +222,7 @@ async function main() {
 
     md += `- **Status**: ${res.status || 'Passed'}\n`;
     md += `- **Tested combination**:\n`;
-    md += `  ${baselineVer} vs ${config.current.name} ( ${vLink} - ${tLink} - ${dLink} )\n`;
+    md += `  ${baselineVer} vs ${config.current.name} ( ${baselineVLink} vs ${currentVLink} - ${tLink} - ${dLink} )\n`;
     if (config.baselineDataURL) {
       md += `- **${config.baseline.name} data**: [Complete test data](${config.baselineDataURL})\n`;
     }
