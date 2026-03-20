@@ -230,18 +230,16 @@ async function main() {
       res.baselineVersion === config.baseline.version
         ? config.baseline.name
         : res.baselineVersion;
-    md += `| KPI | ${baselineHeader} | ${config.current.name} | Δ | % | Threshold |\n`;
-    md += `| :--- | :--- | :--- | :--- | :--- | :--- |\n`;
+    md += `| KPI | ${baselineHeader} | ${config.current.name} | Δ | % |\n`;
+    md += `| :--- | :--- | :--- | :--- | :--- |\n`;
 
     for (const m of res.metrics) {
       const bFormatted = formatValue(m.baseline, m.label);
       const cFormatted = formatValue(m.current, m.label);
       const dFormatted =
         typeof m.delta === 'number' ? m.delta.toFixed(2) : m.delta;
-      const thresholdFormatted =
-        m.threshold !== undefined ? m.threshold.toString() : '-';
 
-      md += `| ${m.label} | ${bFormatted} | ${cFormatted} | ${dFormatted} | ${m.percentage} | ${thresholdFormatted} |\n`;
+      md += `| ${m.label} | ${bFormatted} | ${cFormatted} | ${dFormatted} | ${m.percentage} |\n`;
     }
     md += `\n`;
 
