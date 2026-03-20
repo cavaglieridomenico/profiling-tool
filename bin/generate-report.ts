@@ -190,7 +190,6 @@ async function main() {
   if (config.summary) {
     md += `${config.summary}\n\n`;
   }
-  md += `Analysis compared **${config.current.name}** with the baseline **${config.baseline.name}**.\n\n`;
 
   if (config.insights && config.insights.length > 0) {
     for (const insight of config.insights) {
