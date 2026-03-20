@@ -105,6 +105,8 @@
     "profile:rtrmv_tc04": "ts-node bin/profile.ts rtrmv_tc04",
     "orchestrate": "ts-node bin/orchestrate.ts",
     "extract": "ts-node bin/extract-metrics.ts",
+    "report": "ts-node bin/generate-report.ts",
+    "generate-config": "ts-node bin/generate-report-config.ts",
     "analyze": "ts-node bin/analyze.ts",
     "build": "tsc",
     "format": "prettier --write ."
