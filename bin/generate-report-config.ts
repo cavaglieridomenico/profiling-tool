@@ -104,7 +104,7 @@ async function main() {
         scenarioId: scenarioId,
         status: 'Passed',
         device: deviceDescription,
-        description: humanDescription,
+        report: humanDescription,
         versionId: currentVerId,
         versionURL: currentVerDef?.versionURL || '',
         testCaseId: tcId || '',
@@ -162,7 +162,7 @@ async function main() {
         name: currentName,
         version: currentId
       },
-      insights: [
+      report: [
         `Performance tests on ${currentName} passed.`,
         `Analysis compared ${currentName} with the baseline ${baselineName}.`,
         'Results confirm that all performance KPIs are stable with no degradation, including network resource loading, main thread long tasks, INP, and JS Heap usage.',
@@ -188,7 +188,7 @@ async function main() {
  * REPORT CONFIGURATION - Quick Setup:
  * 1. Fill "baselineDataURL" and "currentDataURL" (once for all cases).
  * 2. Update "title" if needed.
- * 3. Add "insights" paragraphs.
+ * 3. Add high-level "report" paragraphs.
  * 4. Replace "TODO" descriptions in "testCases" with specific KPI analysis.
  */
 ${jsonContent}`;

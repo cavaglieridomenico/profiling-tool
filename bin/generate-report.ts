@@ -173,9 +173,9 @@ async function main() {
 
   md += `## Report\n\n`;
 
-  if (config.insights && config.insights.length > 0) {
-    for (const insight of config.insights) {
-      md += `${insight}\n\n`;
+  if (config.report && config.report.length > 0) {
+    for (const paragraph of config.report) {
+      md += `${paragraph}\n\n`;
     }
   }
 
@@ -227,8 +227,8 @@ async function main() {
     }
 
     md += `\n#### Report\n\n`;
-    if (res.description) {
-      md += `${res.description}\n\n`;
+    if (res.report) {
+      md += `${res.report}\n\n`;
     } else {
       md += `Analysis confirms all performance KPIs remain stable without significant degradation.\n\n`;
     }

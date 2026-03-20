@@ -5,7 +5,7 @@ export const ReportTestCaseSchema = z.object({
   scenarioId: z.string(), // The tab name in Excel (or prefix)
   status: z.string().optional(), // Manual status (e.g. Passed, Failed)
   device: z.string().optional(), // Descriptive device name
-  description: z.string().optional(),
+  report: z.string().optional(),
   versionId: z.string().optional(),
   versionURL: z.string().optional(),
   testCaseId: z.string().optional(),
@@ -35,7 +35,7 @@ export const ReportConfigSchema = z.object({
     name: z.string(),
     version: z.string()
   }),
-  insights: z.array(z.string()).optional(),
+  report: z.array(z.string()).optional(),
   testCases: z.array(ReportTestCaseSchema)
 });
 

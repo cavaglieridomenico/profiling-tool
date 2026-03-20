@@ -53,23 +53,23 @@ async function main() {
       Current: ${config.current.name} (${config.current.version})
     `;
 
-    if (config.insights && config.insights.some((i) => i.includes('TODO'))) {
-      logger.info('Refining insights...');
-      const insightsPrompt = `
+    if (config.report && config.report.some((i) => i.includes('TODO'))) {
+      logger.info('Refining high-level report...');
+      const reportPrompt = `
         You are a senior performance engineer. Based on this context: ${overallContext}, 
         write 3 specific performance insights or observations. 
         Each should be a single standalone paragraph. 
         ${STYLE_GUIDE_PROMPT}
-        Return ONLY the insights separated by double newlines.
+        Return ONLY the report paragraphs separated by double newlines.
       `;
-      const aiInsights = await gemini.generateText(insightsPrompt);
-      config.insights = aiInsights.split('\n\n').filter((i) => i.trim());
+      const aiReport = await gemini.generateText(reportPrompt);
+      config.report = aiReport.split('\n\n').filter((i) => i.trim());
       await sleep(12000);
     }
 
-    // 2. Refine individual Test Case descriptions
+    // 2. Refine individual Test Case reports
     for (const tc of config.testCases) {
-      if (tc.description?.includes('TODO')) {
+      if (tc.report?.includes('TODO')) {
         logger.info(`Refining analysis for: ${tc.name}...`);
 
         const baselineMetrics = await getMetricsFromExcel(
@@ -98,7 +98,7 @@ async function main() {
           Return ONLY the analysis text.
         `;
 
-        tc.description = await gemini.generateText(tcPrompt);
+        tc.report = await gemini.generateText(tcPrompt);
         await sleep(12000);
       }
     }
