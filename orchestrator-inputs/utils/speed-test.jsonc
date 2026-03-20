@@ -3,7 +3,7 @@
     "connect": true,
     "checkThermal": false,
     "puppeteerEnv": "",
-    "strictVersionCheck": false
+    "strictVersionCheck": true
   },
   "timeline": [
     {

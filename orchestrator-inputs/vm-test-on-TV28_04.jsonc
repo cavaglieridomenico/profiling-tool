@@ -1,0 +1,278 @@
+{
+  "setup": {
+    "connect": true,
+    "checkThermal": true,
+    "puppeteerEnv": "",
+    "strictVersionCheck": true
+  },
+  "timeline": [
+    {
+      "setupCommands": ["COMMANDS.DEVICE_CLOSE_ALL_TABS"],
+      "postCommandDelay": 5000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 8000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
+      "postCommandDelay": 15000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.VMMV_TV28_04",
+      "skipNavigation": true,
+      "caseName": "testCases.vmmv_tc01",
+      "traceName": "TV28_04-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000
+    },
+    {
+      "targetUrl": "urls.VMMV_TV28_04",
+      "skipNavigation": true,
+      "caseName": "testCases.vmmv_tc01",
+      "traceName": "TV28_04-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04",
+      "runs": 1
+    },
+    {
+      "targetUrl": "urls.VMMV_TV28_04",
+      "skipNavigation": true,
+      "caseName": "testCases.vmmv_tc01",
+      "traceName": "TV28_04-TC01-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC04-TD31_04",
+      "runs": 1
+    },
+    {
+      "targetUrl": "urls.VMMV_TV28_04",
+      "skipNavigation": true,
+      "caseName": "testCases.vmmv_tc01_end",
+      "traceName": "TV28_04-TC01-TD31_04-end",
+      "runs": 1
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV28_04-TC10-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV28_04-TC10-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc10",
+      "traceName": "TV28_04-TC10-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "caseName": "testCases.devtools_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04-OFFSET=4",
+      "runs": 1
+    },
+    {
+      "caseName": "testCases.perfetto_10seconds",
+      "traceName": "TV28_04-TC11-TD31_04",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc10_end",
+      "traceName": "TV28_04-TC10-TD31_04-end",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc13",
+      "traceName": "TV28_04-TC13-TD31_04",
+      "runs": 3
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 8000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_PRIVACY"],
+      "postCommandDelay": 15000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc05",
+      "traceName": "TV28_04-TC05-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc05_01",
+      "traceName": "TV28_04-TC05_01-TD31_04",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc06",
+      "traceName": "TV28_04-TC06-TD31_04-OFFSET=4",
+      "runs": 3
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_04",
+      "postNavigationDelay": 15000,
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 5000,
+      "caseName": "testCases.vmmv_tc06_perfetto",
+      "traceName": "TV28_04-TC06-TD31_04",
+      "runs": 3
+    }
+  ]
+}

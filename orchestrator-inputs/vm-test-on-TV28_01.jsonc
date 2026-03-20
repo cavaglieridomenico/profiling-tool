@@ -134,9 +134,33 @@
       "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
       "targetUrl": "urls.VMMV_TV28_01",
       "postNavigationDelay": 15000,
+      "caseName": "testCases.vmmv_tc10_end",
+      "traceName": "TV28_01-TC10-TD31_04-end",
+      "runs": 1
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_BOTTOM_CENTER"],
+      "postCommandDelay": 2000
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
+    },
+    {
+      "preNavigationCommands": ["COMMANDS.DEVICE_CLEAN_STATE_PRESERVE_COOKIES"],
+      "targetUrl": "urls.VMMV_TV28_01",
+      "postNavigationDelay": 15000,
       "caseName": "testCases.vmmv_tc13",
       "traceName": "TV28_01-TC13-TD31_04",
       "runs": 3
+    },
+    {
+      "setupCommands": ["COMMANDS.INPUT_TAP_VMMV_VMP_RESTART"],
+      "postCommandDelay": 2000
     }
   ]
 }
