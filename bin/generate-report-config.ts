@@ -179,12 +179,11 @@ async function main() {
 
     // Add some comments to make it JSONC-like and guide the user
     const jsoncContent = `/**
- * Report Configuration File
- * 
- * Instructions:
- * 1. Review and update the "title", "baseline", and "current" sections.
- * 2. Update "testCases" with human-readable names and appropriate baseline overrides.
- * 3. Add "summary" and "insights" based on your analysis.
+ * REPORT CONFIGURATION - Quick Setup:
+ * 1. Fill "baselineDataURL" and "currentDataURL" (once for all cases).
+ * 2. Update "title" if needed.
+ * 3. Add "summary" and "insights" paragraphs.
+ * 4. Replace "TODO" descriptions in "testCases" with specific KPI analysis.
  */
 ${jsonContent}`;
 
