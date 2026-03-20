@@ -1,5 +1,9 @@
 export const urls: Record<string, string> = {
   VMCORE_BYPASS: 'https://vmcore.luxottica.com/luxotticabypass',
+  VMMV_TV28_04:
+    'https://vmmv-uat.luxottica.com/v/5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E35',
+  VMMV_TV28_03:
+    'https://vmmv-uat.luxottica.com/v/5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E33',
   VMMV_TV28_02:
     'https://vmmv-uat.luxottica.com/v/5.6/demo/demo.html?key=95702A5E-1523-4ADD-AC16-5CE7062F7E32',
   VMMV_TV28_01:
