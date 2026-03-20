@@ -380,6 +380,48 @@ Example `orchestrator.jsonc`:
 **Note on test cases with template:**
 When using test cases that contain the `TARGET_URL` placeholder, the Orchestrator passes the `targetUrl` defined in your timeline item to the runner for replacement. If the test case already includes its own `navigate:url` command (like `vmmv_tc01`), set `"skipNavigation": true` to avoid redundant navigations.
 
+## Performance Reporting
+
+The reporting tool generates Confluence-compatible Markdown reports by comparing two aggregated Excel metrics files (Baseline vs. Current). It uses a two-step workflow: generate a configuration, then generate the report.
+
+### 1. Generate Report Configuration
+
+Analyzes two Excel files and creates a draft `.jsonc` configuration in the `./reports` folder. It automatically maps scenarios using fuzzy matching and identifies the product/version from filenames.
+
+**Command:**
+```bash
+npm run generate-config "<baseline_excel_path>" "<current_excel_path>"
+```
+
+**Key Features:**
+- **Automatic Naming:** Extracted from filenames (e.g., `VMMV_TV28_01-...` identifies product `VMMV` and version `TV28_01`).
+- **Fuzzy Matching:** Matches baseline scenarios even if device or version IDs have changed between runs.
+- **Human-Readable Mapping:** Automatically maps technical IDs (like `TC01`) to descriptive names using internal maps.
+
+### 2. Review and Edit Configuration
+
+Open the generated `.jsonc` file in the `reports/` directory. You should:
+1. Fill `baselineDataURL` and `currentDataURL` (SharePoint/OneDrive links).
+2. Add high-level `summary` and `insights` paragraphs.
+3. Replace "TODO" descriptions in `testCases` with specific KPI analysis.
+
+### 3. Generate Markdown Report
+
+Processes the finalized configuration and the Excel files to produce the `.md` report.
+
+**Command:**
+```bash
+npm run report "<baseline_excel_path>" "<current_excel_path>" "<config_jsonc_path>"
+```
+
+**Key Features:**
+- **Calculated Deltas:** Automatically calculates absolute difference and percentage change for all KPIs.
+- **Interactive Links:** Generates "Inline" style links for Versions, Test Cases, and Devices if URLs are defined in the maps.
+- **Summary Links:** The top summary table includes internal links to the detailed sections below.
+- **Zero-Value Preservation:** Explicitly handles and displays `0` and `0.00` values instead of dashes.
+
+---
+
 ## Enabling Memory Profiling on Android device
 
 For mobile devices, you need to manually enable memory profiling in Chrome before you can capture a trace with heap data. Here are the steps:

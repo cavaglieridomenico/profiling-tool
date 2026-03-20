@@ -97,7 +97,21 @@ To add new metrics to the extraction process:
 - **New Test Case:** Define the sequence of actions in `src/testCases.ts`.
 - **New URL Alias:** Add to `src/urls.ts`.
 
-### 6. Logging
+### 6. Performance Reporting
+
+The reporting tool generates Confluence-compatible Markdown reports by comparing two aggregated Excel metrics files (Baseline vs. Current).
+
+**Workflow:**
+1. **Draft Config:** Run `npm run generate-config "<baseline_excel>" "<current_excel>"`. This creates a `.jsonc` file in the `reports/` directory with identified scenarios and TODO placeholders.
+2. **Review:** Open the `.jsonc` file, fill in the SharePoint data URLs, and add high-level analysis to the `summary`, `insights`, and test case `description` fields.
+3. **Generate Report:** Run `npm run report "<baseline_excel>" "<current_excel>" "<config_jsonc>"`. This produces the final `.md` report in the `reports/` folder.
+
+**Mapping Architecture:**
+- **Product Map:** `src/report-generator/report-test-cases-map.ts` stores human-readable names and Jira links for each product (e.g., VMMV).
+- **Version Map:** `src/report-generator/report-version-map.ts` stores descriptive names and metadata for each test version (e.g., TV28_01 -> VMMV 5.6).
+- **Device Map:** `src/report-generator/report-device-map.ts` stores descriptive names for hardware IDs.
+
+### 7. Logging
 
 The project uses a custom `Logger` class (`src/logger.ts`) for consistent console output and file logging.
 
