@@ -62,8 +62,10 @@ async function main() {
     const testCases = currentScenarios.map((scenarioId) => {
       // Human-readable name from product list
       const tcId = extractTestCaseId(scenarioId);
-      const tcDefinition = tcId ? productList.find(t => t.testCase === tcId) : undefined;
-      
+      const tcDefinition = tcId
+        ? productList.find((t) => t.testCase === tcId)
+        : undefined;
+
       const humanName = tcDefinition
         ? tcDefinition.testCaseDescription
         : scenarioId.split('-').join(' ');
@@ -72,11 +74,20 @@ async function main() {
 
       // Device mapping
       const deviceId = extractDeviceId(scenarioId);
-      const deviceDefinition = deviceId ? DEVICE_MAP.find(d => d.device === deviceId) : undefined;
-      const deviceDescription = deviceDefinition ? deviceDefinition.deviceDescription : 'TODO: Provide device description';
+      const deviceDefinition = deviceId
+        ? DEVICE_MAP.find((d) => d.device === deviceId)
+        : undefined;
+      const deviceDescription = deviceDefinition
+        ? deviceDefinition.deviceDescription
+        : 'TODO: Provide device description';
 
       // New Version / TC / Device fields for links
-      const currentVerId = path.basename(currentExcel).split('-')[0].split('_').slice(1).join('_');
+      const currentVerId = path
+        .basename(currentExcel)
+        .split('-')[0]
+        .split('_')
+        .slice(1)
+        .join('_');
       const verList = PRODUCT_VERSION_MAP[productName] || [];
       const currentVerDef = verList.find((v) => v.version === currentVerId);
 
@@ -96,7 +107,9 @@ async function main() {
 
       // Final fallback: Match strictly by TC ID if suffix matching fails
       if (!baselineMatch && tcId) {
-        baselineMatch = baselineScenarios.find((b) => extractTestCaseId(b) === tcId);
+        baselineMatch = baselineScenarios.find(
+          (b) => extractTestCaseId(b) === tcId
+        );
       }
 
       const baselineId = baselineMatch ? baselineMatch.split('-')[0] : '';
@@ -129,8 +142,16 @@ async function main() {
     const baselineBasename = path.basename(baselineExcel, '.xlsx');
     const currentBasename = path.basename(currentExcel, '.xlsx');
 
-    const baselineId = baselineBasename.split('-')[0].split('_').slice(1).join('_');
-    const currentId = currentBasename.split('-')[0].split('_').slice(1).join('_');
+    const baselineId = baselineBasename
+      .split('-')[0]
+      .split('_')
+      .slice(1)
+      .join('_');
+    const currentId = currentBasename
+      .split('-')[0]
+      .split('_')
+      .slice(1)
+      .join('_');
 
     const baselineVersionName =
       baselineBasename.split('-').length > 1
@@ -192,8 +213,11 @@ async function main() {
  * REPORT CONFIGURATION - Quick Setup:
  * 1. Fill "baselineDataURL" and "currentDataURL" (once for all cases).
  * 2. Update "title" if needed.
- * 3. Add high-level "report" paragraphs.
- * 4. Replace "TODO" descriptions in "testCases" with specific KPI analysis.
+ * 3. Update main Status.
+ * 4. Update test cases Status.
+ * 5. Update main Report paragraphs.
+ * 6. Update test cases Report.
+ * 7. "TODO" is the key word for agentic reporting.
  */
 ${jsonContent}`;
 
