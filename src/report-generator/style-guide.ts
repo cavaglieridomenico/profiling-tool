@@ -4,16 +4,36 @@
  */
 export const PERFORMANCE_STYLE_EXAMPLES = [
   {
+    context:
+      'Standard comment for a main test report without any special highlights',
+    style:
+      'Performance tests on VMMV 5.5.3 passed. Analysis compared VMMV 5.5.3 with the baseline VMMV 5.5.2. Results confirm that all performance KPIs are stable with no degradation, including network resource loading, main thread long tasks, INP, and JS Heap usage. No UI/UX issues occurred during testing.'
+  },
+  {
+    context:
+      'Standard comment for a single test report without any special highlights',
+    style:
+      'Analysis confirms all performance KPIs remain stable without significant degradation.'
+  },
+  {
+    context: 'Standard comment for a single test report after a highlight',
+    style:
+      'Analysis confirms all other performance KPIs remain stable without significant degradation.'
+  },
+  {
     context: 'Improved Longest Task duration',
-    style: 'Analysis confirms stable performance KPIs with an important reduction of Longest task duration on the main thread due to relocating heavy logic to a web worker.'
+    style:
+      'Analysis confirms stable performance KPIs with an important reduction of Longest task duration on the main thread due to relocating heavy logic to a web worker.'
   },
   {
     context: 'Improved VMP Picture Processing',
-    style: 'Performance improved by skipping the unnecessary download of ffmpeg and TensorFlow libraries and reducing the hardcoded loop for picture pose inference, freeing the main thread.'
+    style:
+      'Performance improved by skipping the unnecessary download of ffmpeg and TensorFlow libraries and reducing the hardcoded loop for picture pose inference, freeing the main thread.'
   },
   {
     context: 'Stable KPIs',
-    style: 'Results confirm stable performance KPIs, with improved main thread computation during engine initialization and enhanced resource handling.'
+    style:
+      'Results confirm stable performance KPIs, with improved main thread computation during engine initialization and enhanced resource handling.'
   }
 ];
 
